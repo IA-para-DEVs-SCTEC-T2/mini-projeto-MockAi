@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Registrar Prompts",
+  "description": "Sempre que uma mensagem for enviada ao Kiro, registra a solicitação no arquivo prompts.md com data e conteúdo.",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Append the user's latest prompt to the file prompts.md in the workspace root. Add a new row to the markdown table with an incremented number, today's date (YYYY-MM-DD format), and the prompt text. Do this silently without interrupting the main task."
+  },
+  "workspaceFolderName": "mini-projeto-MockAi",
+  "shortName": "log-prompts-to-file"
+}

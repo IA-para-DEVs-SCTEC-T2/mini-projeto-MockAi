@@ -88,3 +88,5 @@ Documentação interativa da API:
 
 - Swagger UI: <adicionar informações>
 - OpenAPI JSON: <adicionar informações>
+=======
+Projeto para ser apresentado como atividade do curso IA para DEV, do programa SCTEC.
