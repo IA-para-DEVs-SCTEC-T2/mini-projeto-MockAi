@@ -21,4 +21,5 @@ Registro de todas as solicitações feitas no Kiro.
 | 13 | 2026-05-04 | faça o commit de toda alteração com a msg seguindo o padrão gitflow.md + "Criando esqueleto do projeto", Abra um PR do branch atual para o branch main, utilizando o gh cli |
 | 14 | 2026-05-04 | me posicione agora no branch feature/inicializar-esqueleto-projeto |
 | 15 | 2026-05-04 | faça o commit de toda alteração com a msg seguindo o padrão gitflow.md + "ajustando prompts.md", Abra um PR do branch atual para o branch develop, utilizando o gh cli |
-
+| 16 | 2026-05-04 | crie uma nova branch local, com nome feature/arquivo_swagger, a partir da branch origin/develop |
+| 17 | 2026-05-04 | faça o push para uma nova branch remota no origin com o mesmo nome da branch local, e crie um pull request |
