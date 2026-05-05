@@ -23,3 +23,8 @@ Registro de todas as solicitações feitas no Kiro.
 | 15 | 2026-05-04 | faça o commit de toda alteração com a msg seguindo o padrão gitflow.md + "ajustando prompts.md", Abra um PR do branch atual para o branch develop, utilizando o gh cli |
 | 16 | 2026-05-04 | crie uma nova branch local, com nome feature/arquivo_swagger, a partir da branch origin/develop |
 | 17 | 2026-05-04 | faça o push para uma nova branch remota no origin com o mesmo nome da branch local, e crie um pull request |
+| 18 | 2026-05-04 | Implementar endpoint de upload de arquivos OpenAPI 3.x (JSON e YAML) com geração automática de slug amigável baseado no título da spec, suporte a slugs incrementais em caso de conflito, e extração completa dos padrões e características dos endpoints (parâmetros, múltiplas respostas, metadados, segurança e request body). Expor os projetos via URL estruturada no padrão `/{slug}/endpoints`, com endpoints para listagem de projetos com sumário, remoção por slug e arquivos de exemplo para testes. |
+| 19 | 2026-05-04 | Implementar o executor de endpoints mock com suporte a chamadas HTTP diretas no padrão `/mock/{slug}/{path}`, resolução automática de path templates (ex: `/usuarios/{id}`), retorno do status HTTP e body definidos na spec OpenAPI, exposto como um único endpoint no Swagger. |
+| 20 | 2026-05-04 | Atualizar o README com documentação completa em português e consolidar o histórico de prompts. |
+| 21 | 2026-05-04 | Qual seria um bom nome para o texto do commit? |
+| 22 | 2026-05-04 | Sim, fazer os commits e abrir o PR |

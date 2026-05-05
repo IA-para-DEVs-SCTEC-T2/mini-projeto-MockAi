@@ -1,6 +1,8 @@
 # MockAI
 
-MockAI é um gerador inteligente de APIs mock que transforma arquivos Swagger/OpenAPI em APIs simuladas locais, permitindo desenvolvimento e testes sem dependência de serviços externos. Suporta geração dinâmica de endpoints e integração opcional com IA para respostas simuladas mais realistas.
+MockAI é um gerador inteligente de APIs mock que transforma arquivos Swagger/OpenAPI em APIs simuladas locais, permitindo desenvolvimento e testes sem dependência de serviços externos.
+
+Ao fazer o upload de uma spec OpenAPI (JSON ou YAML), o sistema gera automaticamente um **slug** amigável baseado no título da spec (ex: `usuarios`, `fiscalizacao`) e disponibiliza os endpoints simulados em URLs legíveis como `http://localhost:8080/mock/usuarios/usuarios`.
 
 ## Tecnologias
 
@@ -11,6 +13,7 @@ MockAI é um gerador inteligente de APIs mock que transforma arquivos Swagger/Op
 | Spring Boot | 4.0.6 |
 | SpringDoc OpenAPI | 3.0.2 |
 | H2 Database | runtime |
+| Jackson YAML | runtime |
 
 ## Pré-requisitos
 
@@ -41,6 +44,8 @@ mvn clean package
 mvn clean
 ```
 
+---
+
 ## Estrutura do Projeto
 
 O projeto segue os princípios de **Clean Architecture** e **Hexagonal Architecture**, organizado em 4 camadas isoladas:
@@ -48,44 +53,55 @@ O projeto segue os princípios de **Clean Architecture** e **Hexagonal Architect
 ```
 src/main/java/com/ia/para/devs/mockai/
 ├── MockaiApplication.java
-├── domain/                          # Java puro, sem dependências externas
+├── domain/                               # Java puro, sem dependências externas
 │   ├── model/
-│   │   ├── MockDefinition.java      # Entidade de domínio: representa um mock cadastrado
-│   │   ├── MockEndpoint.java        # Endpoint extraído da spec OpenAPI
-│   │   └── OpenApiSpec.java         # Dados extraídos após parsing da spec
+│   │   ├── MockDefinition.java           # Entidade de domínio: representa um projeto mock
+│   │   ├── MockEndpoint.java             # Endpoint com metadados completos da spec
+│   │   ├── EndpointParameter.java        # Parâmetro de endpoint (path/query/header/cookie)
+│   │   ├── EndpointResponse.java         # Resposta possível de um endpoint
+│   │   └── OpenApiSpec.java              # Dados extraídos após parsing da spec
 │   └── port/
-│       ├── MockDefinitionRepository.java  # Port de saída: contrato de persistência
-│       └── OpenApiParser.java             # Port de entrada: contrato de parsing
-├── application/                     # Casos de uso e regras de negócio
+│       ├── MockDefinitionRepository.java # Port de saída: contrato de persistência
+│       └── OpenApiParser.java            # Port de entrada: contrato de parsing
+├── application/                          # Casos de uso e regras de negócio
 │   ├── usecase/
-│   │   ├── CreateMockUseCase.java   # Cria mock a partir de uma spec OpenAPI
-│   │   ├── ListMocksUseCase.java    # Lista todos os mocks cadastrados
-│   │   └── DeleteMockUseCase.java   # Remove um mock pelo id
+│   │   ├── CreateMockUseCase.java        # Cria mock a partir de spec inline
+│   │   ├── UploadSpecUseCase.java        # Cria mock a partir de arquivo enviado
+│   │   ├── ListMocksUseCase.java         # Lista todos os mocks (detalhes completos)
+│   │   ├── ListProjectsUseCase.java      # Lista projetos com sumário
+│   │   ├── GetProjectEndpointsUseCase.java # Busca endpoints de um projeto pelo slug
+│   │   ├── DeleteMockUseCase.java        # Remove mock pelo UUID
+│   │   └── DeleteProjectBySlugUseCase.java # Remove projeto pelo slug
 │   └── service/
-│       └── MockResolverService.java # Resolve a resposta simulada para um endpoint
-├── infrastructure/                  # Adaptadores técnicos: JPA, gateways, mappers
+│       ├── MockResolverService.java      # Resolve endpoint por UUID ou slug + path template
+│       └── SlugGeneratorService.java     # Gera slugs únicos e incrementais a partir do título
+├── infrastructure/                       # Adaptadores técnicos: JPA, gateways, mappers
 │   ├── persistence/
 │   │   ├── entity/
-│   │   │   └── MockDefinitionEntity.java        # Entidade JPA
+│   │   │   └── MockDefinitionEntity.java         # Entidade JPA (inclui campo slug)
 │   │   ├── repository/
-│   │   │   └── MockDefinitionJpaRepository.java # Spring Data JPA
+│   │   │   └── MockDefinitionJpaRepository.java  # Spring Data JPA com queries por slug
 │   │   └── mapper/
-│   │       └── MockDefinitionMapper.java        # Converte Entity ↔ Domain Model
+│   │       └── MockDefinitionMapper.java         # Converte Entity ↔ Domain Model
 │   └── gateway/
-│       ├── OpenApiParserGateway.java             # Implementa parsing JSON/YAML
-│       └── MockDefinitionRepositoryAdapter.java  # Implementa port de persistência
-└── api/                             # Controllers REST, DTOs e tratamento de exceções
+│       ├── OpenApiParserGateway.java              # Parser OpenAPI 3.x (JSON e YAML)
+│       └── MockDefinitionRepositoryAdapter.java   # Implementa port de persistência
+└── api/                                  # Controllers REST, DTOs e tratamento de exceções
     ├── controller/
-    │   ├── MockController.java          # CRUD de mocks: POST, GET, DELETE
-    │   └── MockExecutorController.java  # Executa chamadas aos endpoints mock
+    │   ├── MockController.java           # Gerenciamento de mocks: POST, GET, DELETE por UUID
+    │   ├── ProjectEndpointsController.java # Projetos por slug: listar, consultar, deletar
+    │   └── MockExecutorController.java   # Executor: simula chamadas reais aos endpoints
     ├── dto/
     │   ├── request/
-    │   │   └── CreateMockRequest.java   # DTO de entrada com validação
+    │   │   └── CreateMockRequest.java    # DTO de entrada com validação
     │   └── response/
-    │       ├── MockResponse.java        # DTO de saída do mock
-    │       └── MockEndpointResponse.java
+    │       ├── MockResponse.java         # DTO de saída com slug e endpointsUrl
+    │       ├── MockEndpointResponse.java # Endpoint com metadados completos
+    │       ├── EndpointParameterResponse.java
+    │       ├── EndpointResponseDetail.java
+    │       └── ProjectSummaryResponse.java # Sumário de projeto para listagem
     └── exception/
-        └── GlobalExceptionHandler.java  # Handler global de erros HTTP
+        └── GlobalExceptionHandler.java   # Handler global de erros HTTP
 ```
 
 ### Responsabilidades por camada
@@ -95,59 +111,168 @@ src/main/java/com/ia/para/devs/mockai/
 - `infrastructure` — Implementa os ports do domain usando JPA, H2 e gateways externos.
 - `api` — Expõe endpoints REST, valida entradas e serializa respostas JSON.
 
+---
+
 ## Endpoints da API
+
+### Gerenciamento de Mocks (`/mocks`)
 
 | Método | Endpoint | Descrição |
 |---|---|---|
-| `POST` | `/mocks` | Cria um mock a partir de uma spec OpenAPI (JSON ou YAML) |
-| `GET` | `/mocks` | Lista todos os mocks cadastrados |
-| `DELETE` | `/mocks/{id}` | Remove um mock pelo id |
-| `GET/POST/PUT/DELETE/PATCH` | `/mock/{id}/{path}` | Executa uma chamada ao endpoint mock simulado |
+| `POST` | `/mocks` | Cria um mock a partir de uma spec OpenAPI inline (JSON ou YAML como string) |
+| `POST` | `/mocks/upload` | Cria um mock via upload de arquivo `.json`, `.yaml` ou `.yml` |
+| `GET` | `/mocks` | Lista todos os mocks com detalhes completos |
+| `DELETE` | `/mocks/{id}` | Remove um mock pelo UUID |
 
-## Como testar
+### Projetos por Slug (`/projects`, `/{slug}`)
 
-### Swagger UI
+| Método | Endpoint | Descrição |
+|---|---|---|
+| `GET` | `/projects` | Lista todos os projetos com slug, URL de acesso e sumário dos endpoints |
+| `GET` | `/{slug}/endpoints` | Retorna os endpoints completos de um projeto pelo slug |
+| `DELETE` | `/{slug}` | Remove um projeto e todos os seus endpoints pelo slug |
 
-Acesse a documentação interativa com todos os endpoints disponíveis:
+### Executor (`/mock`)
 
+| Método | Endpoint | Descrição |
+|---|---|---|
+| `*` | `/mock/{slug}/{path}` | Simula uma chamada real ao endpoint mock — use o método HTTP desejado diretamente |
+
+---
+
+## Fluxo de Uso
+
+### 1. Fazer upload de uma spec OpenAPI
+
+```bash
+curl -X POST http://localhost:8080/mocks/upload \
+  -F "file=@usuarios-api.yaml"
 ```
-http://localhost:8080/swagger-ui.html
-```
 
-### Exemplo de criação de mock
-
-`POST /mocks` com o body:
+A resposta inclui o **slug** gerado e a **URL de acesso**:
 
 ```json
 {
-  "specContent": "{\"openapi\":\"3.0.0\",\"info\":{\"title\":\"Minha API\",\"version\":\"1.0.0\"},\"paths\":{\"/usuarios\":{\"get\":{\"summary\":\"Lista usuários\",\"responses\":{\"200\":{\"description\":\"OK\",\"content\":{\"application/json\":{\"example\":{\"id\":1,\"nome\":\"João\"}}}}}}}}}"
+  "id": "3fa85f64-...",
+  "name": "Usuarios API",
+  "slug": "usuarios",
+  "endpointsUrl": "/usuarios/endpoints"
 }
 ```
 
-### Executar um endpoint mock
+Se já existir um projeto com o mesmo slug, um sufixo incremental é adicionado automaticamente:
+- `usuarios` → `usuarios-2` → `usuarios-3`
 
-Com o `id` retornado na criação:
+### 2. Consultar os endpoints do projeto
 
 ```
-GET http://localhost:8080/mock/{id}/usuarios
+GET http://localhost:8080/usuarios/endpoints
+GET http://localhost:8080/fiscalizacao/endpoints
 ```
 
-Retorna a resposta simulada definida na spec: `{"id":1,"nome":"João"}`
+### 3. Listar todos os projetos
+
+```
+GET http://localhost:8080/projects
+```
+
+Retorna slug, nome, URL de acesso, URL de deleção e sumário dos endpoints de cada projeto.
+
+### 4. Executar um endpoint mock
+
+Faça a chamada diretamente com o método HTTP desejado — sem parâmetros extras:
+
+```
+GET    http://localhost:8080/mock/fiscalizacao/fiscalizacoes
+GET    http://localhost:8080/mock/fiscalizacao/fiscalizacoes/1
+POST   http://localhost:8080/mock/usuarios/usuarios
+PUT    http://localhost:8080/mock/usuarios/usuarios/1
+DELETE http://localhost:8080/mock/usuarios/usuarios/1
+PATCH  http://localhost:8080/mock/fiscalizacao/fiscalizacoes/1
+```
+
+O sistema resolve automaticamente **path templates** — `/fiscalizacoes/{id}` bate com `/fiscalizacoes/42`, `/fiscalizacoes/abc`, etc.
+
+A resposta retorna com o **status HTTP real** definido na spec (200, 201, 204, 404...) e o body JSON simulado.
+
+### 5. Deletar um projeto pelo slug
+
+```bash
+curl -X DELETE http://localhost:8080/usuarios-2
+curl -X DELETE http://localhost:8080/fiscalizacao
+```
+
+---
+
+## Geração de Slugs
+
+O slug é gerado automaticamente a partir do campo `info.title` da spec OpenAPI:
+
+| Título da spec | Slug gerado |
+|---|---|
+| `Usuarios API` | `usuarios` |
+| `Fiscalização API` | `fiscalizacao` |
+| `Usuarios API` (2ª vez) | `usuarios-2` |
+| `Usuarios API` (3ª vez) | `usuarios-3` |
+
+Regras aplicadas:
+- Converte para minúsculas
+- Remove acentos e caracteres especiais
+- Substitui espaços por hífen
+- Adiciona sufixo incremental se o slug já existir
+
+---
+
+## Características Extraídas da Spec OpenAPI
+
+O parser extrai os seguintes dados de cada endpoint:
+
+| Campo | Descrição |
+|---|---|
+| `path` | Path do endpoint (ex: `/usuarios/{id}`) |
+| `httpMethod` | Método HTTP (GET, POST, PUT, PATCH, DELETE...) |
+| `summary` | Resumo da operação |
+| `description` | Descrição detalhada |
+| `operationId` | Identificador único da operação |
+| `tags` | Grupos/categorias |
+| `requiresAuth` | Se possui `security` definido |
+| `parameters` | Parâmetros path/query/header/cookie com tipo e obrigatoriedade |
+| `requestBodyExample` | Exemplo do corpo da requisição |
+| `requestBodyRequired` | Se o body é obrigatório |
+| `responseStatus` | Status HTTP da resposta principal (2xx) |
+| `responseBody` | Body da resposta principal |
+| `responses` | Todas as respostas possíveis (200, 201, 400, 401, 404...) |
+
+---
+
+## Arquivos de Exemplo
+
+Os arquivos de exemplo estão em `docs/samples/`:
+
+| Arquivo | Descrição |
+|---|---|
+| `usuarios-api.yaml` | Spec OpenAPI 3.x em YAML — CRUD de usuários (5 endpoints) |
+| `usuarios-api.json` | Mesma spec em JSON |
+| `fiscalizacao-api.yaml` | Spec OpenAPI 3.x — API de fiscalizações (4 endpoints) |
+| `requests.http` | Exemplos de requisições para REST Client (VS Code / IntelliJ) |
+| `test-curl.sh` | Script bash com todos os cenários de teste usando curl |
+
+---
 
 ## Ferramentas de Desenvolvimento
 
-### H2 Console
-
-Banco de dados em memória disponível durante o desenvolvimento:
-
-- URL: `http://localhost:8080/h2-console`
-- JDBC URL: `jdbc:h2:mem:testdb`
-- Username: `sa`
-- Password: _(vazio)_
-
 ### Swagger UI
 
-Documentação interativa da API:
+Documentação interativa com todos os endpoints:
 
-- Swagger UI: `http://localhost:8080/swagger-ui.html`
-- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+- **Swagger UI:** `http://localhost:8080/swagger-ui.html`
+- **OpenAPI JSON:** `http://localhost:8080/v3/api-docs`
+
+### H2 Console
+
+Banco de dados em memória para inspeção durante o desenvolvimento:
+
+- **URL:** `http://localhost:8080/h2-console`
+- **JDBC URL:** `jdbc:h2:mem:testdb`
+- **Username:** `sa`
+- **Password:** _(vazio)_
