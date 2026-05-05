@@ -151,3 +151,7 @@ Documentação interativa da API:
 
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
 - OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+
+### Arquivo de exemplo de documentação
+
+- `./docs/Swagger-Petstore-OpenAPI3.2.yml`
