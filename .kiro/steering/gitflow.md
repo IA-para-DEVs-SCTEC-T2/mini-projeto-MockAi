@@ -1,3 +1,7 @@
+---
+inclusion: manual
+---
+
 # Gitflow e Padrões de Nomenclatura
 
 Este projeto segue convenções específicas de gitflow e nomenclatura de commits.

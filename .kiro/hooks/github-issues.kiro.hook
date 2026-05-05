@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Gerenciar Issues GitHub",
+  "description": "Cria ou atualiza issues no GitHub seguindo o template padrão do projeto, usando o GitHub CLI (gh). Quando um número ou URL de issue for informado, busca os dados atuais antes de qualquer alteração.",
+  "version": "1",
+  "when": {
+    "type": "promptSubmit"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Execute o fluxo de gerenciamento de issues no GitHub usando o `gh` CLI:\n\n**Para criar uma nova issue:**\n1. Monte o comando `gh issue create` com título em português e descrição no template obrigatório:\n```\n## Descrição\n(O que deve ser feito / qual problema resolver?)\n\n## Orientações técnicas\n- Orientação 1\n\n## Critérios de Aceite\n- [ ] Critério 1\n```\n2. Inclua `--label`, `--assignee` e `--type` somente se explicitamente informados\n3. Execute o comando\n\n**Para atualizar uma issue existente (quando número ou URL for informado):**\n1. Busque os dados atuais: `gh issue view <ISSUE_NUMBER|URL>`\n2. Analise título, descrição, labels, assignees, type e status\n3. Mescle as informações existentes com as novas solicitadas\n4. Aplique com `gh issue edit`, preservando o que não foi alterado\n\nPergunte ao desenvolvedor o que deseja fazer: criar uma nova issue ou atualizar uma existente? Se atualizar, qual o número ou URL da issue?\n\nRegras:\n- Sempre usar `gh` CLI\n- Título claro, objetivo e em português\n- Descrição sempre no template definido\n- Labels, assignees e type somente quando explicitamente informados"
+  },
+  "workspaceFolderName": "mini-projeto-MockAi",
+  "shortName": "github-issues"
+}

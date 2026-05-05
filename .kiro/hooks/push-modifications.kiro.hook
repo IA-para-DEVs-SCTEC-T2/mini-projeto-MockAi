@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Push e Abrir Pull Request",
+  "description": "Verifica se há alterações pendentes, executa o commit se necessário, realiza o push da branch atual e abre um Pull Request no GitHub com título e descrição em português.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Execute o fluxo de push e abertura de Pull Request:\n\n1. Verifique o status com `git status`\n2. Se houver alterações não commitadas, execute primeiro o fluxo de commit:\n   - Verifique a branch com `git branch --show-current`\n   - Se não seguir `feature/` ou `bugfix/`, pergunte ao desenvolvedor e crie a branch adequada\n   - Pergunte sobre as alterações e realize o commit seguindo conventional commits em português\n3. Realize o push: `git push -u origin HEAD`\n4. Analise os commits da branch: `git log origin/main..HEAD --oneline`\n5. Crie o Pull Request com `gh pr create --title \"<título breve em português>\" --body \"<breve descrição das alterações>\"`\n\nRegras:\n- Nunca fazer push diretamente na `main` ou 'develop'\n- Título do PR deve ser conciso (máximo ~70 caracteres) e em português\n- Descrição deve explicar o que foi feito, não como foi feito"
+  },
+  "workspaceFolderName": "mini-projeto-MockAi",
+  "shortName": "push-modifications"
+}

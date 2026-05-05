@@ -1,3 +1,8 @@
+---
+inclusion: auto
+description: Utilizado em operações que envolvam a estrutura do projeto, como criação, movimentação ou remoção de arquivos e diretórios.
+---
+
 # Estrutura do Projeto
 
 Este projeto adota os princípios da **Clean Architecture** e **Hexagonal Architecture**, garantindo que as regras de negócio sejam completamente independentes de frameworks, bancos de dados e detalhes de infraestrutura.

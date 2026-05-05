@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Commitar Modificações",
+  "description": "Verifica a branch atual, garante que segue o padrão gitflow (feature/ ou bugfix/), solicita descrição das alterações e realiza o commit seguindo conventional commits em português.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Execute o fluxo de commit seguindo as instruções da skill commit-modifications:\n\n1. Verifique a branch atual com `git branch --show-current`\n2. Se a branch não seguir o padrão `feature/` ou `bugfix/`, pergunte ao desenvolvedor se é uma nova funcionalidade ou correção de bug e crie a branch adequada\n3. Pergunte ao desenvolvedor: \"Do que se tratam as alterações realizadas? Descreva brevemente para que eu possa criar a mensagem de commit.\"\n4. Com base na descrição, determine o tipo de commit (feat, fix, refactor, docs)\n5. Execute `git add .` e `git commit -m \"<tipo>: <descrição curta em português>\"`\n\nRegras:\n- Nunca commitar diretamente na branch `main`\n- Usar nomes e mensagens descritivos em português\n- Manter commits atômicos\n\nPadrões de branch: `feature/<nome-em-portugues>` ou `bugfix/<nome-em-portugues>`\nPadrões de commit: `feat:`, `fix:`, `refactor:`, `docs:`"
+  }
+}
