@@ -1,0 +1,183 @@
+openapi: "3.0.3"
+info:
+  title: Fiscalizacao API
+  description: API para gerenciamento de fiscalizações e autos de infração
+  version: "1.0.0"
+
+paths:
+  /fiscalizacoes:
+    post:
+      summary: Registrar fiscalização
+      description: Registra uma nova fiscalização no sistema
+      operationId: registrarFiscalizacao
+      tags:
+        - Fiscalizacoes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - estabelecimento
+                - fiscal
+                - dataFiscalizacao
+              properties:
+                estabelecimento:
+                  type: string
+                  example: Restaurante Bom Sabor
+                fiscal:
+                  type: string
+                  example: João Auditor
+                dataFiscalizacao:
+                  type: string
+                  format: date-time
+                  example: "2026-05-04T10:00:00Z"
+                observacoes:
+                  type: string
+                  example: Irregularidades encontradas no setor de alimentos
+            example:
+              estabelecimento: Restaurante Bom Sabor
+              fiscal: João Auditor
+              dataFiscalizacao: "2026-05-04T10:00:00Z"
+              observacoes: Irregularidades encontradas no setor de alimentos
+      responses:
+        "201":
+          description: Fiscalização registrada com sucesso
+          content:
+            application/json:
+              example:
+                id: 1
+                estabelecimento: Restaurante Bom Sabor
+                fiscal: João Auditor
+                dataFiscalizacao: "2026-05-04T10:00:00Z"
+                status: ABERTA
+                observacoes: Irregularidades encontradas no setor de alimentos
+        "400":
+          description: Dados inválidos
+          content:
+            application/json:
+              example:
+                status: 400
+                errors:
+                  - O campo estabelecimento é obrigatório
+        "401":
+          description: Não autorizado
+          content:
+            application/json:
+              example:
+                status: 401
+                message: Token inválido ou expirado
+      security:
+        - bearerAuth: []
+
+    get:
+      summary: Listar fiscalizações
+      description: Retorna a lista de fiscalizações com filtros opcionais
+      operationId: listarFiscalizacoes
+      tags:
+        - Fiscalizacoes
+      parameters:
+        - name: status
+          in: query
+          description: Filtrar por status da fiscalização
+          required: false
+          schema:
+            type: string
+            enum: [ABERTA, ENCERRADA, CANCELADA]
+        - name: fiscal
+          in: query
+          description: Filtrar pelo nome do fiscal
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de fiscalizações
+          content:
+            application/json:
+              example:
+                - id: 1
+                  estabelecimento: Restaurante Bom Sabor
+                  fiscal: João Auditor
+                  dataFiscalizacao: "2026-05-04T10:00:00Z"
+                  status: ABERTA
+                - id: 2
+                  estabelecimento: Mercado Central
+                  fiscal: Maria Inspetora
+                  dataFiscalizacao: "2026-05-03T14:00:00Z"
+                  status: ENCERRADA
+
+  /fiscalizacoes/{id}:
+    get:
+      summary: Buscar fiscalização por ID
+      description: Retorna os detalhes de uma fiscalização específica
+      operationId: buscarFiscalizacaoPorId
+      tags:
+        - Fiscalizacoes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Fiscalização encontrada
+          content:
+            application/json:
+              example:
+                id: 1
+                estabelecimento: Restaurante Bom Sabor
+                fiscal: João Auditor
+                dataFiscalizacao: "2026-05-04T10:00:00Z"
+                status: ABERTA
+                observacoes: Irregularidades encontradas no setor de alimentos
+        "404":
+          description: Fiscalização não encontrada
+          content:
+            application/json:
+              example:
+                status: 404
+                message: "Fiscalização não encontrada com id: 1"
+
+    patch:
+      summary: Atualizar status da fiscalização
+      description: Atualiza o status de uma fiscalização existente
+      operationId: atualizarStatusFiscalizacao
+      tags:
+        - Fiscalizacoes
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              status: ENCERRADA
+              observacoes: Irregularidades corrigidas após nova vistoria
+      responses:
+        "200":
+          description: Status atualizado com sucesso
+          content:
+            application/json:
+              example:
+                id: 1
+                estabelecimento: Restaurante Bom Sabor
+                fiscal: João Auditor
+                dataFiscalizacao: "2026-05-04T10:00:00Z"
+                status: ENCERRADA
+                observacoes: Irregularidades corrigidas após nova vistoria
+        "404":
+          description: Fiscalização não encontrada
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

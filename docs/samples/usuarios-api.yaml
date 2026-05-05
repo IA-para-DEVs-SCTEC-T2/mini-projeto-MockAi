@@ -1,0 +1,244 @@
+openapi: "3.0.3"
+info:
+  title: Usuarios API
+  description: API para gerenciamento de usuários
+  version: "1.0.0"
+
+paths:
+  /usuarios:
+    post:
+      summary: Criar um novo usuário
+      description: Cria um novo usuário no sistema com os dados fornecidos
+      operationId: criarUsuario
+      tags:
+        - Usuarios
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - nome
+                - sobrenome
+                - email
+              properties:
+                nome:
+                  type: string
+                  example: João
+                sobrenome:
+                  type: string
+                  example: Silva
+                email:
+                  type: string
+                  format: email
+                  example: joao.silva@example.com
+                ativo:
+                  type: boolean
+                  default: true
+                roles:
+                  type: array
+                  items:
+                    type: string
+                  example:
+                    - USER
+            example:
+              nome: João
+              sobrenome: Silva
+              email: joao.silva@example.com
+              ativo: true
+              roles:
+                - USER
+      responses:
+        "201":
+          description: Usuário criado com sucesso
+          content:
+            application/json:
+              example:
+                id: 1
+                nome: João
+                sobrenome: Silva
+                email: joao.silva@example.com
+                ativo: true
+                roles:
+                  - USER
+                dataCriacao: "2026-05-04T20:30:00Z"
+        "400":
+          description: Erro de validação
+          content:
+            application/json:
+              example:
+                status: 400
+                errors:
+                  - O campo email é obrigatório
+                  - O campo nome é obrigatório
+        "401":
+          description: Não autorizado
+          content:
+            application/json:
+              example:
+                status: 401
+                message: Token inválido ou expirado
+      security:
+        - bearerAuth: []
+
+    get:
+      summary: Listar usuários
+      description: Retorna a lista paginada de usuários cadastrados
+      operationId: listarUsuarios
+      tags:
+        - Usuarios
+      parameters:
+        - name: page
+          in: query
+          description: Número da página (começa em 0)
+          required: false
+          schema:
+            type: integer
+            default: 0
+        - name: size
+          in: query
+          description: Quantidade de itens por página
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: Authorization
+          in: header
+          description: Bearer token de autenticação
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Lista de usuários retornada com sucesso
+          content:
+            application/json:
+              example:
+                content:
+                  - id: 1
+                    nome: João
+                    sobrenome: Silva
+                    email: joao.silva@example.com
+                    ativo: true
+                    roles:
+                      - USER
+                totalElements: 1
+                totalPages: 1
+                page: 0
+                size: 10
+        "401":
+          description: Não autorizado
+          content:
+            application/json:
+              example:
+                status: 401
+                message: Token inválido ou expirado
+
+  /usuarios/{id}:
+    get:
+      summary: Buscar usuário por ID
+      description: Retorna os dados de um usuário específico pelo seu identificador
+      operationId: buscarUsuarioPorId
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          description: Identificador único do usuário
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Usuário encontrado
+          content:
+            application/json:
+              example:
+                id: 1
+                nome: João
+                sobrenome: Silva
+                email: joao.silva@example.com
+                ativo: true
+                roles:
+                  - USER
+                dataCriacao: "2026-05-04T20:30:00Z"
+        "404":
+          description: Usuário não encontrado
+          content:
+            application/json:
+              example:
+                status: 404
+                message: "Usuário não encontrado com id: 1"
+
+    put:
+      summary: Atualizar usuário
+      description: Atualiza os dados de um usuário existente
+      operationId: atualizarUsuario
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              nome: João Atualizado
+              sobrenome: Silva
+              email: joao.novo@example.com
+              ativo: true
+              roles:
+                - USER
+                - ADMIN
+      responses:
+        "200":
+          description: Usuário atualizado com sucesso
+          content:
+            application/json:
+              example:
+                id: 1
+                nome: João Atualizado
+                sobrenome: Silva
+                email: joao.novo@example.com
+                ativo: true
+                roles:
+                  - USER
+                  - ADMIN
+                dataCriacao: "2026-05-04T20:30:00Z"
+        "404":
+          description: Usuário não encontrado
+
+    delete:
+      summary: Remover usuário
+      description: Remove um usuário do sistema pelo seu identificador
+      operationId: removerUsuario
+      tags:
+        - Usuarios
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Usuário removido com sucesso
+        "404":
+          description: Usuário não encontrado
+          content:
+            application/json:
+              example:
+                status: 404
+                message: "Usuário não encontrado com id: 1"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

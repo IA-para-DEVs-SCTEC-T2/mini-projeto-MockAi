@@ -24,7 +24,8 @@ public class MockDefinitionMapper {
      */
     public MockDefinition toDomain(MockDefinitionEntity entity) {
         List<MockEndpoint> endpoints = deserializeEndpoints(entity.getEndpointsJson());
-        return new MockDefinition(entity.getId(), entity.getName(), entity.getDescription(), endpoints);
+        return new MockDefinition(entity.getId(), entity.getName(), entity.getDescription(),
+                entity.getSlug(), endpoints);
     }
 
     /**
@@ -32,7 +33,8 @@ public class MockDefinitionMapper {
      */
     public MockDefinitionEntity toEntity(MockDefinition domain) {
         String endpointsJson = serializeEndpoints(domain.getEndpoints());
-        return new MockDefinitionEntity(domain.getId(), domain.getName(), domain.getDescription(), endpointsJson);
+        return new MockDefinitionEntity(domain.getId(), domain.getName(), domain.getDescription(),
+                domain.getSlug(), endpointsJson);
     }
 
     private String serializeEndpoints(List<MockEndpoint> endpoints) {

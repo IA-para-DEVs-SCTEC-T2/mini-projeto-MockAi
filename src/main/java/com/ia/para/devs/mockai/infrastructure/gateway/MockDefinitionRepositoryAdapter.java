@@ -41,6 +41,11 @@ public class MockDefinitionRepositoryAdapter implements MockDefinitionRepository
     }
 
     @Override
+    public Optional<MockDefinition> findBySlug(String slug) {
+        return jpaRepository.findBySlug(slug).map(mapper::toDomain);
+    }
+
+    @Override
     public List<MockDefinition> findAll() {
         return jpaRepository.findAll().stream()
                 .map(mapper::toDomain)
@@ -55,5 +60,10 @@ public class MockDefinitionRepositoryAdapter implements MockDefinitionRepository
     @Override
     public boolean existsById(UUID id) {
         return jpaRepository.existsById(id);
+    }
+
+    @Override
+    public long countBySlugStartingWith(String slugBase) {
+        return jpaRepository.countBySlugStartingWith(slugBase);
     }
 }
