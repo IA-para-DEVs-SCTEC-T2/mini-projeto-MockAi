@@ -155,3 +155,7 @@ Documentação interativa da API:
 ### Arquivo de exemplo de documentação
 
 - `./docs/Swagger-Petstore-OpenAPI3.2.yml`
+
+### Link Kanban
+
+- https://github.com/orgs/IA-para-DEVs-SCTEC-T2/projects/6/views/1

@@ -1,3 +1,7 @@
+---
+inclusion: always
+---
+
 # Stacks
 
 Este documento descreve as tecnologias, frameworks e ferramentas utilizadas no projeto.

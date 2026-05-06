@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Push e Abrir Pull Request",
+  "description": "Verifica se há alterações pendentes, delega o commit ao hook commit-modifications se necessário, realiza o push da branch atual e abre um Pull Request vinculado à task no GitHub, sempre com destino à branch develop.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Execute o fluxo de push e abertura de Pull Request:\n\n1. Verifique o status com `git status`\n\n2. Se houver alterações não commitadas, execute o hook `/commit-modifications` para realizar o commit antes de continuar.\n\n3. Verifique a branch atual com `git branch --show-current`\n   - PROIBIDO fazer push se a branch for `main` ou `develop` — interrompa e avise o desenvolvedor\n\n4. Realize o push: `git push -u origin HEAD`\n\n5. Extraia o número da task a partir do nome da branch:\n   - O padrão é `feature/task<N>` ou `bugfix/task<N>`\n   - O número da task é o valor de `<N>` no nome da branch\n\n6. Analise os commits da branch: `git log origin/develop..HEAD --oneline`\n\n7. Crie o Pull Request (sem vincular a issue no body):\n   - Use o comando: `gh pr create --base develop --title \"<título breve em português>\" --body \"<descrição das alterações>\"`\n   - O título deve ser conciso (máximo ~70 caracteres) e em português\n   - A descrição deve explicar o que foi feito, não como foi feito\n   - NÃO inclua `Closes #<N>` nem `Fixes #<N>` no body — isso fecharia a issue automaticamente\n\n8. Vincule a issue à task via propriedade Development do PR:\n   - Use o comando: `gh pr edit <PR_NUMBER> --repo IA-para-DEVs-SCTEC-T2/mini-projeto-MockAi --add-linked-issue <número-da-task>`\n   - Isso cria o vínculo de desenvolvimento sem fechar a issue\n\nRegras:\n- NUNCA abrir PR para `main` — o destino obrigatório é sempre `develop`\n- NUNCA fazer push diretamente na `main` ou `develop`\n- Título do PR em português, conciso e descritivo\n- O PR deve sempre ser vinculado à task via propriedade Development (não via `Closes` no body)\n- A issue NÃO deve ser fechada ao criar o PR"
+  },
+  "workspaceFolderName": "mini-projeto-MockAi",
+  "shortName": "push-modifications"
+}
