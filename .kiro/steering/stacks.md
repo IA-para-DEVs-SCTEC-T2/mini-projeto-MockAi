@@ -1,3 +1,8 @@
+---
+inclusion: auto
+description: Descreve as tecnologias, frameworks e ferramentas utilizadas no projeto. Deve ser consultado sempre que for necessário entender as stacks do projeto, como na geração de código, modificação de arquivos Java ou pom.xml.
+---
+
 # Stacks
 
 Este documento descreve as tecnologias, frameworks e ferramentas utilizadas no projeto.

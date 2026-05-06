@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Push e Abrir Pull Request",
+  "description": "Verifica se há alterações pendentes, delega o commit ao hook commit-modifications se necessário, realiza o push da branch atual e abre um Pull Request vinculado à task no GitHub, sempre com destino à branch develop.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Execute o fluxo de push e abertura de Pull Request:\n\n1. Verifique o status com `git status`\n\n2. Se houver alterações não commitadas, execute o hook `/commit-modifications` para realizar o commit antes de continuar.\n\n3. Verifique a branch atual com `git branch --show-current`\n   - PROIBIDO fazer push se a branch for `main` ou `develop` — interrompa e avise o desenvolvedor\n\n4. Realize o push: `git push -u origin HEAD`\n\n5. Extraia o número da task a partir do nome da branch:\n   - O padrão é `feature/task<N>` ou `bugfix/task<N>`\n   - O número da task é o valor de `<N>` no nome da branch\n\n6. Analise os commits da branch: `git log origin/develop..HEAD --oneline`\n\n7. Crie o Pull Request vinculando automaticamente a issue:\n   - Use o comando: `gh pr create --base develop --title \"<título breve em português>\" --body \"<descrição das alterações>\n\n   Resolves #<número-da-task>\" (se branch for feature/*)\n   - OU: `gh pr create --base develop --title \"<título breve em português>\" --body \"<descrição das alterações>\n\n   Fixes #<número-da-task>\" (se branch for bugfix/*)\n   - O título deve ser conciso (máximo ~70 caracteres) e em português\n   - A descrição deve explicar o que foi feito, não como foi feito\n   - A palavra-chave `Resolves` (para features) ou `Fixes` (para bugfixes) vincula automaticamente o PR à issue via propriedade Development\n\nRegras:\n- NUNCA abrir PR para `main` — o destino obrigatório é sempre `develop`\n- NUNCA fazer push diretamente na `main` ou `develop`\n- Título do PR em português, conciso e descritivo\n- Use `Resolves #<N>` para branches feature/* e `Fixes #<N>` para branches bugfix/*\n- Isso vincula o PR à issue via propriedade Development e fecha a issue automaticamente quando o PR for merged"
+  },
+  "workspaceFolderName": "mini-projeto-MockAi",
+  "shortName": "push-modifications"
+}
