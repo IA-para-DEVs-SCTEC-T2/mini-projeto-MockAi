@@ -2,6 +2,16 @@
 
 MockAI é um gerador inteligente de APIs mock que transforma arquivos Swagger/OpenAPI em APIs simuladas locais, permitindo desenvolvimento e testes sem dependência de serviços externos. Suporta geração dinâmica de endpoints e integração opcional com IA para respostas simuladas mais realistas.
 
+## Grupo 3
+- Dariel Verdecia Verdecia
+- João Ricardo Tasca Puel
+- Welton Sabino 
+- Daniel Rodrigues da Silva
+- Luiz Fernando Amaral
+
+## Kanban
+- https://github.com/orgs/IA-para-DEVs-SCTEC-T2/projects/6/views/1
+
 ## Tecnologias
 
 | Tecnologia | Versão |
