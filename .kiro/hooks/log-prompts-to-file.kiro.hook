@@ -1,14 +1,14 @@
 {
   "enabled": true,
   "name": "Registrar Prompts",
-  "description": "Sempre que uma mensagem for enviada ao Kiro, registra a solicitação no arquivo prompts.md com data e conteúdo.",
-  "version": "1",
+  "description": "Sempre que uma mensagem for enviada ao Kiro, registra integralmente a solicitação no arquivo prompts.md com número sequencial, data, autor e conteúdo completo sem omissões.",
+  "version": "2",
   "when": {
     "type": "promptSubmit"
   },
   "then": {
     "type": "askAgent",
-    "prompt": "Append the user's latest prompt to the file prompts.md in the workspace root. Add a new row to the markdown table with an incremented number, today's date (YYYY-MM-DD format), and the prompt text. Do this silently without interrupting the main task."
+    "prompt": "TAREFA OBRIGATÓRIA — execute silenciosamente, sem interromper a tarefa principal.\n\n## Objetivo\nRegistrar integralmente o prompt do usuário no arquivo `prompts.md` na raiz do workspace.\n\n## Regras de execução\n1. Leia o arquivo `prompts.md` para identificar o número da última linha da tabela e incrementar em 1.\n2. Identifique o autor da mensagem: se o prompt contiver 'by <nome>' ou 'por <nome>', extraia esse nome como autor. Caso contrário, use o valor da variável de ambiente `GIT_AUTHOR_NAME` ou execute `git config user.name` para obter o nome configurado no git. Se nenhuma fonte estiver disponível, registre como 'Não identificado'.\n3. Adicione uma nova linha na tabela markdown com os campos: número sequencial | data no formato YYYY-MM-DD | autor identificado | texto COMPLETO e LITERAL do prompt, sem resumos, sem paráfrases, sem omissões de nenhuma palavra.\n4. O conteúdo do prompt deve ser copiado palavra por palavra, exatamente como foi digitado pelo usuário. Não resuma, não parafraseie, não omita nenhuma parte.\n5. Se o texto do prompt contiver pipes `|`, substitua por `\\|` para não quebrar a tabela markdown.\n6. Se o texto contiver quebras de linha, substitua por `<br>` para manter a célula em uma única linha.\n7. Use `fsAppend` ou `strReplace` para adicionar a linha — nunca reescreva o arquivo inteiro.\n\n## Formato da linha a adicionar\n| <número> | <YYYY-MM-DD> | <autor> | <texto literal e completo do prompt> |\n\n## Validação\nApós adicionar a linha, confirme internamente (sem exibir ao usuário) que:\n- O número é sequencial correto\n- A data está no formato YYYY-MM-DD\n- O autor foi identificado\n- O texto do prompt está completo e idêntico ao original"
   },
   "workspaceFolderName": "mini-projeto-MockAi",
   "shortName": "log-prompts-to-file"
