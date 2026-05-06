@@ -1,0 +1,13 @@
+{
+  "enabled": true,
+  "name": "Commitar Modificações",
+  "description": "Solicita o número da task, busca dados no GitHub para determinar o tipo de branch, garante que segue o padrão gitflow (feature/task<N> ou bugfix/task<N>), solicita descrição das alterações e realiza o commit seguindo conventional commits em português.",
+  "version": "1",
+  "when": {
+    "type": "userTriggered"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Execute o fluxo de commit seguindo as etapas abaixo:\n\n1. Verifique a branch atual com `git branch --show-current`\n\n2. Se a branch não seguir o padrão `feature/task<N>` ou `bugfix/task<N>`:\n   a. Pergunte ao desenvolvedor: \"Qual o número da task que você está trabalhando?\"\n   b. Com o número informado, busque os dados da issue no GitHub com `gh issue view <número>`\n   c. Analise o campo `type` da issue:\n      - Se o tipo for `Feature` → crie a branch como `feature/task<número>`\n      - Se o tipo for `Bug` → crie a branch como `bugfix/task<número>`\n      - Se não houver tipo definido → pergunte ao desenvolvedor: \"As implementações se tratam de uma nova funcionalidade ou correção de bug?\"\n        - Nova funcionalidade → `feature/task<número>`\n        - Correção de bug → `bugfix/task<número>`\n   d. Crie e mude para a nova branch com `git checkout -b <nome-da-branch>`\n\n3. Pergunte ao desenvolvedor: \"Do que se tratam as alterações realizadas? Descreva brevemente para que eu possa criar a mensagem de commit.\"\n\n4. Com base nas alterações realizadas, determine o tipo de commit:\n   - `feat:` → Novas funcionalidades do produto: novos códigos Java, novos arquivos de configuração, alterações no pom.xml que adicionam capacidades\n   - `fix:` → Correções de funcionalidades do produto: correções em código Java, ajustes no pom.xml que resolvem problemas\n   - `refactor:` → Refatoração de código Java sem alteração de comportamento\n   - `docs:` → Modificações em documentos, guias, arquivos steerings, hooks e skills — qualquer alteração que NÃO modifique o código-fonte da aplicação\n\n5. Execute `git add .` e `git commit -m \"<tipo>: <descrição curta em português>\"`\n\nRegras:\n- Nunca commitar diretamente na branch `main`\n- Manter commits atômicos e mensagens claras em português\n- O nome da branch deve ser SEMPRE `feature/task<N>` ou `bugfix/task<N>` (sem nomes descritivos adicionais)\n\nPadrões de branch: `feature/task<número>` ou `bugfix/task<número>`\nPadrões de commit: `feat:`, `fix:`, `refactor:`, `docs:`"
+  }
+}
