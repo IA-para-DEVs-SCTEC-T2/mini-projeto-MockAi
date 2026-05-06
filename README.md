@@ -90,5 +90,3 @@ Documentação interativa da API:
 - OpenAPI JSON: <adicionar informações>
 =======
 Projeto para ser apresentado como atividade do curso IA para DEV, do programa SCTEC.
-
-
