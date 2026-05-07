@@ -24,3 +24,8 @@ Registro de todas as solicitações feitas no Kiro.
 | 16 | 2026-05-04 | crie uma nova branch local, com nome feature/arquivo_swagger, a partir da branch origin/develop |
 | 17 | 2026-05-04 | faça o push para uma nova branch remota no origin com o mesmo nome da branch local, e crie um pull request |
 | 18 | 2026-05-06 | Você deve criar um documento de Steering de Linguagem e Padrões de Escrita para o projeto desenvolvido em Java. |
+| 5 | 2026-05-04 | crie uma nova branch local, com nome feature/arquivo_swagger, a partir da branch origin/develop |
+| 6 | 2026-05-04 | faça o push para uma nova branch remota no origin com o mesmo nome da branch local, e crie um pull request |
+| 7 | 2026-05-06 | crie uma nova branch local, com nome feature/task28, a partir da branch origin/develop |
+| 8 | 2026-05-06 | crie o arquivo de steering product.md, com um template padrão para ser preenchido depois |
+
