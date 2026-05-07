@@ -4,6 +4,7 @@ Registro de todas as solicitações feitas no Kiro.
 
 ---
 
+<<<<<<< bugfix/task33
 | # | Data | Autor | Solicitação |
 |---|------|-------|-------------|
 | 1 | 2026-04-30 | Não identificado | Adicione o arquivo prompts.md, onde todas as solicitações que as pessoas criarem no Kiro serão registradas, e salve-o lá para que fique guardado |
@@ -24,3 +25,10 @@ Registro de todas as solicitações feitas no Kiro.
 | 16 | 2026-05-04 | Não identificado | crie uma nova branch local, com nome feature/arquivo_swagger, a partir da branch origin/develop |
 | 17 | 2026-05-04 | Não identificado | faça o push para uma nova branch remota no origin com o mesmo nome da branch local, e crie um pull request |
 | 18 | 2026-05-06 | Não identificado | Atualizar e refatorar o hook de gerar o arquivo de prompts com o objetivo de garantir que todas as especificações definidas sejam incorporadas de forma completa, consistente e sem perda de detalhes.Deve-se garantir que todo prompt solicitado por um usuário seja registrado integralmente no arquivo, sem omissões ou alterações de conteúdo, e que inclua explicitamente a identificação de quem realizou a solicitação, assegurando rastreabilidade e controle.Além disso, é necessário otimizar o prompt para melhorar a interpretação e execução pela IA, mantendo o significado original das instruções. Por fim, deve ser realizada uma validação prática para confirmar que o comportamento gerado atende integralmente às especificações, sem desvios ou perda de informação. |
+=======
+| # | Data | Solicitação |
+|---|------|-------------|
+| 1 | 2026-04-30 | Adicione o arquivo prompts.md, onde todas as solicitações que as pessoas criarem no Kiro serão registradas, e salve-o lá para que fique guardado |
+| 2 | 2026-04-30 | testando no prompts.md by Dariel Verdecia |
+
+>>>>>>> develop
