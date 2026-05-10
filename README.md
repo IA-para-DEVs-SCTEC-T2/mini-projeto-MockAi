@@ -13,6 +13,12 @@ MockAI é um gerador inteligente de APIs mock que transforma arquivos Swagger/Op
 ## Kanban
 - https://github.com/orgs/IA-para-DEVs-SCTEC-T2/projects/6/views/1
 
+## Banco de Dados
+
+- [Diagrama do banco de dados (dbdiagram.io)](https://dbdiagram.io/d/6a0034347a923b947269ee88)
+- Especificação DBML: [`docs/database-schema.dbml`](docs/database-schema.dbml)
+- Documentação das tabelas: [`docs/database-schema.md`](docs/database-schema.md)
+
 ## Tecnologias
 
 | Tecnologia | Versão |
