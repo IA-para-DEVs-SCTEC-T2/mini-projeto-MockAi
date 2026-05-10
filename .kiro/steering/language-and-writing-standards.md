@@ -14,7 +14,7 @@ Este documento define as regras de uso de idioma no projeto MockAI, garantindo c
 Projetos de software colaborativos exigem clareza tanto no código quanto na documentação. Para o MockAI, adotamos uma separação deliberada de idiomas:
 
 - **Inglês** para todo o código-fonte, pois é a língua universal da programação, compatível com ferramentas, IDEs, linters e bibliotecas externas.
-- **Português (pt-BR)** para toda a documentação e comentários, pois o time é brasileiro e a comunicação técnica interna deve ser acessível a todos os membros sem barreiras de idioma.
+- **Português (pt-BR)** para toda a documentação (JavaDoc) e textos explicativos, pois o time é brasileiro e a comunicação técnica interna deve ser acessível a todos os membros sem barreiras de idioma.
 
 Essa separação não é arbitrária — ela reduz ambiguidade, facilita o onboarding de novos membros e mantém o código alinhado com as convenções da indústria.
 
@@ -30,12 +30,11 @@ Essa separação não é arbitrária — ela reduz ambiguidade, facilita o onboa
 | Nomes de variáveis e parâmetros   | Inglês         |
 | Nomes de constantes               | Inglês         |
 | Nomes de pacotes                  | Inglês         |
-| Comentários de linha (`//`)       | Português      |
-| Comentários de bloco (`/* */`)    | Português      |
 | JavaDoc (`/** */`)                | Português      |
 | Mensagens de exceção              | Português      |
 | Mensagens de log                  | Português      |
 | Arquivos `.md` e documentação     | Português      |
+| Paths de endpoints REST           | Inglês         |
 | Arquivos de configuração (chaves) | Inglês         |
 
 ---
@@ -112,7 +111,7 @@ com.ia.para.devs.mockai.aplicacao.casodeuso
 
 ## 4. Regras para Documentação e Comentários
 
-Toda documentação, comentário e descrição deve estar em **português (pt-BR)**. Isso inclui JavaDoc, comentários inline e comentários de bloco.
+O código **não deve conter comentários** (`//` ou `/* */`). A única forma de documentação no código-fonte é o **JavaDoc** (`/** */`), que deve estar em **português (pt-BR)**. Qualquer explicação sobre o funcionamento de um código deve estar em português — inclusive anotações como `@DisplayName` em testes.
 
 ### 4.1 JavaDoc em Classes
 
@@ -162,23 +161,7 @@ public interface MockDefinitionRepository {
 }
 ```
 
-### 4.4 Comentários Inline
-
-```java
-// ✅ Correto — comentário em português, explicando o porquê
-// Valida se o caminho já está registrado antes de criar um novo mock
-if (repository.existsByPath(request.getPath())) {
-    throw new DuplicateMockException(request.getPath());
-}
-
-// ❌ Incorreto — comentário em inglês
-// Check if path already exists before creating a new mock
-if (repository.existsByPath(request.getPath())) {
-    throw new DuplicateMockException(request.getPath());
-}
-```
-
-### 4.5 Mensagens de Exceção e Log
+### 4.4 Mensagens de Exceção e Log
 
 ```java
 // ✅ Correto
@@ -222,17 +205,34 @@ server.port=8080
 mockai.max-endpoints-per-mock=10
 ```
 
-### 5.3 Nomes de Testes
+### 5.3 Paths de Endpoints REST
 
-Métodos de teste podem usar inglês ou português, desde que o nome seja descritivo. Prefira o padrão `should_[comportamento]_when_[condição]` em inglês ou descrições em português:
+Os paths dos endpoints devem estar em **inglês**, seguindo as convenções REST (kebab-case para recursos compostos):
 
 ```java
-// ✅ Ambos são aceitos
+// ✅ Correto
+@PostMapping("/mock-definitions")
+@GetMapping("/mock-definitions/{id}")
+@DeleteMapping("/mock-definitions/{id}")
+
+// ❌ Incorreto
+@PostMapping("/definicoes-mock")
+@GetMapping("/definicoes-mock/{id}")
+```
+
+### 5.4 Nomes de Testes
+
+Métodos de teste devem ter nomes descritivos. Prefira descrições em português usando `@DisplayName`, que é a forma recomendada para explicar o comportamento esperado:
+
+```java
+// ✅ Correto — @DisplayName em português
 @Test
-void should_throw_exception_when_mock_not_found() { }
+@DisplayName("Deve lançar exceção quando o mock não for encontrado")
+void shouldThrowExceptionWhenMockNotFound() { }
 
 @Test
-void deveLancarExcecaoQuandoMockNaoForEncontrado() { }
+@DisplayName("Deve retornar o mock criado com status 201")
+void shouldReturnCreatedMockWithStatus201() { }
 ```
 
 ---
@@ -241,21 +241,14 @@ void deveLancarExcecaoQuandoMockNaoForEncontrado() { }
 
 ### 6.1 Evite Mistura de Idiomas
 
-Nunca misture inglês e português no mesmo identificador ou comentário.
+Nunca misture inglês e português no mesmo identificador.
 
 ```java
 // ❌ Incorreto — mistura de idiomas no nome do método
 public MockDefinition buscarMockById(String id) { }
 
-// ❌ Incorreto — mistura de idiomas no comentário
-// Find the mock and retorna o resultado
-MockDefinition result = repository.findById(id);
-
 // ✅ Correto
 public MockDefinition findById(String id) { }
-
-// Busca o mock e retorna o resultado encontrado
-MockDefinition result = repository.findById(id);
 ```
 
 ### 6.2 Clareza Antes de Tradução Literal
@@ -264,61 +257,13 @@ Prefira nomes que expressem a intenção do código em inglês, não traduções
 
 ```java
 // ❌ Tradução literal — não idiomático em inglês
-public void executeMockSimulation() { }  // "simulação de mock" traduzido literalmente
+public void executeMockSimulation() { }
 
 // ✅ Nome idiomático em inglês
 public void resolveMock() { }
 public void executeMock() { }
 ```
 
-### 6.3 Comentários Úteis, Não Redundantes
-
-Comentários devem explicar o **porquê**, não o **o quê**. Evite comentários que apenas repetem o que o código já diz.
-
-```java
-// ❌ Redundante — o código já é autoexplicativo
-// Incrementa o contador em 1
-counter++;
-
-// ✅ Útil — explica uma decisão não óbvia
-// Incrementa antes de retornar para garantir que o primeiro ID gerado seja 1, não 0
-return ++counter;
-```
-
-### 6.4 JavaDoc é Obrigatório em APIs Públicas
+### 6.3 JavaDoc é Obrigatório em APIs Públicas
 
 Todo método, classe ou interface pública que faça parte da API do sistema (controllers, use cases, ports) deve ter JavaDoc completo em português.
-
----
-
-## 7. Critérios de Code Review
-
-Use este checklist durante revisões de código para garantir conformidade com os padrões de idioma:
-
-### Código-Fonte
-
-- [ ] Todos os nomes de classes estão em inglês e seguem PascalCase
-- [ ] Todos os nomes de interfaces estão em inglês e seguem PascalCase
-- [ ] Todos os nomes de métodos estão em inglês e seguem camelCase
-- [ ] Todos os nomes de variáveis e parâmetros estão em inglês e seguem camelCase
-- [ ] Todas as constantes estão em inglês e seguem UPPER_SNAKE_CASE
-- [ ] Nenhum identificador mistura inglês e português
-
-### Documentação e Comentários
-
-- [ ] Todos os comentários inline (`//`) estão em português
-- [ ] Todos os comentários de bloco (`/* */`) estão em português
-- [ ] Todos os JavaDocs estão em português e incluem `@param`, `@return` e `@throws` quando aplicável
-- [ ] Todas as mensagens de exceção estão em português
-- [ ] Todas as mensagens de log estão em português
-
-### Qualidade dos Comentários
-
-- [ ] Comentários explicam o **porquê**, não apenas o **o quê**
-- [ ] Não há comentários redundantes que apenas repetem o código
-- [ ] Classes e métodos públicos de API possuem JavaDoc completo
-
-### Exceções Aplicadas Corretamente
-
-- [ ] Anotações de bibliotecas externas seguem o padrão da biblioteca
-- [ ] Chaves de configuração seguem o padrão do Spring (inglês, kebab-case)
