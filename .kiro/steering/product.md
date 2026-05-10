@@ -1,5 +1,6 @@
 ---
-inclusion: always
+inclusion: auto
+description: Informações sobre regras de negócio, objetivos e funcionalidades principais do sistema MockAI. Utilize quando precisar entender o propósito do sistema, suas funcionalidades, restrições ou glossário de termos do domínio.
 ---
 
 # MockAI
@@ -49,6 +50,6 @@ Desenvolvedores que precisam implementar o consumo de alguma API Rest.
 |-------|-----------|
 | API Rest | Interface de Programação de Aplicações (API) que segue os princípios de design da arquitetura REST (Representational State Transfer). Permite a comunicação entre sistemas distribuídos pela internet usando métodos HTTP padronizados (GET, POST, PUT, DELETE) para acessar e manipular recursos, com foco em simplicidade, escalabilidade e formato de dados geralmente em JSON. |
 | Mock | Objeto ou estrutura simulada usada em programação para imitar o comportamento de componentes reais (como bancos de dados ou APIs). |
-| OpenAPI | Formato padronizado, legível por humanos e máquinas, para descrever APIs RESTful. Ela define endpoints, operações (GET, POST), parâmetros e métodos de autenticação em formato YAML ou JSON, facilitando a documentação, geração de código e testes. |
+| OpenAPI | Formato padronizado, legível por humanos e máquinas, para descrever APIs RESTful. Ela define endpoints, operações (GET, POST), parâmetros e métodos de autenticação em formato JSON, facilitando a documentação, geração de código e testes. |
 | Swagger | Conjunto de ferramentas open-source e comerciais (como Swagger UI, Editor, Codegen) que utilizam a especificação OpenAPI para projetar, construir, documentar e consumir APIs. |
 
