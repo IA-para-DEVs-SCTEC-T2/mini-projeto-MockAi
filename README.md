@@ -13,6 +13,15 @@ MockAI é um gerador inteligente de APIs mock que transforma arquivos Swagger/Op
 ## Kanban
 - https://github.com/orgs/IA-para-DEVs-SCTEC-T2/projects/6/views/1
 
+## Arquitetura
+
+O diagrama C4 completo da arquitetura do MockAI está disponível em [`docs/architecture-diagram.md`](docs/architecture-diagram.md), cobrindo os 4 níveis:
+
+- **Nível 1 — Contexto:** sistema, atores externos e serviço de IA
+- **Nível 2 — Containers:** MockAI Application (Spring Boot) e H2 Database
+- **Nível 3 — Componentes:** as 4 camadas da Clean Architecture
+- **Nível 4 — Código:** modelo de dados com as 6 entidades JPA
+
 ## Banco de Dados
 
 - [Diagrama do banco de dados (dbdiagram.io)](https://dbdiagram.io/d/6a0034347a923b947269ee88)
@@ -96,14 +105,12 @@ src/main/java/com/ia/para/devs/mockai/
 
 Banco de dados em memória disponível durante o desenvolvimento:
 
-- URL: <adicionar informações>
-- JDBC URL: <adicionar informações>
+- URL: `http://localhost:8080/mockai/h2-console`
+- JDBC URL: `jdbc:h2:mem:testdb`
 
 ### Swagger UI
 
 Documentação interativa da API:
 
-- Swagger UI: <adicionar informações>
-- OpenAPI JSON: <adicionar informações>
-=======
-Projeto para ser apresentado como atividade do curso IA para DEV, do programa SCTEC.
+- Swagger UI: `http://localhost:8080/mockai/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/mockai/v3/api-docs`
