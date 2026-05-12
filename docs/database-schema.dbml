@@ -1,0 +1,52 @@
+// MockAI — Database Schema
+// Compatible with https://dbdiagram.io
+// Generated from entity-modeling design
+
+Table api_specification {
+  id          uuid         [pk, not null, note: "Identificador único gerado pela aplicação"]
+  title       varchar(255) [not null, note: "Título da API"]
+  version     varchar(255) [not null, note: "Versão da API"]
+  description text         [note: "Descrição da API"]
+  base_url    varchar(255) [not null, note: "URL base da API"]
+}
+
+Table tag {
+  id          uuid         [pk, not null, note: "Identificador único gerado pela aplicação"]
+  name        varchar(255) [not null, note: "Nome da tag"]
+  description text         [note: "Descrição da tag"]
+}
+
+Table endpoint_definition {
+  id                   uuid         [pk, not null, note: "Identificador único gerado pela aplicação"]
+  path                 varchar(255) [not null, note: "Caminho URL do endpoint (ex: /users/{id})"]
+  http_method          varchar(20)  [not null, note: "Método HTTP: GET, POST, PUT, DELETE, PATCH, etc."]
+  summary              varchar(255) [note: "Resumo do endpoint"]
+  description          text         [note: "Descrição detalhada do endpoint"]
+  api_specification_id uuid         [not null, ref: > api_specification.id, note: "FK para api_specification"]
+}
+
+Table endpoint_tags {
+  endpoint_id uuid [not null, ref: > endpoint_definition.id, note: "FK para endpoint_definition"]
+  tag_id      uuid [not null, ref: > tag.id, note: "FK para tag"]
+
+  indexes {
+    (endpoint_id, tag_id) [pk]
+  }
+}
+
+Table path_parameter {
+  id                     uuid         [pk, not null, note: "Identificador único gerado pela aplicação"]
+  name                   varchar(255) [not null, note: "Nome do parâmetro (ex: id, slug)"]
+  type                   varchar(100) [not null, note: "Tipo do parâmetro (ex: integer, string)"]
+  required               boolean      [not null, note: "Indica se o parâmetro é obrigatório"]
+  endpoint_definition_id uuid         [not null, ref: > endpoint_definition.id, note: "FK para endpoint_definition"]
+}
+
+Table endpoint_response {
+  id                     uuid         [pk, not null, note: "Identificador único gerado pela aplicação"]
+  status_code            varchar(10)  [not null, note: "Código de status HTTP (ex: 200, 404)"]
+  content_type           varchar(255) [not null, note: "Tipo de conteúdo (ex: application/json)"]
+  description            text         [note: "Descrição da resposta"]
+  response_schema        text         [note: "Schema da resposta serializado em JSON"]
+  endpoint_definition_id uuid         [not null, ref: > endpoint_definition.id, note: "FK para endpoint_definition"]
+}
