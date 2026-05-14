@@ -1,4 +1,15 @@
-Prompt básico para criação de qualquer tela do nosso projeto
+> ⚠️ **NOTA IMPORTANTE**
+> As telas descritas neste documento **não serão implementadas** na aplicação.
+> O MockAI é uma API backend e **não possui interface gráfica**.
+> Os prompts e prints foram criados exclusivamente para **fins avaliativos** solicitados pelo professor Wanderson.
+
+---
+
+# Prompts de Telas — MockAI (Figma)
+
+---
+
+## Prompt base
 
 Crie uma interface web moderna em tema dark para um sistema chamado MockAI. O design deve seguir um estilo futurista, minimalista e profissional, inspirado em ferramentas modernas de desenvolvimento e plataformas SaaS premium.
 
@@ -98,10 +109,9 @@ Toda nova tela criada deve seguir EXATAMENTE esse padrão visual, mantendo consi
 RESULTADO ESPERADO:
 A interface deve parecer um produto real, moderno e profissional chamado MockAI, focado em gerenciamento de APIs mockadas e ferramentas administrativas para desenvolvedores.
 
+---
 
---------------------------------------------------------------------------------------------------------
-
-Tela Login
+## Tela Login
 
 Crie uma interface web moderna em tema dark para um sistema chamado MockAI. A tela deve representar uma área de login administrativo com aparência futurista, minimalista e profissional, seguindo o padrão visual de dashboards modernos de desenvolvimento/API.
 
@@ -121,30 +131,30 @@ Visual geral:
 - Estilo inspirado em Vercel, GitHub Dark, Insomnia e Postman
 
 Branding:
-Adicionar o nome “MockAI” no topo da aplicação ou discretamente dentro do card.
+Adicionar o nome "MockAI" no topo da aplicação ou discretamente dentro do card.
 
 Estrutura do card:
 Título principal:
-“Acesso administrativo”
+"Acesso administrativo"
 
 Subtítulo:
-“Entre para gerenciar endpoints e projetos.”
+"Entre para gerenciar endpoints e projetos."
 
 Campos do formulário:
-- Input “Usuario”
-  Valor preenchido: “admin”
+- Input "Usuario"
+  Valor preenchido: "admin"
 
-- Input “Senha”
+- Input "Senha"
   Campo password preenchido com bullets/senha mascarada
 
 Botão principal:
 - Botão grande ocupando toda a largura
 - Cor azul clara vibrante
 - Texto:
-“Acessar painel”
+"Acessar painel"
 
 Texto auxiliar no rodapé:
-“Dica: apos o login, use o menu superior para atualizar dados, importar Mockoon e criar novos projetos.”
+"Dica: apos o login, use o menu superior para atualizar dados, importar Mockoon e criar novos projetos."
 
 Detalhes visuais:
 - Inputs com fundo azul-escuro translúcido
@@ -159,9 +169,9 @@ Detalhes visuais:
 Resultado esperado:
 A interface deve parecer uma tela real de login administrativo de um sistema moderno chamado MockAI para gerenciamento de APIs mockadas.
 
---------------------------------------------------------------------------------------------------------
+---
 
-Tela Novo Endpoint
+## Tela Novo Endpoint
 
 Crie uma interface web moderna em tema dark para um sistema chamado MockAI. A tela deve ser um modal centralizado com cantos arredondados e aparência futurista, seguindo um estilo semelhante a dashboards modernos de desenvolvimento/API.
 
@@ -181,34 +191,34 @@ Visual geral:
 - UX clean e moderna
 
 Branding:
-Adicionar o nome “MockAI” no topo da aplicação ou discretamente no modal.
+Adicionar o nome "MockAI" no topo da aplicação ou discretamente no modal.
 
 Estrutura do modal:
 Título no topo esquerdo:
-“Novo endpoint”
+"Novo endpoint"
 
 Campos do formulário organizados em duas colunas:
 
 Linha 1:
-- Select “Grupo”
-  Valor selecionado: “Api fiscalizacao”
-- Select “Método”
-  Valor selecionado: “GET”
+- Select "Grupo"
+  Valor selecionado: "Api fiscalizacao"
+- Select "Método"
+  Valor selecionado: "GET"
 
 Linha 2:
-- Input “Rota*”
-  Placeholder: “/users”
-- Input “Status”
-  Valor: “200”
+- Input "Rota*"
+  Placeholder: "/users"
+- Input "Status"
+  Valor: "200"
 
 Linha 3:
-- Input “Delay (ms)”
-  Valor: “0”
-- Checkbox “Ativo”
+- Input "Delay (ms)"
+  Valor: "0"
+- Checkbox "Ativo"
   Marcado por padrão
 
 Linha 4:
-- Textarea “Body (JSON)”
+- Textarea "Body (JSON)"
   Grande
   Fundo escuro
   Borda azul suave
@@ -216,8 +226,8 @@ Linha 4:
 
 Botões:
 No canto inferior esquerdo:
-- Botão primário azul claro com texto “Criar”
-- Botão secundário escuro com texto “Cancelar”
+- Botão primário azul claro com texto "Criar"
+- Botão secundário escuro com texto "Cancelar"
 
 Detalhes visuais:
 - Inputs com fundo azul-escuro
@@ -230,9 +240,9 @@ Detalhes visuais:
 Resultado esperado:
 A interface deve parecer um produto profissional real para gerenciamento de endpoints mockados de APIs chamado MockAI.
 
---------------------------------------------------------------------------------------------------------
+---
 
-Tela atualização/edição de um endpoint
+## Tela atualização/edição de um endpoint
 
 Crie uma interface web moderna em tema dark para um sistema chamado MockAI. A tela deve representar um modal de edição de endpoint mockado de API, com aparência futurista, minimalista e profissional, seguindo o padrão visual de ferramentas modernas de desenvolvimento.
 
@@ -252,42 +262,42 @@ Visual geral:
 - Estilo inspirado em Vercel, GitHub Dark, Postman e Insomnia
 
 Branding:
-Adicionar o nome “MockAI” discretamente na interface ou no topo da aplicação.
+Adicionar o nome "MockAI" discretamente na interface ou no topo da aplicação.
 
 Estrutura do modal:
 Título principal:
-“Atualizar endpoint”
+"Atualizar endpoint"
 
 Campos do formulário organizados em duas colunas:
 
 Linha 1:
-- Select “Grupo”
+- Select "Grupo"
   Valor selecionado:
-  “Api fiscalizacao”
+  "Api fiscalizacao"
 
-- Select “Metodo”
+- Select "Metodo"
   Valor selecionado:
-  “GET”
+  "GET"
 
 Linha 2:
-- Input “Rota*”
+- Input "Rota*"
   Valor:
-  “/fiscalizacao-api”
+  "/fiscalizacao-api"
 
-- Input “Status”
+- Input "Status"
   Valor:
-  “200”
+  "200"
 
 Linha 3:
-- Input “Delay (ms)”
+- Input "Delay (ms)"
   Valor:
-  “0”
+  "0"
 
-- Checkbox “Ativo”
+- Checkbox "Ativo"
   Marcado por padrão
 
 Linha 4:
-- Textarea “Body (JSON)”
+- Textarea "Body (JSON)"
   Grande
   Fundo escuro
   Borda azul suave
@@ -302,10 +312,10 @@ Conteúdo do JSON:
 Botões:
 No canto inferior esquerdo:
 - Botão primário azul clara com texto:
-  “Atualizar”
+  "Atualizar"
 
 - Botão secundário escuro com texto:
-  “Cancelar”
+  "Cancelar"
 
 Detalhes visuais:
 - Inputs com fundo azul-escuro translúcido
@@ -320,9 +330,9 @@ Detalhes visuais:
 Resultado esperado:
 A interface deve parecer um produto profissional real para gerenciamento e edição de endpoints mockados de APIs em um sistema chamado MockAI.
 
---------------------------------------------------------------------------------------------------------
+---
 
-Tela lista de endpoints criados
+## Tela lista de endpoints criados
 
 Crie uma interface web moderna em tema dark para um sistema chamado MockAI. A tela deve representar um painel administrativo para gerenciamento de APIs mockadas, seguindo um visual futurista, minimalista e profissional inspirado em ferramentas modernas de desenvolvimento.
 
@@ -343,18 +353,18 @@ Estrutura da tela:
 
 HEADER SUPERIOR: Barra horizontal no topo da aplicação contendo:
 
-Nome do sistema: “MockAI Lab”
-Subtítulo pequeno: “URL base por grupo: /api/mock//”
+Nome do sistema: "MockAI Lab"
+Subtítulo pequeno: "URL base por grupo: /api/mock//"
 No canto superior direito:
 
-Botão “Rotas” destacado em azul
-Botão “Logs”
+Botão "Rotas" destacado em azul
+Botão "Logs"
 Ícone de tema dark/light (lua)
-Botão/Menu hamburguer com texto: “Menu”
+Botão/Menu hamburguer com texto: "Menu"
 LAYOUT PRINCIPAL: Divisão em duas áreas:
 
 SIDEBAR ESQUERDA — PROJETOS Card lateral escuro com bordas arredondadas contendo:
-Título: “PROJETOS”
+Título: "PROJETOS"
 
 Lista de projetos mockados: Cada projeto deve ser exibido em um card moderno contendo:
 
@@ -365,23 +375,23 @@ Botão copiar
 Botão deletar
 Projetos exibidos:
 
-Api fiscalizacao “8 rotas · 9 logs”
-Dev “3 rotas · 8 logs”
-usuarios “2 rotas · 8 logs”
+Api fiscalizacao "8 rotas · 9 logs"
+Dev "3 rotas · 8 logs"
+usuarios "2 rotas · 8 logs"
 O projeto ativo deve possuir:
 
 Glow azul
 Borda azul destacada
 Fundo levemente iluminado
 ÁREA PRINCIPAL — ROTAS Container principal com bordas arredondadas e fundo dark.
-Título: “ROTAS - API FISCALIZACAO”
+Título: "ROTAS - API FISCALIZACAO"
 
 No topo da área:
 
-Campo de busca com placeholder: “Filtrar rotas…”
+Campo de busca com placeholder: "Filtrar rotas…"
 No canto superior direito:
 
-Botão azul claro: “+ Novo”
+Botão azul claro: "+ Novo"
 LISTA DE ROTAS: Exibir cards/lista de endpoints mockados.
 
 Cada item deve conter:
@@ -407,9 +417,9 @@ Inputs com glow azul discreto
 Componentes premium estilo SaaS
 Resultado esperado: A interface deve parecer um sistema real e profissional para gerenciamento de APIs mockadas chamado MockAI, com aparência moderna, tecnológica e pronta para produção.
 
---------------------------------------------------------------------------------------------------------
+---
 
-Tela Import de endpoints
+## Tela Import de endpoints
 
 Crie uma interface web moderna em tema dark para um sistema chamado MockAI. A tela deve representar um modal de importação de configurações de arquivos, com aparência futurista, minimalista e profissional, seguindo o padrão visual de dashboards modernos para desenvolvimento de APIs.
 
@@ -428,32 +438,32 @@ Tipografia moderna e elegante
 UX clean e premium
 Estilo inspirado em Vercel, GitHub Dark, Postman e Insomnia
 Aparência SaaS profissional
-Branding: Adicionar o nome “MockAI” discretamente na interface ou no topo da aplicação.
+Branding: Adicionar o nome "MockAI" discretamente na interface ou no topo da aplicação.
 
-Estrutura do modal: Título principal: “Importar JSON”
+Estrutura do modal: Título principal: "Importar JSON"
 
 Abaixo do título: Sistema de abas moderno contendo:
 
-Aba ativa: “Carregar arquivo”
-Aba secundária: “Colar JSON”
+Aba ativa: "Carregar arquivo"
+Aba secundária: "Colar JSON"
 A aba ativa deve possuir:
 
 Linha inferior azul glow
 Texto destacado em azul claro
 Separador horizontal abaixo das abas.
 
-Conteúdo da aba “Carregar arquivo”: Texto auxiliar: “Selecione o arquivo JSON.”
+Conteúdo da aba "Carregar arquivo": Texto auxiliar: "Selecione o arquivo JSON."
 
 Campo de upload estilizado:
 
 Input de upload moderno
 Fundo azul-escuro translúcido
 Borda suave azul
-Texto: “Escolher arquivo Nenhum arquivo escolhido”
+Texto: "Escolher arquivo Nenhum arquivo escolhido"
 Hover elegante
 Botões: No canto inferior esquerdo:
 
-Botão secundário escuro com texto: “Fechar”
+Botão secundário escuro com texto: "Fechar"
 Detalhes visuais:
 
 Inputs e uploads com fundo dark translúcido
