@@ -1,6 +1,5 @@
 ---
-inclusion: auto
-description: Define os padrões de idioma e escrita do projeto. Deve ser consultado sempre que for necessário escrever código, comentários, documentação, mensagens de log ou qualquer outro texto no projeto.
+inclusion: always
 ---
 
 # Padrões de Linguagem e Escrita

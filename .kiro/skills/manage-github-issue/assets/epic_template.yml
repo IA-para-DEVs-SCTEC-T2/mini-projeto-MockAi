@@ -1,0 +1,28 @@
+name: Epic
+description: Template para criação de Epics
+title: "[EPIC] "
+labels: ["epic"]
+type: Feature
+
+body:
+  - type: textarea
+    id: vision
+    attributes:
+      label: Visão
+      description: Descreva brevemente a funcionalidade como um todo que deve ser entregue.
+      placeholder: |
+        Entregar a plataforma móvel Shop4u com busca, carrinho, checkout autenticado,
+        recomendações com IA e notificações de pedido, permitindo um MVP funcional.
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Escopo do Epic
+      description: Liste as funcionalidades principais que compõem este epic.
+      placeholder: |
+        - Implementar funcionalidades essenciais para o fluxo de compra mobile.
+        - Priorizar autenticação, pagamento seguro e recomendações iniciais por IA.
+    validations:
+      required: true
