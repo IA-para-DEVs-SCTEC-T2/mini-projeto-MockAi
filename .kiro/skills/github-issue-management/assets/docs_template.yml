@@ -1,0 +1,29 @@
+name: Docs
+description: Template para criação de issues de Documentação
+title: "[DOCS] "
+labels: ["docs"]
+type: Feature
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Descrição
+      description: Descreva brevemente as modificações que devem ser feitas.
+      placeholder: |
+        Documentar visão geral do projeto, arquitetura do MVP, contratos de API principais,
+        convenções de desenvolvimento (branching, PR, linting) e como a equipe usará IA
+        para acelerar backlog, docs e PRs.
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: minimum-content
+    attributes:
+      label: Conteúdo mínimo
+      description: Marque as alterações que devem ser feitas nesta issue de documentação.
+      options:
+        - label: Descreva aqui o primeiro item de documentação a ser produzido ou atualizado
+        - label: Descreva aqui o segundo item de documentação a ser produzido ou atualizado
+    validations:
+      required: true

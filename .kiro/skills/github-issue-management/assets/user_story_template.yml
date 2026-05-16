@@ -1,0 +1,41 @@
+name: User Story
+description: Template para criação de User Stories
+title: "[STORY] "
+labels: ["story"]
+type: Feature
+
+body:
+ - type: textarea
+   id: user-story
+   attributes:
+     label: User Story
+     description: Descreva no formato Como / Quero / Para.
+     placeholder: |
+       Como cliente,
+       quero buscar produtos,
+       para encontrar itens rapidamente.
+   validations:
+     required: true
+
+ - type: textarea
+   id: bdd
+   attributes:
+     label: Critérios de aceitação — BDD
+     description: Use Dado / Quando / Então.
+     placeholder: |
+       Cenário 1:
+
+       Dado que ...
+       Quando ...
+       Então ...
+   validations:
+     required: true
+
+ - type: checkboxes
+   id: checklist
+   attributes:
+     label: Checklist técnico
+     description: Liste tarefas técnicas.
+     placeholder: |
+       - [ ] Criar endpoint
+       - [ ] Criar frontend
