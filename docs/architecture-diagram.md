@@ -37,7 +37,7 @@ flowchart TD
   Disponibiliza endpoints prontos
   para consumo imediato."]
 
-  ai_ext["☁️ Serviço de IA Externo
+  ai_ext["☁️ Groq
   ─────────────────
   Gera payloads de resposta
   dinamicamente para os
@@ -96,9 +96,9 @@ flowchart LR
     e schemas de resposta")]
   end
 
-  ai_ext["☁️ Serviço de IA Externo
+  ai_ext["☁️ Groq
   ─────────────────
-  API externa
+  API externa (api.groq.com)
   ─────────────────
   Gera payloads JSON
   dinamicamente"]
@@ -184,9 +184,9 @@ flowchart TD
 
       gateway["Gateway de IA
       ─────────────────
-      HTTP Client
+      HTTP Client (Spring AI)
       ─────────────────
-      Chama o serviço de IA externo
+      Chama o Groq (api.groq.com)
       para gerar payloads mockados"]
 
       mapper["Mappers
@@ -197,7 +197,7 @@ flowchart TD
   end
 
   db[("H2 Database")]
-  ai_ext["Serviço de IA Externo"]
+  ai_ext["Groq (api.groq.com)"]
 
   http_in --> ctrl
   ctrl    --> usecase

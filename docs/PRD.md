@@ -11,7 +11,7 @@
 
 O **MockAI** é um gerador inteligente de APIs mock que transforma arquivos Swagger/OpenAPI em APIs simuladas locais. A partir de uma documentação no padrão OpenAPI (JSON), o sistema processa o contrato, persiste as definições de endpoints e disponibiliza rotas HTTP prontas para consumo imediato — sem dependência de serviços externos reais.
 
-A integração opcional com um serviço de IA externo (ex.: OpenAI/ChatGPT) permite que os payloads de resposta sejam gerados dinamicamente, tornando as simulações mais realistas e úteis para desenvolvimento e testes.
+A integração opcional com um serviço de IA externo (Groq) permite que os payloads de resposta sejam gerados dinamicamente, tornando as simulações mais realistas e úteis para desenvolvimento e testes.
 
 ---
 
@@ -90,7 +90,7 @@ Perfil típico:
 - Os endpoints devem estar disponíveis imediatamente após o processamento, sem reinicialização
 
 ### RF04 — Geração de retornos com IA
-- O sistema deve integrar com um serviço de IA externo (ex.: OpenAI/ChatGPT) para gerar payloads de resposta
+- O sistema deve integrar com o serviço de IA Groq para gerar payloads de resposta
 - O client de IA deve receber o schema do endpoint e retornar uma resposta gerada no formato esperado
 - O token de autenticação da API de IA deve ser configurado via variável de ambiente ou `application.properties`, sem exposição no código-fonte
 - Erros de comunicação com a API de IA devem ser tratados e propagados adequadamente
@@ -251,7 +251,7 @@ Com base no backlog e nas issues abertas do projeto:
 | Alta | Criar endpoint `POST /import` para recebimento do arquivo Swagger | #18, #58, #12 |
 | Alta | Implementar validação do arquivo Swagger/OpenAPI | #22 |
 | Alta | Implementar criação de endpoints dinâmicos | #19 |
-| Alta | Criar client HTTP para integração com IA (OpenAI/ChatGPT) | #21 |
+| Alta | Criar client HTTP para integração com IA (Groq) | #21 |
 | Alta | Implementar geração de retornos com IA | #23 |
 | Média | Criar endpoint `GET /status` para consulta de status do mock | #10 |
 | Média | Criar endpoint para consulta de endpoints disponíveis | #24 |

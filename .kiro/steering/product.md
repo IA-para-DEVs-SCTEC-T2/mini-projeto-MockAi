@@ -35,7 +35,7 @@ Desenvolvedores que precisam implementar o consumo de alguma API Rest.
 ## Regras de Negócio
 
 - A documentação a ser fornecida deve seguir o padrão Swagger/OpenAPI 3.0 ou superior, no formato JSON.
-- Para endpoints que contenham payload no body da resposta, o conteúdo do payload será gerado dinamicamente com auxílio de IA.
+- Para endpoints que contenham payload no body da resposta, o conteúdo do payload será gerado dinamicamente com auxílio do Groq (serviço de IA).
 - A cada inserção de documentação Swagger, todos os endpoints já existentes e rodando serão deletados, e a MockAI criará novos endpoints com base na documentação inserida.
 
 ## Restrições e Limitações
@@ -51,3 +51,4 @@ Desenvolvedores que precisam implementar o consumo de alguma API Rest.
 | Mock | Objeto ou estrutura simulada usada em programação para imitar o comportamento de componentes reais, como bancos de dados ou APIs. |
 | OpenAPI | Formato padronizado para descrever APIs RESTful. Define endpoints, operações, parâmetros e respostas em formato JSON ou YAML, facilitando documentação, geração de código e testes. |
 | Swagger | Conjunto de ferramentas open-source (como Swagger UI, Editor, Codegen) que utilizam a especificação OpenAPI para projetar, construir, documentar e consumir APIs. |
+| Groq | Serviço de inferência de IA de alta velocidade utilizado pelo MockAI para geração dinâmica de payloads de resposta. Acessado via API compatível com OpenAI em `api.groq.com`. |
