@@ -6,7 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -41,11 +42,11 @@ public class EndpointDefinitionEntity {
         joinColumns = @JoinColumn(name = "endpoint_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    List<TagEntity> tags;
+    Set<TagEntity> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "endpointDefinition", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<PathParameterEntity> pathParameters;
+    Set<PathParameterEntity> pathParameters = new HashSet<>();
 
     @OneToMany(mappedBy = "endpointDefinition", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<EndpointResponseEntity> responses;
+    Set<EndpointResponseEntity> responses = new HashSet<>();
 }

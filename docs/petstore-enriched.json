@@ -1,0 +1,272 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "API Petstore Enriquecida",
+    "version": "1.0.0",
+    "description": "Spec enriquecida para testar a geração de respostas dinâmicas com múltiplos esquemas, $ref, allOf, oneOf, enums e propriedades adicionais."
+  },
+  "servers": [
+    { "url": "http://localhost:8080/mockai" }
+  ],
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "Lista todos os animais",
+        "responses": {
+          "200": {
+            "description": "Lista de animais",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Animal" }
+                },
+                "examples": {
+                  "exemplo": {
+                    "value": [
+                      {
+                        "id": "11111111-1111-1111-1111-111111111111",
+                        "nome": "Fido",
+                        "idade": 4,
+                        "raca": "CACHORRO",
+                        "etiquetas": ["amigável"],
+                        "tutor": {
+                          "id": "22222222-2222-2222-2222-222222222222",
+                          "nome": "Alice"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cadastra um novo animal",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/AnimalEspec" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Animal cadastrado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Animal" },
+                "example": {
+                  "id": "33333333-3333-3333-3333-333333333333",
+                  "nome": "Bella",
+                  "idade": 2,
+                  "raca": "GATO",
+                  "etiquetas": ["fofo"],
+                  "tutor": {
+                    "id": "44444444-4444-4444-4444-444444444444",
+                    "nome": "Bob"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Erro" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets/{petId}": {
+      "get": {
+        "summary": "Busca um animal por ID",
+        "parameters": [
+          {
+            "name": "petId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Animal encontrado",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/Animal" },
+                    { "$ref": "#/components/schemas/AnimalMinimo" }
+                  ]
+                },
+                "example": {
+                  "id": "11111111-1111-1111-1111-111111111111",
+                  "nome": "Fido",
+                  "idade": 4,
+                  "raca": "CACHORRO"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Animal não encontrado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Erro" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/owners": {
+      "get": {
+        "summary": "Mapa de tutores por ID",
+        "responses": {
+          "200": {
+            "description": "Mapa (chave=id) de Tutores",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": { "$ref": "#/components/schemas/Tutor" }
+                },
+                "example": {
+                  "22222222-2222-2222-2222-222222222222": {
+                    "id": "22222222-2222-2222-2222-222222222222",
+                    "nome": "Alice",
+                    "contato": {
+                      "email": "alice@exemplo.com",
+                      "telefone": "+5511999999999"
+                    },
+                    "animais": [
+                      { "id": "11111111-1111-1111-1111-111111111111", "nome": "Fido" }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pets/search": {
+      "get": {
+        "summary": "Busca animais por filtros",
+        "parameters": [
+          { "name": "raca", "in": "query", "schema": { "type": "string" } },
+          { "name": "idadeMinima", "in": "query", "schema": { "type": "integer", "minimum": 0 } }
+        ],
+        "responses": {
+          "200": {
+            "description": "Resultados filtrados",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Animal" }
+                },
+                "example": [
+                  {
+                    "id": "55555555-5555-5555-5555-555555555555",
+                    "nome": "Nina",
+                    "idade": 1,
+                    "raca": "PASSARO",
+                    "etiquetas": []
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Animal": {
+        "type": "object",
+        "properties": {
+          "id":        { "type": "string", "format": "uuid" },
+          "nome":      { "type": "string" },
+          "idade":     { "type": "integer", "nullable": true },
+          "raca":      { "$ref": "#/components/schemas/Raca" },
+          "etiquetas": { "type": "array", "items": { "type": "string" } },
+          "tutor":     { "$ref": "#/components/schemas/TutorRef" },
+          "metadados": { "type": "object", "additionalProperties": true }
+        },
+        "required": ["id", "nome"]
+      },
+      "AnimalMinimo": {
+        "type": "object",
+        "properties": {
+          "id":   { "type": "string" },
+          "nome": { "type": "string" }
+        },
+        "required": ["id", "nome"]
+      },
+      "AnimalEspec": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Animal" },
+          {
+            "type": "object",
+            "properties": {
+              "vacinado":    { "type": "boolean" },
+              "idMicrochip": { "type": "string", "nullable": true }
+            }
+          }
+        ]
+      },
+      "Tutor": {
+        "type": "object",
+        "properties": {
+          "id":   { "type": "string", "format": "uuid" },
+          "nome": { "type": "string" },
+          "contato": {
+            "type": "object",
+            "properties": {
+              "email":    { "type": "string", "format": "email" },
+              "telefone": { "type": "string" }
+            }
+          },
+          "animais": { "type": "array", "items": { "$ref": "#/components/schemas/AnimalMinimo" } }
+        },
+        "required": ["id", "nome"]
+      },
+      "TutorRef": {
+        "type": "object",
+        "properties": {
+          "id":   { "type": "string" },
+          "nome": { "type": "string" }
+        }
+      },
+      "Raca": {
+        "type": "string",
+        "enum": ["CACHORRO", "GATO", "PASSARO", "COBRA"]
+      },
+      "Erro": {
+        "type": "object",
+        "properties": {
+          "codigo":   { "type": "integer" },
+          "mensagem": { "type": "string" }
+        }
+      },
+      "AnimalExemplo": {
+        "type": "object",
+        "properties": {
+          "id":    { "type": "string" },
+          "nome":  { "type": "string",    "example": "Fido" },
+          "idade": { "type": "integer",   "example": 4 },
+          "raca":  { "type": "string",    "example": "CACHORRO" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,261 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "API Clínica Veterinária",
+    "version": "2.0.0",
+    "description": "API para gerenciamento de uma clínica veterinária com pacientes, consultas e veterinários."
+  },
+  "paths": {
+    "/pacientes": {
+      "get": {
+        "summary": "Lista todos os pacientes da clínica",
+        "responses": {
+          "200": {
+            "description": "Lista de pacientes",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Paciente" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Cadastra um novo paciente",
+        "responses": {
+          "201": {
+            "description": "Paciente cadastrado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Paciente" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pacientes/{pacienteId}": {
+      "get": {
+        "summary": "Busca paciente por ID",
+        "parameters": [
+          {
+            "name": "pacienteId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Paciente encontrado",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PacienteDetalhado" }
+              }
+            }
+          },
+          "404": {
+            "description": "Paciente não encontrado"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove um paciente",
+        "parameters": [
+          {
+            "name": "pacienteId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string", "format": "uuid" }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Paciente removido com sucesso"
+          }
+        }
+      }
+    },
+    "/consultas": {
+      "get": {
+        "summary": "Lista todas as consultas agendadas",
+        "responses": {
+          "200": {
+            "description": "Lista de consultas",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Consulta" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Agenda uma nova consulta",
+        "responses": {
+          "201": {
+            "description": "Consulta agendada",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Consulta" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/veterinarios": {
+      "get": {
+        "summary": "Lista todos os veterinários",
+        "responses": {
+          "200": {
+            "description": "Lista de veterinários",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Veterinario" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/veterinarios/{vetId}/agenda": {
+      "get": {
+        "summary": "Consulta a agenda de um veterinário",
+        "parameters": [
+          {
+            "name": "vetId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Agenda do veterinário",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Agenda" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Paciente": {
+        "type": "object",
+        "required": ["id", "nome", "especie"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "nome": { "type": "string" },
+          "especie": { "$ref": "#/components/schemas/Especie" },
+          "raca": { "type": "string" },
+          "idade": { "type": "integer" },
+          "peso": { "type": "number" },
+          "tutor": { "$ref": "#/components/schemas/Tutor" }
+        }
+      },
+      "PacienteDetalhado": {
+        "allOf": [
+          { "$ref": "#/components/schemas/Paciente" },
+          {
+            "type": "object",
+            "properties": {
+              "historicoVacinas": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/Vacina" }
+              },
+              "alergias": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "castrado": { "type": "boolean" }
+            }
+          }
+        ]
+      },
+      "Tutor": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "nomeCompleto": { "type": "string" },
+          "telefone": { "type": "string" },
+          "email": { "type": "string", "format": "email" }
+        }
+      },
+      "Consulta": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "paciente": { "$ref": "#/components/schemas/Paciente" },
+          "veterinario": { "$ref": "#/components/schemas/Veterinario" },
+          "dataHora": { "type": "string", "format": "date-time" },
+          "motivo": { "type": "string" },
+          "status": { "$ref": "#/components/schemas/StatusConsulta" },
+          "observacoes": { "type": "string" }
+        }
+      },
+      "Veterinario": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer" },
+          "nome": { "type": "string" },
+          "crmv": { "type": "string" },
+          "especialidade": { "$ref": "#/components/schemas/Especialidade" },
+          "disponivel": { "type": "boolean" }
+        }
+      },
+      "Agenda": {
+        "type": "object",
+        "properties": {
+          "veterinarioId": { "type": "integer" },
+          "data": { "type": "string", "format": "date" },
+          "horarios": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Horario" }
+          }
+        }
+      },
+      "Horario": {
+        "type": "object",
+        "properties": {
+          "hora": { "type": "string", "format": "time" },
+          "disponivel": { "type": "boolean" },
+          "pacienteNome": { "type": "string" }
+        }
+      },
+      "Vacina": {
+        "type": "object",
+        "properties": {
+          "nome": { "type": "string" },
+          "dataAplicacao": { "type": "string", "format": "date" },
+          "proximaDose": { "type": "string", "format": "date" }
+        }
+      },
+      "Especie": {
+        "type": "string",
+        "enum": ["CANINO", "FELINO", "AVE", "REPTIL", "ROEDOR", "PEIXE"]
+      },
+      "StatusConsulta": {
+        "type": "string",
+        "enum": ["AGENDADA", "EM_ANDAMENTO", "CONCLUIDA", "CANCELADA"]
+      },
+      "Especialidade": {
+        "type": "string",
+        "enum": ["CLINICO_GERAL", "CIRURGIAO", "DERMATOLOGISTA", "ORTOPEDISTA", "CARDIOLOGISTA"]
+      }
+    }
+  }
+}

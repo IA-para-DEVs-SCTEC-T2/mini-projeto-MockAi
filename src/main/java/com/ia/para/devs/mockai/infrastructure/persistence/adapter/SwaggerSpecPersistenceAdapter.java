@@ -3,8 +3,11 @@ package com.ia.para.devs.mockai.infrastructure.persistence.adapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -85,7 +88,7 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
      */
     @Override
     @Transactional
-    public void persist(OpenApiSpecDto spec) {
+    public UUID persist(OpenApiSpecDto spec) {
         try {
             // 1. Deleta todos os dados existentes via port dedicado (RN03)
             //    PersistenceDeletionException propagada diretamente se lançada aqui
@@ -102,7 +105,8 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
             apiSpec.setEndpoints(endpoints);
 
             // 5. Persiste a especificação com todos os endpoints em cascata (CascadeType.ALL)
-            apiSpecificationRepository.save(apiSpec);
+            ApiSpecificationEntity savedApiSpec = apiSpecificationRepository.save(apiSpec);
+            return savedApiSpec.getId();
 
         } catch (PersistenceDeletionException ex) {
             // Relança diretamente — já tem mensagem descritiva do adapter de deleção
@@ -133,7 +137,23 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
         entity.setVersion(spec.getInfo() != null ? spec.getInfo().getVersion() : "");
         entity.setDescription(spec.getInfo() != null ? spec.getInfo().getDescription() : null);
         entity.setBaseUrl(extractBaseUrl(spec));
+        entity.setComponentsJson(serializeComponents(spec));
         return entity;
+    }
+
+    /**
+     * Serializa o bloco "components" da spec como JSON string para persistência.
+     * Retorna null se não houver components.
+     */
+    private String serializeComponents(OpenApiSpecDto spec) {
+        if (spec.getComponents() == null) {
+            return null;
+        }
+        try {
+            return objectMapper.writeValueAsString(spec.getComponents());
+        } catch (JsonProcessingException e) {
+            return null;
+        }
     }
 
     private String extractBaseUrl(OpenApiSpecDto spec) {
@@ -230,15 +250,15 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
      * Resolve as tags de um endpoint buscando as TagEntity já persistidas pelo nome.
      * Tags referenciadas no endpoint mas não declaradas globalmente são ignoradas.
      */
-    private List<TagEntity> resolveEndpointTags(
+    private Set<TagEntity> resolveEndpointTags(
             PathItemDto pathItem,
             Map<String, TagEntity> tagsByName) {
 
         if (pathItem.getTags() == null || pathItem.getTags().isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<TagEntity> tags = new ArrayList<>();
+        Set<TagEntity> tags = new HashSet<>();
         for (String tagName : pathItem.getTags()) {
             TagEntity tagEntity = tagsByName.get(tagName);
             if (tagEntity != null) {
@@ -251,15 +271,15 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
     /**
      * Constrói PathParameterEntity apenas para parâmetros com "in": "path".
      */
-    private List<PathParameterEntity> buildPathParameters(
+    private Set<PathParameterEntity> buildPathParameters(
             PathItemDto pathItem,
             EndpointDefinitionEntity endpoint) {
 
         if (pathItem.getParameters() == null || pathItem.getParameters().isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<PathParameterEntity> parameters = new ArrayList<>();
+        Set<PathParameterEntity> parameters = new HashSet<>();
         for (ParameterDto paramDto : pathItem.getParameters()) {
             if (!"path".equalsIgnoreCase(paramDto.getIn())) {
                 continue;
@@ -287,15 +307,15 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
      * Respostas sem bloco "content" (ex: 204 No Content) geram um registro com
      * contentType DEFAULT_CONTENT_TYPE.
      */
-    private List<EndpointResponseEntity> buildResponses(
+    private Set<EndpointResponseEntity> buildResponses(
             PathItemDto pathItem,
             EndpointDefinitionEntity endpoint) {
 
         if (pathItem.getResponses() == null || pathItem.getResponses().isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<EndpointResponseEntity> responses = new ArrayList<>();
+        Set<EndpointResponseEntity> responses = new HashSet<>();
 
         for (Map.Entry<String, ResponseDto> responseEntry : pathItem.getResponses().entrySet()) {
             String statusCode = responseEntry.getKey();
@@ -341,14 +361,34 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
 
     /**
      * Serializa o schema de um MediaTypeDto como string JSON.
-     * Usa JsonNode para preservar a estrutura original (incluindo $ref, allOf, etc.).
+     * Prioridade: schema > example > primeiro valor de examples.
+     * Usa o ObjectMapper 2.x para serializar estruturas Map/List/primitivo.
      */
     private String serializeSchema(MediaTypeDto mediaType) {
-        if (mediaType == null || mediaType.getSchema() == null) {
+        if (mediaType == null) {
             return null;
         }
         try {
-            return objectMapper.writeValueAsString(mediaType.getSchema());
+            // 1. Schema estrutural (type, properties, $ref, etc.) — prioridade máxima
+            if (mediaType.getSchema() != null) {
+                return objectMapper.writeValueAsString(mediaType.getSchema());
+            }
+            // 2. Exemplo literal inline
+            if (mediaType.getExample() != null) {
+                return objectMapper.writeValueAsString(mediaType.getExample());
+            }
+            // 3. Primeiro exemplo nomeado — extrai o campo "value" se presente
+            if (mediaType.getExamples() != null && !mediaType.getExamples().isEmpty()) {
+                Object first = mediaType.getExamples().values().iterator().next();
+                if (first instanceof Map) {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Object> firstMap = (Map<String, Object>) first;
+                    Object value = firstMap.getOrDefault("value", first);
+                    return objectMapper.writeValueAsString(value);
+                }
+                return objectMapper.writeValueAsString(first);
+            }
+            return null;
         } catch (JsonProcessingException e) {
             return null;
         }

@@ -1,5 +1,7 @@
 package com.ia.para.devs.mockai.application.port.out;
 
+import java.util.UUID;
+
 import com.ia.para.devs.mockai.adapter.in.web.dto.OpenApiSpecDto;
 
 /**
@@ -13,6 +15,7 @@ public interface PersistSwaggerSpecPort {
      * substituindo qualquer especificação existente (conforme RN03).
      *
      * @param spec DTO com a especificação OpenAPI desserializada
+     * @return UUID da especificação persistida
      */
-    void persist(OpenApiSpecDto spec);
+    UUID persist(OpenApiSpecDto spec);
 }
