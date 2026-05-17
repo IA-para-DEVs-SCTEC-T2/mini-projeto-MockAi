@@ -1,19 +1,18 @@
 ---
-inclusion: auto
-description: Descreve as tecnologias, frameworks e ferramentas utilizadas no projeto. Deve ser consultado sempre que for necessário entender as stacks do projeto, como na geração de código, modificação de arquivos Java ou pom.xml.
+inclusion: always
 ---
 
-# Stacks
+# Stack Tecnológica
 
-Este documento descreve as tecnologias, frameworks e ferramentas utilizadas no projeto.
+Este documento descreve as tecnologias, frameworks e ferramentas utilizadas no projeto MockAI.
 
 ## Versões Principais
 
-| Tecnologia    | Versão          | Descrição                                    |
-|---------------|-----------------|----------------------------------------------|
-| Java          | 17              | Linguagem de programação principal           |
-| Maven         | 3.9.7+          | Gerenciador de dependências e build          |
-| Spring Boot   | 4.0.6           | Framework principal para aplicações Java     |
+| Tecnologia  | Versão  | Descrição                                |
+|-------------|---------|------------------------------------------|
+| Java        | 17      | Linguagem de programação principal       |
+| Maven       | 3.9.7+  | Gerenciador de dependências e build      |
+| Spring Boot | 4.0.6   | Framework principal para aplicações Java |
 
 ## Stack Completa
 
@@ -26,44 +25,40 @@ Este documento descreve as tecnologias, frameworks e ferramentas utilizadas no p
 
 ### Persistência de Dados
 
-- **Spring Data JPA**
+- **Spring Data JPA** (`spring-boot-starter-data-jpa`)
   - Abstração sobre JPA para acesso a dados
   - Repositórios com queries automáticas
   - Suporte a transações declarativas
 
-- **H2 Database**
+- **H2 Database** (`spring-boot-h2console` + `com.h2database:h2`)
   - Banco de dados em memória para desenvolvimento e testes
   - Console web integrado para visualização de dados
   - Configuração zero para ambientes de desenvolvimento
 
 ### Web e API
 
-- **Spring Web MVC**
+- **Spring Web MVC** (`spring-boot-starter-webmvc`)
   - Framework para construção de APIs REST
   - Suporte a controllers, request/response handling
   - Serialização/deserialização JSON automática
 
-- **SpringDoc OpenAPI 3.0.2**
+- **SpringDoc OpenAPI 3.0.2** (`springdoc-openapi-starter-webmvc-ui`)
   - Geração automática de documentação OpenAPI/Swagger
   - Interface Swagger UI para testar endpoints
   - Integração nativa com Spring Boot
 
-### Validação
+### Utilitários
 
-- **Spring Boot Starter Validation (Bean Validation)**
-  - Validação declarativa usando anotações
-  - Implementação de JSR-380 (Bean Validation 2.0)
-  - Validação automática em controllers e DTOs
+- **Lombok**
+  - Redução de boilerplate com geração de código em tempo de compilação
+  - Anotações como `@Getter`, `@Setter`, `@Builder`, `@RequiredArgsConstructor`
+  - Configurado como `optional` no Maven e excluído do JAR final
 
 ### Testes
 
-- **Spring Boot Starter Data JPA Test**
+- **Spring Boot Starter Data JPA Test** (`spring-boot-starter-data-jpa-test`)
   - Ferramentas para testes de repositórios
   - Suporte a testes com banco de dados em memória
-
-- **Spring Boot Starter Validation Test**
-  - Ferramentas para testes de validação
-  - Verificação de constraints e regras de negócio
 
 ## Comandos Maven Úteis
 
@@ -86,10 +81,15 @@ mvn clean
 
 ## Configurações Importantes
 
+### Contexto da Aplicação
+
+A aplicação sobe com context path `/mockai` na porta `8080`:
+- Base URL: `http://localhost:8080/mockai`
+
 ### H2 Console
 
 O console H2 está disponível em desenvolvimento para inspeção do banco de dados:
-- URL: `http://localhost:8080/h2-console`
+- URL: `http://localhost:8080/mockai/h2-console`
 - JDBC URL: `jdbc:h2:mem:testdb`
 - Username: `sa`
 - Password: (vazio)
@@ -97,22 +97,22 @@ O console H2 está disponível em desenvolvimento para inspeção do banco de da
 ### Swagger UI
 
 A documentação interativa da API está disponível em:
-- Swagger UI: `http://localhost:8080/swagger-ui.html`
-- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+- Swagger UI: `http://localhost:8080/mockai/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/mockai/v3/api-docs`
 
 ## Boas Práticas
 
 ### Maven
 
-- Sempre especificar versões explícitas de dependências quando necessário
+- Sempre especificar versões explícitas de dependências quando não gerenciadas pelo parent POM
 - Usar o `spring-boot-starter-parent` como parent POM
-- Manter as dependências atualizadas e compatíveis
+- Manter as dependências compatíveis com a versão do Spring Boot em uso
 
 ### Spring Boot
 
 - Usar anotações do Spring para injeção de dependência
 - Aproveitar a configuração automática do Spring Boot
-- Externalizar configurações em `application.properties` ou `application.yml`
+- Externalizar configurações em `application.properties`
 
 ### JPA e Persistência
 
@@ -120,15 +120,15 @@ A documentação interativa da API está disponível em:
 - Mapear entidades para modelos de domínio usando mappers
 - Evitar expor entidades JPA diretamente na API
 
-### Validação
+### Lombok
 
-- Aplicar validações em DTOs na camada de API
-- Usar Bean Validation para validações simples
-- Implementar validações complexas nos casos de uso (application)
+- Preferir `@RequiredArgsConstructor` para injeção de dependência via construtor
+- Usar `@Builder` em DTOs e modelos de domínio para facilitar a construção de objetos
+- Não usar Lombok em interfaces ou classes abstratas do domínio
 
 ### Documentação
 
-- Documentar endpoints com anotações do SpringDoc
+- Documentar endpoints com anotações do SpringDoc (`@Operation`, `@ApiResponse`)
 - Incluir exemplos de request/response
 - Descrever códigos de status HTTP retornados
 
@@ -136,7 +136,7 @@ A documentação interativa da API está disponível em:
 
 ### Domain
 - Sem dependências de frameworks
-- Java puro
+- Java puro (pode usar Lombok)
 
 ### Application
 - Depende apenas de abstrações do Domain
@@ -145,10 +145,11 @@ A documentação interativa da API está disponível em:
 ### Infrastructure
 - Spring Data JPA
 - H2 Database
-- Implementações de repositórios
+- Implementações de repositórios e gateways
 
 ### API
 - Spring Web MVC
-- Bean Validation
 - SpringDoc OpenAPI
 - DTOs e Controllers
+
+#[[file:pom.xml]]

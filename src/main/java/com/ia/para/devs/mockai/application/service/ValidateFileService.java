@@ -1,6 +1,6 @@
 package com.ia.para.devs.mockai.application.service;
 
-import com.ia.para.devs.mockai.application.port.in.ValidateFileUseCase;
+import com.ia.para.devs.mockai.domain.port.in.ValidateFileUseCase;
 import com.ia.para.devs.mockai.domain.exception.InvalidExtensionException;
 import com.ia.para.devs.mockai.domain.model.FileData;
 import org.springframework.stereotype.Service;

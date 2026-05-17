@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ia.para.devs.mockai.adapter.in.web.dto.OpenApiSpecDto;
-import com.ia.para.devs.mockai.application.port.in.ImportSwaggerUseCase;
-import com.ia.para.devs.mockai.application.port.in.PersistSwaggerSpecUseCase;
+import com.ia.para.devs.mockai.domain.port.in.ImportSwaggerUseCase;
+import com.ia.para.devs.mockai.domain.port.in.PersistSwaggerSpecUseCase;
 import com.ia.para.devs.mockai.domain.exception.InvalidSwaggerContentException;
 import com.ia.para.devs.mockai.domain.model.FileData;
 

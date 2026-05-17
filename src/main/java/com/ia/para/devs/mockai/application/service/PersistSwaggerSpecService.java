@@ -3,8 +3,8 @@ package com.ia.para.devs.mockai.application.service;
 import org.springframework.stereotype.Service;
 
 import com.ia.para.devs.mockai.adapter.in.web.dto.OpenApiSpecDto;
-import com.ia.para.devs.mockai.application.port.in.PersistSwaggerSpecUseCase;
-import com.ia.para.devs.mockai.application.port.out.PersistSwaggerSpecPort;
+import com.ia.para.devs.mockai.domain.port.in.PersistSwaggerSpecUseCase;
+import com.ia.para.devs.mockai.domain.port.out.PersistSwaggerSpecPort;
 
 /**
  * Serviço de aplicação responsável por orquestrar a persistência de uma

@@ -1,4 +1,4 @@
-package com.ia.para.devs.mockai.application.port.out;
+package com.ia.para.devs.mockai.domain.port.out;
 
 /**
  * Port de saída que define o contrato para deleção de todos os dados de uma

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ia.para.devs.mockai.adapter.in.web.dto.ImportResponse;
-import com.ia.para.devs.mockai.application.port.in.ImportSwaggerUseCase;
-import com.ia.para.devs.mockai.application.port.in.ValidateFileUseCase;
+import com.ia.para.devs.mockai.domain.port.in.ImportSwaggerUseCase;
+import com.ia.para.devs.mockai.domain.port.in.ValidateFileUseCase;
 import com.ia.para.devs.mockai.domain.model.FileData;
 
 /**

@@ -2,7 +2,7 @@
   "enabled": true,
   "name": "Commitar Modificações",
   "description": "Solicita o número da task, busca dados no GitHub para determinar o tipo de branch, garante que segue o padrão gitflow (feature/task<N> ou bugfix/task<N>), solicita descrição das alterações e realiza o commit seguindo conventional commits em português.",
-  "version": "1",
+  "version": "1.0.0",
   "when": {
     "type": "userTriggered"
   },
