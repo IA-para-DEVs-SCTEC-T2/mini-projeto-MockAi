@@ -3,7 +3,7 @@ package com.ia.para.devs.mockai.infrastructure.persistence.adapter;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Component;
 
-import com.ia.para.devs.mockai.application.port.out.DeleteSwaggerSpecPort;
+import com.ia.para.devs.mockai.domain.port.out.DeleteSwaggerSpecPort;
 import com.ia.para.devs.mockai.domain.exception.PersistenceDeletionException;
 import com.ia.para.devs.mockai.infrastructure.persistence.repository.ApiSpecificationRepository;
 import com.ia.para.devs.mockai.infrastructure.persistence.repository.TagRepository;

@@ -1,4 +1,4 @@
-package com.ia.para.devs.mockai.application.port.in;
+package com.ia.para.devs.mockai.domain.port.in;
 
 import com.ia.para.devs.mockai.adapter.in.web.dto.OpenApiSpecDto;
 
