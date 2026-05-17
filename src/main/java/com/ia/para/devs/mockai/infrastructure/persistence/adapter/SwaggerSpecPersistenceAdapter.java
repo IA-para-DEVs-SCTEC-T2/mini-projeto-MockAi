@@ -3,7 +3,7 @@ package com.ia.para.devs.mockai.infrastructure.persistence.adapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -250,15 +250,15 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
      * Resolve as tags de um endpoint buscando as TagEntity já persistidas pelo nome.
      * Tags referenciadas no endpoint mas não declaradas globalmente são ignoradas.
      */
-    private List<TagEntity> resolveEndpointTags(
+    private Set<TagEntity> resolveEndpointTags(
             PathItemDto pathItem,
             Map<String, TagEntity> tagsByName) {
 
         if (pathItem.getTags() == null || pathItem.getTags().isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<TagEntity> tags = new ArrayList<>();
+        Set<TagEntity> tags = new LinkedHashSet<>();
         for (String tagName : pathItem.getTags()) {
             TagEntity tagEntity = tagsByName.get(tagName);
             if (tagEntity != null) {
@@ -271,15 +271,15 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
     /**
      * Constrói PathParameterEntity apenas para parâmetros com "in": "path".
      */
-    private List<PathParameterEntity> buildPathParameters(
+    private Set<PathParameterEntity> buildPathParameters(
             PathItemDto pathItem,
             EndpointDefinitionEntity endpoint) {
 
         if (pathItem.getParameters() == null || pathItem.getParameters().isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<PathParameterEntity> parameters = new ArrayList<>();
+        Set<PathParameterEntity> parameters = new LinkedHashSet<>();
         for (ParameterDto paramDto : pathItem.getParameters()) {
             if (!"path".equalsIgnoreCase(paramDto.getIn())) {
                 continue;
@@ -307,15 +307,15 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
      * Respostas sem bloco "content" (ex: 204 No Content) geram um registro com
      * contentType DEFAULT_CONTENT_TYPE.
      */
-    private List<EndpointResponseEntity> buildResponses(
+    private Set<EndpointResponseEntity> buildResponses(
             PathItemDto pathItem,
             EndpointDefinitionEntity endpoint) {
 
         if (pathItem.getResponses() == null || pathItem.getResponses().isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<EndpointResponseEntity> responses = new ArrayList<>();
+        Set<EndpointResponseEntity> responses = new LinkedHashSet<>();
 
         for (Map.Entry<String, ResponseDto> responseEntry : pathItem.getResponses().entrySet()) {
             String statusCode = responseEntry.getKey();
