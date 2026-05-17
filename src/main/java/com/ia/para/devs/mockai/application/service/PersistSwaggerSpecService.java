@@ -1,5 +1,7 @@
 package com.ia.para.devs.mockai.application.service;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import com.ia.para.devs.mockai.adapter.in.web.dto.OpenApiSpecDto;
@@ -30,9 +32,10 @@ public class PersistSwaggerSpecService implements PersistSwaggerSpecUseCase {
      * dados existentes conforme a regra de negócio RN03.
      *
      * @param spec DTO com a especificação OpenAPI desserializada
+     * @return UUID da especificação persistida
      */
     @Override
-    public void persist(OpenApiSpecDto spec) {
-        persistSwaggerSpecPort.persist(spec);
+    public UUID persist(OpenApiSpecDto spec) {
+        return persistSwaggerSpecPort.persist(spec);
     }
 }

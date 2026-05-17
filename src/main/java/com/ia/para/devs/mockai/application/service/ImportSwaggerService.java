@@ -1,11 +1,13 @@
 package com.ia.para.devs.mockai.application.service;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ia.para.devs.mockai.adapter.in.web.dto.OpenApiSpecDto;
+import com.ia.para.devs.mockai.domain.port.in.DynamicRouteRegistrationUseCase;
 import com.ia.para.devs.mockai.domain.port.in.ImportSwaggerUseCase;
 import com.ia.para.devs.mockai.domain.port.in.PersistSwaggerSpecUseCase;
 import com.ia.para.devs.mockai.domain.exception.InvalidSwaggerContentException;
@@ -27,12 +29,15 @@ public class ImportSwaggerService implements ImportSwaggerUseCase {
 
     private final ObjectMapper objectMapper;
     private final PersistSwaggerSpecUseCase persistSwaggerSpecUseCase;
+    private final DynamicRouteRegistrationUseCase dynamicRouteRegistrationUseCase;
 
     public ImportSwaggerService(
             ObjectMapper objectMapper,
-            PersistSwaggerSpecUseCase persistSwaggerSpecUseCase) {
+            PersistSwaggerSpecUseCase persistSwaggerSpecUseCase,
+            DynamicRouteRegistrationUseCase dynamicRouteRegistrationUseCase) {
         this.objectMapper = objectMapper;
         this.persistSwaggerSpecUseCase = persistSwaggerSpecUseCase;
+        this.dynamicRouteRegistrationUseCase = dynamicRouteRegistrationUseCase;
     }
 
     /**
@@ -45,7 +50,8 @@ public class ImportSwaggerService implements ImportSwaggerUseCase {
     @Override
     public void importSpec(FileData file) {
         OpenApiSpecDto spec = deserialize(file);
-        persistSwaggerSpecUseCase.persist(spec);
+        UUID specificationId = persistSwaggerSpecUseCase.persist(spec);
+        dynamicRouteRegistrationUseCase.registerRoutes(specificationId);
     }
 
     /**

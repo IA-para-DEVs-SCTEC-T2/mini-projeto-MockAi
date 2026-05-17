@@ -1,5 +1,8 @@
 package com.ia.para.devs.mockai.infrastructure.persistence.entity;
 
+import java.util.List;
+import java.util.UUID;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,9 +15,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
-
-import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Data
@@ -37,6 +37,14 @@ public class ApiSpecificationEntity {
     String description;
 
     String baseUrl;
+
+    /**
+     * Bloco "components" da spec OpenAPI serializado como JSON.
+     * Armazenado para permitir a resolução de $ref em tempo de execução
+     * pelo DynamicResponseBodyBuilder.
+     */
+    @Column(columnDefinition = "TEXT")
+    String componentsJson;
 
     @OneToMany(mappedBy = "apiSpecification", cascade = CascadeType.ALL, orphanRemoval = true)
     List<EndpointDefinitionEntity> endpoints;
