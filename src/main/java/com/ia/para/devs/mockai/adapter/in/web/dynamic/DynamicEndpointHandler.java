@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerMapping;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ia.para.devs.mockai.domain.port.in.GenerateEndpointResponseUseCase;
 import com.ia.para.devs.mockai.infrastructure.persistence.entity.EndpointDefinitionEntity;
 import com.ia.para.devs.mockai.infrastructure.persistence.entity.EndpointResponseEntity;
@@ -26,6 +27,7 @@ public class DynamicEndpointHandler {
     private final SpringWebDynamicRouteRegistry routeRegistry;
     private final DynamicResponseBodyBuilder responseBodyBuilder;
     private final GenerateEndpointResponseUseCase generateEndpointResponseUseCase;
+    private final ObjectMapper objectMapper;
 
     /**
      * Cria uma nova instância do handler com as dependências necessárias.
@@ -33,14 +35,17 @@ public class DynamicEndpointHandler {
      * @param routeRegistry                    registro de rotas dinâmicas do Spring MVC
      * @param responseBodyBuilder              construtor de corpo de resposta estático a partir de schemas OpenAPI
      * @param generateEndpointResponseUseCase  caso de uso de geração de resposta por IA
+     * @param objectMapper                     serializador JSON para parse da resposta da IA
      */
     public DynamicEndpointHandler(
             SpringWebDynamicRouteRegistry routeRegistry,
             DynamicResponseBodyBuilder responseBodyBuilder,
-            GenerateEndpointResponseUseCase generateEndpointResponseUseCase) {
+            GenerateEndpointResponseUseCase generateEndpointResponseUseCase,
+            ObjectMapper objectMapper) {
         this.routeRegistry = routeRegistry;
         this.responseBodyBuilder = responseBodyBuilder;
         this.generateEndpointResponseUseCase = generateEndpointResponseUseCase;
+        this.objectMapper = objectMapper;
     }
 
     /**
@@ -79,7 +84,8 @@ public class DynamicEndpointHandler {
                 return builder.build();
             }
 
-            return builder.contentType(MediaType.APPLICATION_JSON).body(aiBody);
+            Object parsedBody = objectMapper.readValue(aiBody, Object.class);
+            return builder.contentType(MediaType.APPLICATION_JSON).body(parsedBody);
 
         } catch (Exception ex) {
             String componentsJson = endpoint.getApiSpecification() != null

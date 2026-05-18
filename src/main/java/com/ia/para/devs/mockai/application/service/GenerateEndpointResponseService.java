@@ -116,7 +116,7 @@ public class GenerateEndpointResponseService implements GenerateEndpointResponse
 
         try {
             String aiResponse = aiPort.sendPrompt(prompt);
-            return (aiResponse == null || aiResponse.isBlank()) ? null : aiResponse;
+            return (aiResponse == null || aiResponse.isBlank()) ? null : stripCodeFences(aiResponse);
         } catch (Exception ex) {
             throw new AiCommunicationException(
                     "Erro ao gerar resposta via IA para o endpoint: " + endpoint.getPath(), ex);
@@ -150,6 +150,33 @@ public class GenerateEndpointResponseService implements GenerateEndpointResponse
                 .filter(r -> "204".equals(r.getStatusCode()))
                 .findFirst())
                 .orElseGet(() -> endpoint.getResponses().iterator().next());
+    }
+
+    /**
+     * Remove delimitadores de bloco de código Markdown da resposta da IA.
+     *
+     * <p>Alguns modelos de linguagem retornam o JSON envolto em delimitadores
+     * como {@code ```json ... ```} ou {@code ``` ... ```}, mesmo quando instruídos
+     * a não fazê-lo. Este método remove esses delimitadores, retornando apenas
+     * o conteúdo JSON puro.</p>
+     *
+     * @param response resposta bruta retornada pelo serviço de IA
+     * @return resposta sem delimitadores de bloco de código, com espaços em branco
+     *         nas extremidades removidos
+     */
+    private String stripCodeFences(String response) {
+        String trimmed = response.strip();
+        if (trimmed.startsWith("```")) {
+            int firstNewline = trimmed.indexOf('\n');
+            if (firstNewline != -1) {
+                trimmed = trimmed.substring(firstNewline + 1);
+            }
+            if (trimmed.endsWith("```")) {
+                trimmed = trimmed.substring(0, trimmed.length() - 3);
+            }
+            return trimmed.strip();
+        }
+        return trimmed;
     }
 
     /**
