@@ -294,8 +294,8 @@ public class DynamicResponseBodyBuilder {
     }
 
     private Object buildString(JsonNode schema) {
-        if (schema.has("format")) {
-            return schema.get("format").asText();
+        if (schema.has("example") && !schema.get("example").isNull()) {
+            return sampleFromNode(schema.get("example"));
         }
         return "string";
     }

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerMapping;
 
+import com.ia.para.devs.mockai.domain.port.in.GenerateEndpointResponseUseCase;
 import com.ia.para.devs.mockai.infrastructure.persistence.entity.EndpointDefinitionEntity;
 import com.ia.para.devs.mockai.infrastructure.persistence.entity.EndpointResponseEntity;
 
@@ -14,22 +15,46 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * Handler genérico para endpoints registrados dinamicamente.
  *
- * Retorna um payload de exemplo compatível com o schema de resposta
- * persistido em EndpointResponseEntity.responseSchema.
+ * <p>Delega a geração do corpo de resposta ao {@link GenerateEndpointResponseUseCase},
+ * que utiliza IA para produzir um JSON realista e coerente com o schema do endpoint.
+ * Em caso de falha na geração por IA, aplica fallback estático via
+ * {@link DynamicResponseBodyBuilder}.</p>
  */
 @Component
 public class DynamicEndpointHandler {
 
     private final SpringWebDynamicRouteRegistry routeRegistry;
     private final DynamicResponseBodyBuilder responseBodyBuilder;
+    private final GenerateEndpointResponseUseCase generateEndpointResponseUseCase;
 
+    /**
+     * Cria uma nova instância do handler com as dependências necessárias.
+     *
+     * @param routeRegistry                    registro de rotas dinâmicas do Spring MVC
+     * @param responseBodyBuilder              construtor de corpo de resposta estático a partir de schemas OpenAPI
+     * @param generateEndpointResponseUseCase  caso de uso de geração de resposta por IA
+     */
     public DynamicEndpointHandler(
             SpringWebDynamicRouteRegistry routeRegistry,
-            DynamicResponseBodyBuilder responseBodyBuilder) {
+            DynamicResponseBodyBuilder responseBodyBuilder,
+            GenerateEndpointResponseUseCase generateEndpointResponseUseCase) {
         this.routeRegistry = routeRegistry;
         this.responseBodyBuilder = responseBodyBuilder;
+        this.generateEndpointResponseUseCase = generateEndpointResponseUseCase;
     }
 
+    /**
+     * Processa a requisição HTTP para um endpoint mockado dinamicamente.
+     *
+     * <p>Tenta gerar o corpo de resposta via IA. Se a IA retornar um JSON válido,
+     * utiliza-o como corpo da resposta com {@code Content-Type: application/json}.
+     * Se o resultado for {@code null} (schema ausente), retorna apenas o status HTTP
+     * sem corpo. Em caso de qualquer exceção, aplica fallback estático via
+     * {@link DynamicResponseBodyBuilder}.</p>
+     *
+     * @param request requisição HTTP recebida
+     * @return resposta HTTP com o corpo gerado pela IA, corpo estático ou apenas status
+     */
     public ResponseEntity<Object> handle(HttpServletRequest request) {
         String pattern = (String) request.getAttribute(HandlerMapping.BEST_MATCHING_PATTERN_ATTRIBUTE);
         String httpMethod = request.getMethod();
@@ -44,20 +69,30 @@ public class DynamicEndpointHandler {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        MediaType mediaType = parseMediaType(response.getContentType());
         int statusCode = parseStatusCode(response.getStatusCode());
-
-        String componentsJson = endpoint.getApiSpecification() != null
-                ? endpoint.getApiSpecification().getComponentsJson()
-                : null;
-
-        Object body = responseBodyBuilder.buildResponseBody(response.getResponseSchema(), componentsJson);
-
         ResponseEntity.BodyBuilder builder = ResponseEntity.status(statusCode);
-        if (body == null) {
-            return builder.build();
+
+        try {
+            String aiBody = generateEndpointResponseUseCase.generate(endpoint);
+
+            if (aiBody == null) {
+                return builder.build();
+            }
+
+            return builder.contentType(MediaType.APPLICATION_JSON).body(aiBody);
+
+        } catch (Exception ex) {
+            String componentsJson = endpoint.getApiSpecification() != null
+                    ? endpoint.getApiSpecification().getComponentsJson()
+                    : null;
+            Object staticBody = responseBodyBuilder.buildResponseBody(response.getResponseSchema(), componentsJson);
+            MediaType mediaType = parseMediaType(response.getContentType());
+
+            if (staticBody == null) {
+                return builder.build();
+            }
+            return builder.contentType(mediaType).body(staticBody);
         }
-        return builder.contentType(mediaType).body(body);
     }
 
     private EndpointResponseEntity selectDefaultResponse(EndpointDefinitionEntity endpoint) {
