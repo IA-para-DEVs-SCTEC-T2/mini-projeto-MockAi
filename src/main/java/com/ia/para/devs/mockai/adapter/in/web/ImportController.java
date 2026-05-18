@@ -2,6 +2,7 @@ package com.ia.para.devs.mockai.adapter.in.web;
 
 import java.io.IOException;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -9,9 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ia.para.devs.mockai.adapter.in.web.dto.ImportResponse;
+import com.ia.para.devs.mockai.domain.model.FileData;
 import com.ia.para.devs.mockai.domain.port.in.ImportSwaggerUseCase;
 import com.ia.para.devs.mockai.domain.port.in.ValidateFileUseCase;
-import com.ia.para.devs.mockai.domain.model.FileData;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  * Controller REST que expõe o endpoint POST /import.
@@ -25,6 +34,7 @@ import com.ia.para.devs.mockai.domain.model.FileData;
  * Não captura exceções — todo tratamento é delegado ao GlobalExceptionHandler.
  * Não contém lógica de negócio — apenas adaptação e orquestração de chamadas.
  */
+@Tag(name = "Import", description = "Importação de especificação Swagger/OpenAPI")
 @RestController
 public class ImportController {
 
@@ -52,6 +62,22 @@ public class ImportController {
      * @return HTTP 201 com mensagem de sucesso
      * @throws IOException se a leitura dos bytes do MultipartFile falhar
      */
+    @Operation(summary = "Importa especificação Swagger/OpenAPI",
+               description = "Recebe um arquivo .json no formato OpenAPI 3.0+, valida, desserializa e persiste os endpoints mockados. Substitui todos os endpoints existentes.")
+    @RequestBody(required = true, content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                 schema = @Schema(type = "object", requiredProperties = {"file"})))
+    @ApiResponses({
+        @ApiResponse(responseCode = "201", description = "Arquivo importado com sucesso",
+                     content = @Content(schema = @Schema(implementation = ImportResponse.class))),
+        @ApiResponse(responseCode = "400", description = "Extensão inválida ou conteúdo JSON não reconhecido como OpenAPI",
+                     content = @Content(schema = @Schema(implementation = ImportResponse.class))),
+        @ApiResponse(responseCode = "409", description = "Violação de integridade referencial nos dados",
+                     content = @Content(schema = @Schema(implementation = ImportResponse.class))),
+        @ApiResponse(responseCode = "500", description = "Falha interna ao persistir os dados",
+                     content = @Content(schema = @Schema(implementation = ImportResponse.class))),
+        @ApiResponse(responseCode = "503", description = "Banco de dados indisponível",
+                     content = @Content(schema = @Schema(implementation = ImportResponse.class)))
+    })
     @PostMapping(value = "/import", consumes = "multipart/form-data")
     public ResponseEntity<ImportResponse> importFile(@RequestPart("file") MultipartFile file) throws IOException {
         FileData fileData = new FileData(file.getOriginalFilename(), file.getBytes());

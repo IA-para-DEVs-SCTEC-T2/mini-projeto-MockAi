@@ -1,0 +1,187 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "OpenAPI definition",
+        "version": "v0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8080/mockai",
+            "description": "Generated server url"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Endpoints",
+            "description": "Listagem dos endpoints mockados disponíveis"
+        },
+        {
+            "name": "Import",
+            "description": "Importação de especificação Swagger/OpenAPI"
+        },
+        {
+            "name": "AI Connection",
+            "description": "Verificação de conectividade com o serviço de IA"
+        }
+    ],
+    "paths": {
+        "/import": {
+            "post": {
+                "tags": [
+                    "Import"
+                ],
+                "summary": "Importa especificação Swagger/OpenAPI",
+                "description": "Recebe um arquivo .json no formato OpenAPI 3.0+, valida, desserializa e persiste os endpoints mockados. Substitui todos os endpoints existentes.",
+                "operationId": "importFile",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "required": [
+                                    "file"
+                                ]
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Arquivo importado com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImportResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Extensão inválida ou conteúdo JSON não reconhecido como OpenAPI",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImportResponse"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Violação de integridade referencial nos dados",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImportResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Falha interna ao persistir os dados",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImportResponse"
+                                }
+                            }
+                        }
+                    },
+                    "503": {
+                        "description": "Banco de dados indisponível",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImportResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/test-ai-connection": {
+            "get": {
+                "tags": [
+                    "AI Connection"
+                ],
+                "summary": "Verifica conectividade com o serviço de IA",
+                "description": "Testa se a integração com o Groq está operacional",
+                "operationId": "testAiConnection",
+                "responses": {
+                    "200": {
+                        "description": "Conexão com o serviço de IA está funcional",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "503": {
+                        "description": "Conexão com o serviço de IA está indisponível",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/endpoints": {
+            "get": {
+                "tags": [
+                    "Endpoints"
+                ],
+                "summary": "Lista todos os endpoints mockados",
+                "description": "Retorna path, método HTTP e descrição de cada endpoint disponível. Lista vazia quando não há registros.",
+                "operationId": "listEndpoints",
+                "responses": {
+                    "200": {
+                        "description": "Lista de endpoints retornada com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/EndpointResponse"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ImportResponse": {
+                "type": "object",
+                "properties": {
+                    "message": {
+                        "type": "string"
+                    }
+                }
+            },
+            "EndpointResponse": {
+                "type": "object",
+                "properties": {
+                    "path": {
+                        "type": "string"
+                    },
+                    "httpMethod": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
