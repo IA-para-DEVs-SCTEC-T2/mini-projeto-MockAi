@@ -1,0 +1,2 @@
+org.springframework.context.ApplicationContextInitializer=\
+  com.ia.para.devs.mockai.infrastructure.config.DotEnvInitializer
