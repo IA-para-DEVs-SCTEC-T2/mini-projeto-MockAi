@@ -287,8 +287,11 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
 
             PathParameterEntity param = new PathParameterEntity();
             param.setName(paramDto.getName());
+            param.setParamIn(paramDto.getIn());
+            param.setDescription(paramDto.getDescription());
             param.setRequired(Boolean.TRUE.equals(paramDto.getRequired()));
             param.setType(extractParamType(paramDto));
+            param.setFormat(extractParamFormat(paramDto));
             param.setEndpointDefinition(endpoint);
             parameters.add(param);
         }
@@ -300,6 +303,13 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
             return paramDto.getSchema().getType();
         }
         return DEFAULT_PARAM_TYPE;
+    }
+
+    private String extractParamFormat(ParameterDto paramDto) {
+        if (paramDto.getSchema() != null) {
+            return paramDto.getSchema().getFormat();
+        }
+        return null;
     }
 
     /**
