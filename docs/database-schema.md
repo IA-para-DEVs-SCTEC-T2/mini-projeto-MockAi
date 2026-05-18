@@ -82,13 +82,16 @@ Tabela de junção do relacionamento N:N entre `endpoint_definition` e `tag`.
 
 Representa um parâmetro de path de um endpoint (ex: `{id}` em `/users/{id}`).
 
-| Coluna                  | Tipo         | Restrições  | Descrição                                       |
-|-------------------------|--------------|-------------|-------------------------------------------------|
-| `id`                    | UUID         | PK NOT NULL | Identificador único                             |
-| `name`                  | VARCHAR(255) | NOT NULL    | Nome do parâmetro (ex: `id`, `slug`)            |
-| `type`                  | VARCHAR(100) | NOT NULL    | Tipo do parâmetro (ex: `integer`, `string`)     |
-| `required`              | BOOLEAN      | NOT NULL    | Indica se o parâmetro é obrigatório             |
-| `endpoint_definition_id`| UUID         | FK NOT NULL | Referência para `endpoint_definition(id)`       |
+| Coluna                  | Tipo         | Restrições  | Descrição                                                              |
+|-------------------------|--------------|-------------|------------------------------------------------------------------------|
+| `id`                    | UUID         | PK NOT NULL | Identificador único                                                    |
+| `name`                  | VARCHAR(255) | NOT NULL    | Nome do parâmetro (ex: `id`, `slug`)                                   |
+| `param_in`              | VARCHAR(20)  | NOT NULL    | Localização do parâmetro conforme OpenAPI (`path`, `query`, `header`)  |
+| `description`           | TEXT         | —           | Descrição do parâmetro                                                 |
+| `type`                  | VARCHAR(100) | NOT NULL    | Tipo do parâmetro conforme OpenAPI (ex: `string`, `integer`)           |
+| `format`                | VARCHAR(100) | —           | Formato do schema conforme OpenAPI (ex: `uuid`, `int64`, `date-time`)  |
+| `required`              | BOOLEAN      | NOT NULL    | Indica se o parâmetro é obrigatório                                    |
+| `endpoint_definition_id`| UUID         | FK NOT NULL | Referência para `endpoint_definition(id)`                              |
 
 ---
 
@@ -145,7 +148,10 @@ CREATE TABLE endpoint_tags (
 CREATE TABLE path_parameter (
     id                     UUID         PRIMARY KEY,
     name                   VARCHAR(255) NOT NULL,
+    param_in               VARCHAR(20)  NOT NULL,
+    description            TEXT,
     type                   VARCHAR(100) NOT NULL,
+    format                 VARCHAR(100),
     required               BOOLEAN      NOT NULL,
     endpoint_definition_id UUID NOT NULL,
     FOREIGN KEY (endpoint_definition_id) REFERENCES endpoint_definition(id)
@@ -173,3 +179,5 @@ CREATE TABLE endpoint_response (
 - A exclusão em cascata é gerenciada pela aplicação via JPA (`CascadeType.ALL` + `orphanRemoval = true`):
   - Ao deletar uma `api_specification`, todos os `endpoint_definition` associados são removidos.
   - Ao deletar um `endpoint_definition`, todos os `path_parameter` e `endpoint_response` associados são removidos.
+- A tabela `path_parameter` armazena todas as propriedades do parâmetro conforme a spec OpenAPI: `param_in` (localização), `description`, `type` e `format`. Isso permite distinguir endpoints com path parameters de formatos diferentes (ex: `uuid` vs string simples) durante o roteamento dinâmico.
+- A tabela `endpoint_response` persiste **apenas o primeiro status de sucesso (2xx)** encontrado na spec. Respostas de erro (4xx, 5xx) são ignoradas. Se não houver nenhum status de sucesso, persiste um registro com `status_code = 200` e `response_schema = NULL`.

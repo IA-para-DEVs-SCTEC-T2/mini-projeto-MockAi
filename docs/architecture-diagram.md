@@ -272,7 +272,10 @@ erDiagram
   path_parameter {
     UUID    id                     PK
     string  name
+    string  param_in
+    text    description
     string  type
+    string  format
     boolean required
     UUID    endpoint_definition_id FK
   }
