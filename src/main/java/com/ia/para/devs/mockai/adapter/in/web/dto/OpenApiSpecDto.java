@@ -18,6 +18,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OpenApiSpecDto {
 
+    /** Versão da especificação OpenAPI (ex: "3.0.1"). Obrigatório para validação. */
+    String openapi;
+
     InfoDto info;
 
     List<ServerDto> servers;

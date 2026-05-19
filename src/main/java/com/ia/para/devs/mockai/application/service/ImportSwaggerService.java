@@ -7,11 +7,12 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ia.para.devs.mockai.adapter.in.web.dto.OpenApiSpecDto;
+import com.ia.para.devs.mockai.domain.exception.InvalidSwaggerContentException;
+import com.ia.para.devs.mockai.domain.model.FileData;
 import com.ia.para.devs.mockai.domain.port.in.DynamicRouteRegistrationUseCase;
 import com.ia.para.devs.mockai.domain.port.in.ImportSwaggerUseCase;
 import com.ia.para.devs.mockai.domain.port.in.PersistSwaggerSpecUseCase;
-import com.ia.para.devs.mockai.domain.exception.InvalidSwaggerContentException;
-import com.ia.para.devs.mockai.domain.model.FileData;
+import com.ia.para.devs.mockai.domain.port.in.ValidateSwaggerContentUseCase;
 
 /**
  * Serviço de aplicação responsável por orquestrar a importação de uma
@@ -30,26 +31,31 @@ public class ImportSwaggerService implements ImportSwaggerUseCase {
     private final ObjectMapper objectMapper;
     private final PersistSwaggerSpecUseCase persistSwaggerSpecUseCase;
     private final DynamicRouteRegistrationUseCase dynamicRouteRegistrationUseCase;
+    private final ValidateSwaggerContentUseCase validateSwaggerContentUseCase;
 
     public ImportSwaggerService(
             ObjectMapper objectMapper,
             PersistSwaggerSpecUseCase persistSwaggerSpecUseCase,
-            DynamicRouteRegistrationUseCase dynamicRouteRegistrationUseCase) {
+            DynamicRouteRegistrationUseCase dynamicRouteRegistrationUseCase,
+            ValidateSwaggerContentUseCase validateSwaggerContentUseCase) {
         this.objectMapper = objectMapper;
         this.persistSwaggerSpecUseCase = persistSwaggerSpecUseCase;
         this.dynamicRouteRegistrationUseCase = dynamicRouteRegistrationUseCase;
+        this.validateSwaggerContentUseCase = validateSwaggerContentUseCase;
     }
 
     /**
-     * Desserializa o conteúdo do arquivo como OpenApiSpecDto e persiste no banco.
+     * Desserializa o conteúdo do arquivo como OpenApiSpecDto, valida os campos
+     * obrigatórios e persiste no banco.
      *
      * @param file arquivo validado contendo a especificação OpenAPI em JSON
      * @throws InvalidSwaggerContentException se o JSON não puder ser desserializado
-     *         como OpenApiSpecDto (estrutura inválida, JSON malformado, etc.)
+     *         como OpenApiSpecDto ou se campos obrigatórios estiverem ausentes
      */
     @Override
     public void importSpec(FileData file) {
         OpenApiSpecDto spec = deserialize(file);
+        validateSwaggerContentUseCase.validate(spec);
         UUID specificationId = persistSwaggerSpecUseCase.persist(spec);
         dynamicRouteRegistrationUseCase.registerRoutes(specificationId);
     }
