@@ -3,7 +3,7 @@ package com.ia.para.devs.mockai.infrastructure.persistence.adapter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -250,15 +250,15 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
      * Resolve as tags de um endpoint buscando as TagEntity já persistidas pelo nome.
      * Tags referenciadas no endpoint mas não declaradas globalmente são ignoradas.
      */
-    private List<TagEntity> resolveEndpointTags(
+    private Set<TagEntity> resolveEndpointTags(
             PathItemDto pathItem,
             Map<String, TagEntity> tagsByName) {
 
         if (pathItem.getTags() == null || pathItem.getTags().isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<TagEntity> tags = new ArrayList<>();
+        Set<TagEntity> tags = new LinkedHashSet<>();
         for (String tagName : pathItem.getTags()) {
             TagEntity tagEntity = tagsByName.get(tagName);
             if (tagEntity != null) {
@@ -271,15 +271,15 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
     /**
      * Constrói PathParameterEntity apenas para parâmetros com "in": "path".
      */
-    private List<PathParameterEntity> buildPathParameters(
+    private Set<PathParameterEntity> buildPathParameters(
             PathItemDto pathItem,
             EndpointDefinitionEntity endpoint) {
 
         if (pathItem.getParameters() == null || pathItem.getParameters().isEmpty()) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
 
-        List<PathParameterEntity> parameters = new ArrayList<>();
+        Set<PathParameterEntity> parameters = new LinkedHashSet<>();
         for (ParameterDto paramDto : pathItem.getParameters()) {
             if (!"path".equalsIgnoreCase(paramDto.getIn())) {
                 continue;
@@ -287,8 +287,11 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
 
             PathParameterEntity param = new PathParameterEntity();
             param.setName(paramDto.getName());
+            param.setParamIn(paramDto.getIn());
+            param.setDescription(paramDto.getDescription());
             param.setRequired(Boolean.TRUE.equals(paramDto.getRequired()));
             param.setType(extractParamType(paramDto));
+            param.setFormat(extractParamFormat(paramDto));
             param.setEndpointDefinition(endpoint);
             parameters.add(param);
         }
@@ -302,45 +305,82 @@ public class SwaggerSpecPersistenceAdapter implements PersistSwaggerSpecPort {
         return DEFAULT_PARAM_TYPE;
     }
 
+    private String extractParamFormat(ParameterDto paramDto) {
+        if (paramDto.getSchema() != null) {
+            return paramDto.getSchema().getFormat();
+        }
+        return null;
+    }
+
     /**
-     * Constrói EndpointResponseEntity para cada combinação statusCode + contentType.
-     * Respostas sem bloco "content" (ex: 204 No Content) geram um registro com
-     * contentType DEFAULT_CONTENT_TYPE.
+     * Constrói EndpointResponseEntity apenas para o primeiro status de sucesso (2xx) encontrado.
+     * Caso não exista nenhum status de sucesso, persiste um único registro com status "200"
+     * e responseSchema nulo.
+     *
+     * Regras:
+     * - Apenas o primeiro status 2xx é considerado (ex: 200, 201).
+     * - Respostas de erro (4xx, 5xx) e outros status são ignorados.
+     * - Se o status de sucesso não tiver bloco "content", persiste com contentType DEFAULT_CONTENT_TYPE e schema nulo.
+     * - Se houver múltiplos content types no status de sucesso, persiste um registro por content type.
+     * - Se não houver nenhum status de sucesso, persiste um único registro com status "200" e schema nulo.
      */
-    private List<EndpointResponseEntity> buildResponses(
+    private Set<EndpointResponseEntity> buildResponses(
             PathItemDto pathItem,
             EndpointDefinitionEntity endpoint) {
 
-        if (pathItem.getResponses() == null || pathItem.getResponses().isEmpty()) {
-            return Collections.emptyList();
+        Set<EndpointResponseEntity> responses = new LinkedHashSet<>();
+
+        Map.Entry<String, ResponseDto> successEntry = findFirstSuccessResponse(pathItem);
+
+        if (successEntry == null) {
+            responses.add(buildResponse("200", DEFAULT_CONTENT_TYPE, null, null, endpoint));
+            return responses;
         }
 
-        List<EndpointResponseEntity> responses = new ArrayList<>();
+        String statusCode = successEntry.getKey();
+        ResponseDto responseDto = successEntry.getValue();
 
-        for (Map.Entry<String, ResponseDto> responseEntry : pathItem.getResponses().entrySet()) {
-            String statusCode = responseEntry.getKey();
-            ResponseDto responseDto = responseEntry.getValue();
-
-            if (responseDto.getContent() == null || responseDto.getContent().isEmpty()) {
-                // Resposta sem body (ex: 204 No Content)
-                EndpointResponseEntity response = buildResponse(
-                        statusCode, DEFAULT_CONTENT_TYPE, responseDto.getDescription(), null, endpoint);
-                responses.add(response);
-            } else {
-                // Uma entrada por content type
-                for (Map.Entry<String, MediaTypeDto> contentEntry : responseDto.getContent().entrySet()) {
-                    String contentType = contentEntry.getKey();
-                    MediaTypeDto mediaType = contentEntry.getValue();
-                    String schemaJson = serializeSchema(mediaType);
-
-                    EndpointResponseEntity response = buildResponse(
-                            statusCode, contentType, responseDto.getDescription(), schemaJson, endpoint);
-                    responses.add(response);
-                }
+        if (responseDto.getContent() == null || responseDto.getContent().isEmpty()) {
+            responses.add(buildResponse(statusCode, DEFAULT_CONTENT_TYPE, responseDto.getDescription(), null, endpoint));
+        } else {
+            for (Map.Entry<String, MediaTypeDto> contentEntry : responseDto.getContent().entrySet()) {
+                String contentType = contentEntry.getKey();
+                MediaTypeDto mediaType = contentEntry.getValue();
+                String schemaJson = serializeSchema(mediaType);
+                responses.add(buildResponse(statusCode, contentType, responseDto.getDescription(), schemaJson, endpoint));
             }
         }
 
         return responses;
+    }
+
+    /**
+     * Localiza a primeira entrada de resposta com status de sucesso (2xx) no mapa de respostas.
+     * Retorna null se não houver nenhuma resposta de sucesso.
+     */
+    private Map.Entry<String, ResponseDto> findFirstSuccessResponse(PathItemDto pathItem) {
+        if (pathItem.getResponses() == null || pathItem.getResponses().isEmpty()) {
+            return null;
+        }
+        for (Map.Entry<String, ResponseDto> entry : pathItem.getResponses().entrySet()) {
+            String statusCode = entry.getKey();
+            if (isSuccessStatus(statusCode)) {
+                return entry;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Verifica se um código de status HTTP representa sucesso (2xx).
+     */
+    private boolean isSuccessStatus(String statusCode) {
+        try {
+            int code = Integer.parseInt(statusCode);
+            return code >= 200 && code < 300;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     private EndpointResponseEntity buildResponse(

@@ -29,8 +29,19 @@ public class PathParameterEntity {
     @Column(nullable = false)
     String name;
 
+    /** Localização do parâmetro conforme OpenAPI: "path", "query", "header" ou "cookie". */
+    @Column(nullable = false, length = 20)
+    String paramIn;
+
+    @Column(columnDefinition = "TEXT")
+    String description;
+
     @Column(nullable = false, length = 100)
     String type;
+
+    /** Formato do schema conforme OpenAPI (ex: "uuid", "int64", "date-time"). Pode ser nulo. */
+    @Column(length = 100)
+    String format;
 
     @Column(nullable = false)
     Boolean required;

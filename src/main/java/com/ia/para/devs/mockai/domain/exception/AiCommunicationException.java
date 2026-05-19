@@ -1,7 +1,7 @@
 package com.ia.para.devs.mockai.domain.exception;
 
 /**
- * Exceção de domínio lançada quando ocorre falha na comunicação com o serviço de IA (OpenAI API).
+ * Exceção de domínio lançada quando ocorre falha na comunicação com o serviço de IA (Groq API).
  * Encapsula erros HTTP (4xx/5xx), timeout e falhas de autenticação,
  * garantindo que detalhes internos do framework não vazem para as camadas superiores.
  */

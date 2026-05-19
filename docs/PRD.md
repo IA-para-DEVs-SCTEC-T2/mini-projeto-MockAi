@@ -11,7 +11,7 @@
 
 O **MockAI** é um gerador inteligente de APIs mock que transforma arquivos Swagger/OpenAPI em APIs simuladas locais. A partir de uma documentação no padrão OpenAPI (JSON), o sistema processa o contrato, persiste as definições de endpoints e disponibiliza rotas HTTP prontas para consumo imediato — sem dependência de serviços externos reais.
 
-A integração opcional com um serviço de IA externo (ex.: OpenAI/ChatGPT) permite que os payloads de resposta sejam gerados dinamicamente, tornando as simulações mais realistas e úteis para desenvolvimento e testes.
+A integração opcional com um serviço de IA externo (Groq) permite que os payloads de resposta sejam gerados dinamicamente, tornando as simulações mais realistas e úteis para desenvolvimento e testes.
 
 ---
 
@@ -90,7 +90,7 @@ Perfil típico:
 - Os endpoints devem estar disponíveis imediatamente após o processamento, sem reinicialização
 
 ### RF04 — Geração de retornos com IA
-- O sistema deve integrar com um serviço de IA externo (ex.: OpenAI/ChatGPT) para gerar payloads de resposta
+- O sistema deve integrar com o serviço de IA Groq para gerar payloads de resposta
 - O client de IA deve receber o schema do endpoint e retornar uma resposta gerada no formato esperado
 - O token de autenticação da API de IA deve ser configurado via variável de ambiente ou `application.properties`, sem exposição no código-fonte
 - Erros de comunicação com a API de IA devem ser tratados e propagados adequadamente
@@ -238,7 +238,6 @@ O MockAI segue o modelo **C4** e é estruturado em **Clean Architecture** com 4 
 | L03 | **Banco in-memory** — os dados são perdidos ao reiniciar a aplicação (H2 in-memory); não há persistência entre sessões |
 | L04 | **Formato de entrada restrito** — apenas arquivos no formato JSON são suportados; YAML não está contemplado na especificação atual |
 | L05 | **Sem suporte a autenticação na spec** — campos de `securitySchemes` e `security` do OpenAPI são ignorados no mock |
-| L06 | **Camadas application, domain e api ainda não implementadas** — o código atual contém apenas as entidades JPA da camada `infrastructure/persistence`; controllers, use cases, domain models e gateways ainda estão pendentes |
 
 ---
 
@@ -246,25 +245,22 @@ O MockAI segue o modelo **C4** e é estruturado em **Clean Architecture** com 4 
 
 Com base no backlog e nas issues abertas do projeto:
 
-| Prioridade | Item | Issue(s) |
-|------------|------|----------|
-| Alta | Criar endpoint `POST /import` para recebimento do arquivo Swagger | #18, #58, #12 |
-| Alta | Implementar validação do arquivo Swagger/OpenAPI | #22 |
-| Alta | Implementar criação de endpoints dinâmicos | #19 |
-| Alta | Criar client HTTP para integração com IA (OpenAI/ChatGPT) | #21 |
-| Alta | Implementar geração de retornos com IA | #23 |
-| Média | Criar endpoint `GET /status` para consulta de status do mock | #10 |
-| Média | Criar endpoint para consulta de endpoints disponíveis | #24 |
-| Baixa | Criar arquivo CONTRIBUTING.md | #50 |
-| Baixa | Criar arquivo de exemplo YAML para entrada de dados | #40 |
-| Baixa | Criar steering para princípios SOLID e Clean Architecture | #39 |
+| Prioridade | Item | Status |
+|------------|------|--------|
+| ✅ Concluído | Criar endpoint `POST /import` para recebimento do arquivo Swagger | Implementado |
+| ✅ Concluído | Implementar validação do arquivo Swagger/OpenAPI | Implementado |
+| ✅ Concluído | Implementar criação de endpoints dinâmicos | Implementado |
+| ✅ Concluído | Criar client HTTP para integração com IA (Groq) | Implementado |
+| ✅ Concluído | Implementar geração de retornos com IA | Implementado |
+| Média | Criar endpoint `GET /status` para consulta de status do mock | Pendente |
+| Média | Criar endpoint para consulta de endpoints disponíveis | Pendente |
 
-**Roadmap resumido:**
-1. Implementar as camadas `domain`, `application` e `api` seguindo a Clean Architecture definida
-2. Entregar o fluxo completo de importação → persistência → disponibilização dos endpoints mock
-3. Integrar com serviço de IA para geração dinâmica de payloads
-4. Adicionar validações e tratamento de erros
-5. Documentar e preparar para apresentação
+**Estado atual do sistema:**
+- Fluxo completo de importação → persistência → disponibilização dos endpoints mock está funcional
+- Integração com Groq para geração dinâmica de payloads está ativa
+- Persistência de `path_parameter` inclui todos os campos OpenAPI (`param_in`, `description`, `type`, `format`) para roteamento correto de endpoints com parâmetros de formatos distintos (ex: `uuid` vs string simples)
+- Persistência de `endpoint_response` salva apenas o primeiro status de sucesso (2xx); respostas de erro são ignoradas
+- Respostas da IA são retornadas como JSON puro (delimitadores Markdown removidos automaticamente)
 
 ---
 

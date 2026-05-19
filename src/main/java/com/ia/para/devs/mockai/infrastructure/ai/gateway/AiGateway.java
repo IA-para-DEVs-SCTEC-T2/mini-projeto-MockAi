@@ -1,21 +1,22 @@
 package com.ia.para.devs.mockai.infrastructure.ai.gateway;
 
-import com.ia.para.devs.mockai.domain.port.out.AiPort;
-import com.ia.para.devs.mockai.domain.exception.AiCommunicationException;
+import java.net.SocketTimeoutException;
+import java.util.concurrent.TimeoutException;
+
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpStatusCodeException;
 
-import java.net.SocketTimeoutException;
-import java.util.concurrent.TimeoutException;
+import com.ia.para.devs.mockai.domain.exception.AiCommunicationException;
+import com.ia.para.devs.mockai.domain.port.out.AiPort;
 
 /**
- * Gateway de infraestrutura responsável pela comunicação com o serviço de IA (OpenAI API).
+ * Gateway de infraestrutura responsável pela comunicação com o serviço de IA (Groq API).
  * Implementa o port de saída {@link AiPort} utilizando o {@code ChatClient} do Spring AI.
  *
- * <p>Encapsula todos os detalhes de comunicação HTTP com a OpenAI, garantindo que
+ * <p>Encapsula todos os detalhes de comunicação HTTP com o Groq, garantindo que
  * nenhuma exceção interna do framework vaze para as camadas superiores — todas as
  * falhas são convertidas em {@link AiCommunicationException}.</p>
  */
@@ -29,7 +30,7 @@ public class AiGateway implements AiPort {
      * Cria uma nova instância do gateway, construindo o {@code ChatClient} a partir do builder fornecido.
      *
      * @param chatClientBuilder builder do Spring AI para construção do cliente de chat
-     * @param apiKey            chave de API da OpenAI, lida da propriedade {@code spring.ai.openai.api-key}
+     * @param apiKey            chave de API do Groq, lida da propriedade {@code spring.ai.openai.api-key}
      */
     public AiGateway(ChatClient.Builder chatClientBuilder,
                      @Value("${spring.ai.openai.api-key:}") String apiKey) {

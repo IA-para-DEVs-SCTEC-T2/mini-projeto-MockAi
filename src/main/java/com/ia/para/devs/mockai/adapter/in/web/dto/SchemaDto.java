@@ -8,7 +8,7 @@ import lombok.experimental.FieldDefaults;
 
 /**
  * DTO que representa o schema de um parâmetro ou resposta OpenAPI 3.0.
- * O campo "type" é mapeado para PathParameterEntity.type.
+ * Os campos "type" e "format" são mapeados para PathParameterEntity.
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,4 +17,7 @@ public class SchemaDto {
 
     /** Tipo primitivo do schema (ex: "string", "integer", "boolean"). */
     String type;
+
+    /** Formato do schema (ex: "uuid", "int64", "date-time"). */
+    String format;
 }

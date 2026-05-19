@@ -1,6 +1,7 @@
 package com.ia.para.devs.mockai.adapter.in.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -18,6 +19,8 @@ public class ParameterDto {
 
     /** Localização do parâmetro: "path", "query", "header" ou "cookie". */
     String in;
+
+    String description;
 
     Boolean required;
 

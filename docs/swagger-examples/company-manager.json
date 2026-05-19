@@ -1,0 +1,975 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "SCTEC Challenge API",
+        "description": "API RESTful para gerenciar Empresas e Responsáveis",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "/api",
+            "description": "Servidor da API"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Responsáveis",
+            "description": "API para gerenciar responsáveis das empresas"
+        },
+        {
+            "name": "Empresas",
+            "description": "API para gerenciar empresas"
+        }
+    ],
+    "paths": {
+        "/owner": {
+            "get": {
+                "tags": [
+                    "Responsáveis"
+                ],
+                "summary": "Buscar todos os recursos (paginado) - Versão GET",
+                "description": "Recupera uma lista paginada de todos os recursos usando requisição GET com parâmetros de paginação",
+                "operationId": "findAll",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página (iniciado em 0)",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "example": 0
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Número de itens por página",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Parâmetros de paginação inválidos",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Recursos recuperados com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageDTOOwnerDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Responsáveis"
+                ],
+                "summary": "Atualizar um recurso existente",
+                "description": "Atualiza um recurso existente com os dados fornecidos",
+                "operationId": "merge",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OwnerDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "404": {
+                        "description": "Recurso não encontrado",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Recurso já existe (conflito)",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Recurso atualizado com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OwnerDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Responsáveis"
+                ],
+                "summary": "Criar um novo recurso",
+                "description": "Cria um novo recurso com os dados fornecidos",
+                "operationId": "create",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateOwnerDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Recurso criado com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OwnerDTO"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Recurso já existe (conflito)",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/company": {
+            "get": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Buscar todos os recursos (paginado) - Versão GET",
+                "description": "Recupera uma lista paginada de todos os recursos usando requisição GET com parâmetros de paginação",
+                "operationId": "findAll_1",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página (iniciado em 0)",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "example": 0
+                    },
+                    {
+                        "name": "size",
+                        "in": "query",
+                        "description": "Número de itens por página",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        },
+                        "example": 10
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Parâmetros de paginação inválidos",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Recursos recuperados com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageDTOCompanyDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Atualizar um recurso existente",
+                "description": "Atualiza um recurso existente com os dados fornecidos",
+                "operationId": "merge_1",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompanyDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "404": {
+                        "description": "Recurso não encontrado",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Recurso já existe (conflito)",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Recurso atualizado com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompanyDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Criar um novo recurso",
+                "description": "Cria um novo recurso com os dados fornecidos",
+                "operationId": "create_1",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCompanyDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Recurso criado com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompanyDTO"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Recurso já existe (conflito)",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Dados de entrada inválidos",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/owner/all": {
+            "post": {
+                "tags": [
+                    "Responsáveis"
+                ],
+                "summary": "Buscar todos os recursos (paginado) - Versão POST",
+                "description": "Recupera uma lista paginada de todos os recursos usando requisição POST com detalhes de paginação no corpo",
+                "operationId": "findAll_2",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PaginationDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "400": {
+                        "description": "Parâmetros de paginação inválidos",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Recursos recuperados com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageDTOOwnerDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/company/all": {
+            "post": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Buscar todos os recursos (paginado) - Versão POST",
+                "description": "Recupera uma lista paginada de todos os recursos usando requisição POST com detalhes de paginação no corpo",
+                "operationId": "findAll_3",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PaginationDTO"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "400": {
+                        "description": "Parâmetros de paginação inválidos",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Recursos recuperados com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PageDTOCompanyDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/owner/{id}": {
+            "get": {
+                "tags": [
+                    "Responsáveis"
+                ],
+                "summary": "Buscar um recurso por ID",
+                "description": "Recupera um único recurso pelo seu identificador único",
+                "operationId": "findById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador único do recurso",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Recurso não encontrado",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Identificador do recurso inválido",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Recurso recuperado com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/OwnerDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Responsáveis"
+                ],
+                "summary": "Excluir um recurso",
+                "description": "Exclui um recurso pelo seu identificador único",
+                "operationId": "delete",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador único do recurso",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Identificador do recurso inválido",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Recurso excluído com sucesso ou sem conteúdo para excluir"
+                    }
+                }
+            }
+        },
+        "/company/{id}": {
+            "get": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Buscar um recurso por ID",
+                "description": "Recupera um único recurso pelo seu identificador único",
+                "operationId": "findById_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador único do recurso",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "404": {
+                        "description": "Recurso não encontrado",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Identificador do recurso inválido",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Recurso recuperado com sucesso",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CompanyDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Empresas"
+                ],
+                "summary": "Excluir um recurso",
+                "description": "Exclui um recurso pelo seu identificador único",
+                "operationId": "delete_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador único do recurso",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Identificador do recurso inválido",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorCategoryDTO"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Recurso excluído com sucesso ou sem conteúdo para excluir"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "OwnerDTO": {
+                "required": [
+                    "birthDate",
+                    "cpf",
+                    "email",
+                    "id",
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Identificador do responsável",
+                        "format": "uuid",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Nome do responsável",
+                        "example": "João Silva"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email do responsável",
+                        "example": "joao.silva@email.com"
+                    },
+                    "phone": {
+                        "pattern": "\\d{11}",
+                        "type": "string",
+                        "description": "Telefone do responsável (11 dígitos, incluindo DDD)",
+                        "example": "11987654321"
+                    },
+                    "cpf": {
+                        "pattern": "\\d{11}",
+                        "type": "string",
+                        "description": "CPF do responsável (11 dígitos)",
+                        "example": "12345678901"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "description": "Data de nascimento do responsável",
+                        "format": "date",
+                        "example": "1990-01-01"
+                    }
+                },
+                "description": "Armazena dados completos do responsável pela empresa"
+            },
+            "ErrorCategoryDTO": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "description": "Código de erro específico para identificar o tipo de falha"
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "Mensagem de erro detalhada explicando a falha"
+                    },
+                    "timestamp": {
+                        "type": "string",
+                        "description": "Timestamp indicando quando o erro ocorreu",
+                        "format": "date-time"
+                    }
+                },
+                "description": "Armazena dados de erro para respostas de falha da API"
+            },
+            "CompanyDTO": {
+                "required": [
+                    "businessSegment",
+                    "cnpj",
+                    "email",
+                    "foundationDate",
+                    "id",
+                    "municipality",
+                    "name",
+                    "owner"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "description": "Identificador da empresa",
+                        "format": "uuid",
+                        "example": "123e4567-e89b-12d3-a456-426614174000"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Nome da empresa",
+                        "example": "Tech Solutions Ltda."
+                    },
+                    "owner": {
+                        "$ref": "#/components/schemas/OwnerDTO"
+                    },
+                    "municipality": {
+                        "type": "string",
+                        "description": "Município em que a empresa está localizada",
+                        "example": "São Paulo"
+                    },
+                    "cnpj": {
+                        "pattern": "\\d{14}",
+                        "type": "string",
+                        "description": "CNPJ da empresa (14 dígitos)",
+                        "example": "12345678000199"
+                    },
+                    "businessSegment": {
+                        "type": "string",
+                        "description": "Segmento de atuação da empresa",
+                        "example": "TECHNOLOGY",
+                        "enum": [
+                            "TECHNOLOGY",
+                            "COMMERCE",
+                            "INDUSTRY",
+                            "SERVICES",
+                            "AGRIBUSINESS"
+                        ]
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email de contato da empresa",
+                        "example": "suporte@tech.com"
+                    },
+                    "phone": {
+                        "pattern": "\\d{11}",
+                        "type": "string",
+                        "description": "Telefone de contato da empresa (11 dígitos, incluindo DDD)",
+                        "example": "11987654321"
+                    },
+                    "foundationDate": {
+                        "type": "string",
+                        "description": "Data de fundação da empresa",
+                        "format": "date",
+                        "example": "2000-01-01"
+                    },
+                    "isActive": {
+                        "type": "boolean",
+                        "description": "Indica o status da empresa (ativa ou inativa)",
+                        "example": true
+                    }
+                },
+                "description": "Armazena dados completos de uma empresa"
+            },
+            "CreateOwnerDTO": {
+                "required": [
+                    "birthDate",
+                    "cpf",
+                    "email",
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Nome do responsável",
+                        "example": "João Silva"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email do responsável",
+                        "example": "joao.silva@email.com"
+                    },
+                    "phone": {
+                        "pattern": "\\d{11}",
+                        "type": "string",
+                        "description": "Telefone do responsável (11 dígitos, incluindo DDD)",
+                        "example": "11987654321"
+                    },
+                    "cpf": {
+                        "pattern": "\\d{11}",
+                        "type": "string",
+                        "description": "CPF do responsável (11 dígitos)",
+                        "example": "12345678901"
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "description": "Data de nascimento do responsável",
+                        "format": "date",
+                        "example": "1990-01-01"
+                    }
+                },
+                "description": "Armazena dados necessários para criar um novo responsável pela empresa"
+            },
+            "PaginationDTO": {
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "minimum": 0,
+                        "type": "integer",
+                        "description": "Número da página a ser retornada (0 para a primeira página)",
+                        "format": "int32"
+                    },
+                    "size": {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "Número de itens por página a ser retornado",
+                        "format": "int32"
+                    }
+                },
+                "description": "Armazena dados de paginação para consultas paginadas"
+            },
+            "PageDTOOwnerDTO": {
+                "required": [
+                    "contents"
+                ],
+                "type": "object",
+                "properties": {
+                    "size": {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "Número de itens por página a ser retornado",
+                        "format": "int32"
+                    },
+                    "page": {
+                        "minimum": 0,
+                        "type": "integer",
+                        "description": "Número da página a ser retornada (0 para a primeira página)",
+                        "format": "int32"
+                    },
+                    "totalElements": {
+                        "minimum": 0,
+                        "type": "integer",
+                        "description": "Número total de elementos disponíveis para a consulta, considerando todas as páginas",
+                        "format": "int64"
+                    },
+                    "totalPages": {
+                        "minimum": 0,
+                        "type": "integer",
+                        "description": "Número total de páginas disponíveis para a consulta, considerando o tamanho da página e o total de elementos",
+                        "format": "int32"
+                    },
+                    "contents": {
+                        "type": "array",
+                        "description": "Coleção contendo os elementos para a página solicitada",
+                        "items": {
+                            "$ref": "#/components/schemas/OwnerDTO"
+                        }
+                    }
+                },
+                "description": "Armazena dados de uma página de resultados para consultas paginadas"
+            },
+            "CreateCompanyDTO": {
+                "required": [
+                    "businessSegment",
+                    "cnpj",
+                    "email",
+                    "foundationDate",
+                    "municipality",
+                    "name",
+                    "owner"
+                ],
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Nome da empresa",
+                        "example": "Tech Solutions Ltda."
+                    },
+                    "owner": {
+                        "$ref": "#/components/schemas/OwnerDTO"
+                    },
+                    "municipality": {
+                        "type": "string",
+                        "description": "Município em que a empresa está localizada",
+                        "example": "São Paulo"
+                    },
+                    "cnpj": {
+                        "pattern": "\\d{14}",
+                        "type": "string",
+                        "description": "CNPJ da empresa (14 dígitos)",
+                        "example": "12345678000199"
+                    },
+                    "businessSegment": {
+                        "type": "string",
+                        "description": "Segmento de atuação da empresa",
+                        "example": "TECHNOLOGY",
+                        "enum": [
+                            "TECHNOLOGY",
+                            "COMMERCE",
+                            "INDUSTRY",
+                            "SERVICES",
+                            "AGRIBUSINESS"
+                        ]
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email de contato da empresa",
+                        "example": "suporte@tech.com"
+                    },
+                    "phone": {
+                        "pattern": "\\d{11}",
+                        "type": "string",
+                        "description": "Telefone de contato da empresa (11 dígitos, incluindo DDD)",
+                        "example": "11987654321"
+                    },
+                    "foundationDate": {
+                        "type": "string",
+                        "description": "Data de fundação da empresa",
+                        "format": "date",
+                        "example": "2000-01-01"
+                    },
+                    "isActive": {
+                        "type": "boolean",
+                        "description": "Indica o status da empresa (ativa ou inativa)",
+                        "example": true
+                    }
+                },
+                "description": "Armazena dados necessários para criar uma nova empresa"
+            },
+            "PageDTOCompanyDTO": {
+                "required": [
+                    "contents"
+                ],
+                "type": "object",
+                "properties": {
+                    "size": {
+                        "minimum": 1,
+                        "type": "integer",
+                        "description": "Número de itens por página a ser retornado",
+                        "format": "int32"
+                    },
+                    "page": {
+                        "minimum": 0,
+                        "type": "integer",
+                        "description": "Número da página a ser retornada (0 para a primeira página)",
+                        "format": "int32"
+                    },
+                    "totalElements": {
+                        "minimum": 0,
+                        "type": "integer",
+                        "description": "Número total de elementos disponíveis para a consulta, considerando todas as páginas",
+                        "format": "int64"
+                    },
+                    "totalPages": {
+                        "minimum": 0,
+                        "type": "integer",
+                        "description": "Número total de páginas disponíveis para a consulta, considerando o tamanho da página e o total de elementos",
+                        "format": "int32"
+                    },
+                    "contents": {
+                        "type": "array",
+                        "description": "Coleção contendo os elementos para a página solicitada",
+                        "items": {
+                            "$ref": "#/components/schemas/CompanyDTO"
+                        }
+                    }
+                },
+                "description": "Armazena dados de uma página de resultados para consultas paginadas"
+            }
+        }
+    }
+}

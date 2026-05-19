@@ -54,6 +54,19 @@ Este documento descreve as tecnologias, frameworks e ferramentas utilizadas no p
   - Anotações como `@Getter`, `@Setter`, `@Builder`, `@RequiredArgsConstructor`
   - Configurado como `optional` no Maven e excluído do JAR final
 
+### Integração com IA
+
+- **Spring AI** (`spring-ai-starter-model-openai` via BOM `2.0.0-M6`)
+  - Abstração sobre clientes de modelos de linguagem
+  - Integração com o Groq via endpoint compatível com OpenAI
+  - `ChatClient` para envio de prompts e recebimento de respostas
+
+- **Groq** (serviço externo — `https://api.groq.com/openai/v1`)
+  - Motor de inferência de IA de alta velocidade
+  - Modelo em uso: `llama-3.1-8b-instant`
+  - Autenticação via variável de ambiente `GROQ_API_KEY`
+  - Configurado em `application.properties` com as propriedades `spring.ai.openai.*`
+
 ### Testes
 
 - **Spring Boot Starter Data JPA Test** (`spring-boot-starter-data-jpa-test`)
@@ -99,6 +112,19 @@ O console H2 está disponível em desenvolvimento para inspeção do banco de da
 A documentação interativa da API está disponível em:
 - Swagger UI: `http://localhost:8080/mockai/swagger-ui.html`
 - OpenAPI JSON: `http://localhost:8080/mockai/v3/api-docs`
+
+### Groq (Integração com IA)
+
+A integração com o Groq requer a variável de ambiente `GROQ_API_KEY` configurada:
+- Copie `.env.example` para `.env` e preencha com sua chave da API Groq
+- A chave é obtida em `https://console.groq.com/keys`
+- Propriedades configuradas em `application.properties`:
+  ```properties
+  spring.ai.openai.api-key=${GROQ_API_KEY}
+  spring.ai.openai.base-url=https://api.groq.com/openai/v1
+  spring.ai.openai.chat.options.model=llama-3.1-8b-instant
+  spring.ai.openai.chat.options.temperature=0.7
+  ```
 
 ## Boas Práticas
 

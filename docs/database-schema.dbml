@@ -37,7 +37,10 @@ Table endpoint_tags {
 Table path_parameter {
   id                     uuid         [pk, not null, note: "Identificador único gerado pela aplicação"]
   name                   varchar(255) [not null, note: "Nome do parâmetro (ex: id, slug)"]
-  type                   varchar(100) [not null, note: "Tipo do parâmetro (ex: integer, string)"]
+  param_in               varchar(20)  [not null, note: "Localização do parâmetro: path, query, header ou cookie"]
+  description            text         [note: "Descrição do parâmetro"]
+  type                   varchar(100) [not null, note: "Tipo do parâmetro conforme OpenAPI (ex: string, integer)"]
+  format                 varchar(100) [note: "Formato do schema conforme OpenAPI (ex: uuid, int64, date-time)"]
   required               boolean      [not null, note: "Indica se o parâmetro é obrigatório"]
   endpoint_definition_id uuid         [not null, ref: > endpoint_definition.id, note: "FK para endpoint_definition"]
 }
