@@ -65,7 +65,7 @@ public class ImportController {
     @Operation(summary = "Importa especificação Swagger/OpenAPI",
                description = "Recebe um arquivo .json no formato OpenAPI 3.0+, valida, desserializa e persiste os endpoints mockados. Substitui todos os endpoints existentes.")
     @RequestBody(required = true, content = @Content(mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
-                 schema = @Schema(type = "object", requiredProperties = {"file"})))
+                 schema = @Schema(implementation = ImportController.ImportFileRequest.class)))
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Arquivo importado com sucesso",
                      content = @Content(schema = @Schema(implementation = ImportResponse.class))),
@@ -89,5 +89,14 @@ public class ImportController {
         importSwaggerUseCase.importSpec(fileData);
 
         return ResponseEntity.status(201).body(new ImportResponse("Arquivo importado com sucesso"));
+    }
+
+    /**
+     * DTO interno usado exclusivamente para descrever o schema multipart no Swagger UI.
+     * Não é instanciado em runtime — serve apenas como referência para geração da documentação OpenAPI.
+     */
+    static class ImportFileRequest {
+        @Schema(type = "string", format = "binary", description = "Arquivo JSON no formato OpenAPI 3.0+")
+        public MultipartFile file;
     }
 }
