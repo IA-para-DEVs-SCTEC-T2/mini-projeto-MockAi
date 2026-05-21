@@ -52,7 +52,6 @@ mvn spring-boot:run
 │       ├── domain/             # Modelos, ports e exceções
 │       └── infrastructure/     # JPA, gateway de IA (Groq)
 ├── CONTRIBUTING.md
-├── PRD.md
 └── README.md
 ```
 
@@ -82,7 +81,7 @@ test: testes
 
 Consultar a pasta `docs/`.
 
-- [PRD — Product Requirements Document](PRD.md)
+- [PRD — Product Requirements Document](docs/PRD.md)
 - [Diagrama de Arquitetura C4](docs/architecture-diagram.md)
 - [Schema do Banco de Dados](docs/database-schema.md)
 - [Swagger UI](http://localhost:8080/mockai/swagger-ui.html) — disponível com a aplicação rodando
