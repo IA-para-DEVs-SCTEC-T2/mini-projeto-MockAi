@@ -52,9 +52,10 @@ Perfil típico:
 | F1 | **Importação de documentação Swagger/OpenAPI** | Receber um arquivo Swagger/OpenAPI (JSON) via endpoint `POST /import` e processar seu conteúdo |
 | F2 | **Criação automática do mock** | Extrair e persistir todos os endpoints, parâmetros, schemas e respostas definidos no contrato |
 | F3 | **Endpoints mockados dinâmicos** | Disponibilizar automaticamente as rotas HTTP correspondentes ao contrato importado, prontas para consumo |
-| F4 | **Geração de payloads com IA** | Integração com serviço de IA externo para gerar respostas dinâmicas e realistas nos endpoints mockados |
-| F5 | **Consulta de status do mock** | Endpoint `GET /status` para verificar se uma API Mock está ativa na base de dados |
-| F6 | **Documentação interativa** | Swagger UI disponível para explorar e testar os endpoints da própria API MockAI |
+| F4 | **Geração de payloads com IA** | Integração com serviço de IA externo (Groq) para gerar respostas dinâmicas e realistas nos endpoints mockados |
+| F5 | **Listagem de endpoints disponíveis** | Endpoint `GET /endpoints` para listar todos os endpoints mockados ativos (path, método HTTP e descrição) |
+| F6 | **Verificação de conectividade com IA** | Endpoint `GET /test-ai-connection` para verificar se a integração com o Groq está operacional |
+| F7 | **Documentação interativa** | Swagger UI disponível para explorar e testar os endpoints da própria API MockAI |
 
 ---
 
@@ -63,12 +64,14 @@ Perfil típico:
 | ID | Regra |
 |----|-------|
 | RN01 | A documentação fornecida deve seguir o padrão Swagger/OpenAPI 3.0 ou superior, no formato JSON |
-| RN02 | Para endpoints que contenham payload no body da resposta, o conteúdo será gerado dinamicamente com auxílio de IA |
+| RN02 | Para endpoints que contenham payload no body da resposta, o conteúdo será gerado dinamicamente com auxílio de IA (Groq). Em caso de falha na IA, um fallback estático baseado no schema é utilizado |
 | RN03 | A cada nova importação de documentação Swagger, todos os endpoints existentes são deletados e recriados com base na nova documentação |
 | RN04 | Nenhum método de autenticação é disponibilizado nos endpoints mockados |
 | RN05 | Não é possível recuperar um histórico de APIs mockadas — o mock ativo sempre reflete a última documentação importada |
 | RN06 | Arquivos inválidos (não JSON, sem campos obrigatórios do contrato, ou vazios) devem ser rejeitados com erro HTTP 400 e mensagem descritiva |
 | RN07 | Os endpoints mockados devem estar disponíveis imediatamente após o processamento do contrato, sem necessidade de reinicialização |
+| RN08 | **Os endpoints mockados retornam exclusivamente respostas de sucesso (2xx).** Apenas o primeiro status de sucesso definido na spec é persistido e utilizado (prioridade: 200 → 201 → 204 → primeiro disponível). Respostas de erro (4xx, 5xx) são ignoradas |
+| RN09 | Path parameters com formato `uuid` são registrados com constraint de regex no Spring MVC, garantindo que rotas literais (ex: `/owner/all`) não sejam capturadas por endpoints parametrizados |
 
 ---
 
@@ -95,13 +98,14 @@ Perfil típico:
 - O token de autenticação da API de IA deve ser configurado via variável de ambiente ou `application.properties`, sem exposição no código-fonte
 - Erros de comunicação com a API de IA devem ser tratados e propagados adequadamente
 
-### RF05 — Consulta de status do mock
-- O sistema deve expor o endpoint `GET /status` que recebe um identificador de API Mock
-- Deve consultar o banco de dados e retornar o status correspondente
-- Deve retornar erro adequado caso o identificador não seja encontrado
+### RF05 — Listagem de endpoints disponíveis
+- O sistema deve expor o endpoint `GET /endpoints` que retorna todos os endpoints mockados ativos
+- A resposta deve incluir path, método HTTP e descrição de cada endpoint
+- Deve retornar lista vazia quando não houver registros (sem erro)
 
-### RF06 — Consulta de endpoints disponíveis
-- O sistema deve permitir listar os endpoints disponíveis no mock ativo
+### RF06 — Verificação de conectividade com IA
+- O sistema deve expor o endpoint `GET /test-ai-connection` para verificar se a integração com o Groq está operacional
+- Retorna HTTP 200 quando a conexão está funcional e HTTP 503 quando indisponível
 
 ---
 
@@ -128,24 +132,34 @@ Perfil típico:
 2. Desenvolvedor envia o arquivo via POST /mockai/import (multipart/form-data)
 
 3. MockAI valida o arquivo:
-   ├── Inválido → retorna HTTP 400 com mensagem de erro
+   ├── Extensão inválida → retorna HTTP 400 "Arquivo com extensão inválida, deve ser .json"
+   ├── JSON inválido ou não reconhecido como OpenAPI → retorna HTTP 400 com mensagem descritiva
    └── Válido → prossegue
 
 4. MockAI processa o contrato:
-   ├── Extrai title, version, description e base_url da spec
+   ├── Deleta todos os endpoints e specs existentes (RN03)
+   ├── Extrai title, version, description, base_url e components da spec
+   ├── Extrai tags globais
    ├── Extrai todos os paths e métodos HTTP
-   ├── Extrai parâmetros de path, schemas de request e response
-   └── Persiste tudo no banco H2
+   ├── Extrai parâmetros de path (com tipo e formato para roteamento correto)
+   ├── Persiste apenas o primeiro status de sucesso (2xx) de cada endpoint
+   └── Persiste tudo no banco H2 em uma única transação
 
-5. MockAI registra dinamicamente as rotas mock correspondentes
+5. MockAI registra dinamicamente as rotas mock no Spring MVC:
+   ├── Path parameters com formato uuid recebem constraint de regex
+   └── Rotas ficam disponíveis imediatamente, sem reinicialização
 
 6. Desenvolvedor consome os endpoints mockados:
    ├── Faz requisições HTTP para os endpoints registrados
    ├── MockAI consulta o schema do endpoint no banco
-   ├── MockAI solicita ao serviço de IA a geração do payload de resposta
-   └── MockAI retorna a resposta gerada ao consumidor
+   ├── MockAI solicita ao Groq a geração do payload de resposta via IA
+   ├── Em caso de falha na IA → aplica fallback estático baseado no schema
+   └── MockAI retorna a resposta com o status de sucesso definido na spec (2xx)
+   ⚠️  Apenas respostas de sucesso são retornadas — cenários de erro não são simulados
 
-7. Desenvolvedor implementa e testa seu client consumidor usando o mock
+7. Desenvolvedor pode consultar os endpoints disponíveis via GET /mockai/endpoints
+
+8. Desenvolvedor pode verificar a conectividade com a IA via GET /mockai/test-ai-connection
 ```
 
 ---
@@ -222,10 +236,11 @@ O MockAI segue o modelo **C4** e é estruturado em **Clean Architecture** com 4 
 | CS01 | Importação de Swagger funcional | `POST /import` processa um arquivo OpenAPI válido e persiste todos os endpoints no banco |
 | CS02 | Endpoints mockados disponíveis | Após importação, as rotas definidas no contrato respondem a requisições HTTP sem reinicialização |
 | CS03 | Validação de entrada | Arquivos inválidos são rejeitados com HTTP 400 e mensagem descritiva |
-| CS04 | Geração de payload com IA | Endpoints com schema de resposta retornam payload gerado dinamicamente pelo serviço de IA |
-| CS05 | Consulta de status | `GET /status` retorna o status correto de uma API Mock cadastrada |
-| CS06 | Documentação acessível | Swagger UI da própria API está disponível e funcional |
-| CS07 | Arquitetura limpa | Nenhuma dependência da camada `domain` para camadas externas; camadas isoladas e testáveis |
+| CS04 | Geração de payload com IA | Endpoints com schema de resposta retornam payload gerado dinamicamente pelo Groq; fallback estático em caso de falha |
+| CS05 | Listagem de endpoints | `GET /endpoints` retorna a lista de endpoints mockados ativos com path, método e descrição |
+| CS06 | Verificação de IA | `GET /test-ai-connection` retorna 200 quando o Groq está acessível e 503 quando indisponível |
+| CS07 | Documentação acessível | Swagger UI da própria API está disponível e funcional |
+| CS08 | Arquitetura limpa | Nenhuma dependência da camada `domain` para camadas externas; camadas isoladas e testáveis |
 
 ---
 
@@ -236,8 +251,10 @@ O MockAI segue o modelo **C4** e é estruturado em **Clean Architecture** com 4 
 | L01 | **Sem autenticação nos mocks** — os endpoints mockados não implementam nenhum mecanismo de autenticação ou autorização |
 | L02 | **Sem histórico de mocks** — apenas o mock da última documentação importada está disponível; não há versionamento ou recuperação de specs anteriores |
 | L03 | **Banco in-memory** — os dados são perdidos ao reiniciar a aplicação (H2 in-memory); não há persistência entre sessões |
-| L04 | **Formato de entrada restrito** — apenas arquivos no formato JSON são suportados; YAML não está contemplado na especificação atual |
+| L04 | **Formato de entrada restrito** — apenas arquivos no formato JSON são suportados; YAML não está contemplado |
 | L05 | **Sem suporte a autenticação na spec** — campos de `securitySchemes` e `security` do OpenAPI são ignorados no mock |
+| L06 | **Apenas respostas de sucesso** — os endpoints mockados retornam exclusivamente respostas 2xx. Cenários de erro (4xx, 5xx) definidos na spec não são simulados |
+| L07 | **Dependência de conectividade com Groq** — a geração de payloads realistas requer acesso à API do Groq. Sem conectividade, o sistema aplica fallback estático baseado no schema |
 
 ---
 
@@ -252,15 +269,17 @@ Com base no backlog e nas issues abertas do projeto:
 | ✅ Concluído | Implementar criação de endpoints dinâmicos | Implementado |
 | ✅ Concluído | Criar client HTTP para integração com IA (Groq) | Implementado |
 | ✅ Concluído | Implementar geração de retornos com IA | Implementado |
-| Média | Criar endpoint `GET /status` para consulta de status do mock | Pendente |
-| Média | Criar endpoint para consulta de endpoints disponíveis | Pendente |
+| ✅ Concluído | Criar endpoint `GET /endpoints` para listagem dos endpoints mockados | Implementado |
+| ✅ Concluído | Criar endpoint `GET /test-ai-connection` para verificação de conectividade com IA | Implementado |
 
 **Estado atual do sistema:**
 - Fluxo completo de importação → persistência → disponibilização dos endpoints mock está funcional
-- Integração com Groq para geração dinâmica de payloads está ativa
+- Integração com Groq para geração dinâmica de payloads está ativa, com fallback estático em caso de falha
 - Persistência de `path_parameter` inclui todos os campos OpenAPI (`param_in`, `description`, `type`, `format`) para roteamento correto de endpoints com parâmetros de formatos distintos (ex: `uuid` vs string simples)
 - Persistência de `endpoint_response` salva apenas o primeiro status de sucesso (2xx); respostas de erro são ignoradas
 - Respostas da IA são retornadas como JSON puro (delimitadores Markdown removidos automaticamente)
+- `api_specification` persiste o bloco `components` serializado como JSON para resolução de `$ref` durante a geração de payloads
+- Endpoints mockados retornam **exclusivamente respostas de sucesso (2xx)** — não há simulação de cenários de erro
 
 ---
 

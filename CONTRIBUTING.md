@@ -75,15 +75,19 @@ mvn clean compile
 ### 2.4 Executar a aplicação localmente
 
 ```bash
+# Configure a chave do Groq antes de executar
+cp .env.example .env
+# Edite .env e defina GROQ_API_KEY=sua_chave_aqui
+
 mvn spring-boot:run
 ```
 
 A aplicação estará disponível em:
 
-- **API:** `http://localhost:8080`
-- **Swagger UI:** `http://localhost:8080/swagger-ui.html`
-- **OpenAPI JSON:** `http://localhost:8080/v3/api-docs`
-- **H2 Console:** `http://localhost:8080/h2-console`
+- **API:** `http://localhost:8080/mockai`
+- **Swagger UI:** `http://localhost:8080/mockai/swagger-ui.html`
+- **OpenAPI JSON:** `http://localhost:8080/mockai/v3/api-docs`
+- **H2 Console:** `http://localhost:8080/mockai/h2-console`
   - JDBC URL: `jdbc:h2:mem:testdb`
   - Usuário: `sa` | Senha: *(vazio)*
 
@@ -616,22 +620,22 @@ mvn verify
 
 ### 16.1 Arquitetura em camadas
 
-O projeto segue arquitetura em camadas. Respeite as dependências entre elas:
+O projeto segue Clean Architecture com Hexagonal Architecture. Respeite as dependências entre camadas:
 
 ```
-API (Controllers, DTOs)
+Adapter/in/web (Controllers, DTOs, Dynamic Routes)
     ↓
 Application (Use Cases, Services)
     ↓
-Domain (Entities, Value Objects, Interfaces)
+Domain (Models, Ports/Interfaces, Exceptions)
     ↑
-Infrastructure (JPA Entities, Repositories, Adapters)
+Infrastructure (JPA Entities, Repositories, Adapters, AI Gateway)
 ```
 
-- **Domain:** Java puro, sem dependências de frameworks
-- **Application:** Depende apenas de abstrações do Domain
-- **Infrastructure:** Implementações concretas (JPA, H2)
-- **API:** Controllers Spring MVC, DTOs, validações Bean Validation
+- **Domain:** Java puro, sem dependências de frameworks. Define ports (in/out) e exceções de negócio.
+- **Application:** Depende apenas de abstrações do Domain (ports de entrada e saída).
+- **Infrastructure:** Implementações concretas (JPA, H2, Spring AI/Groq). Implementa os ports de saída.
+- **Adapter:** Controllers Spring MVC, DTOs, roteamento dinâmico, tratamento global de exceções.
 
 ### 16.2 Convenções Java
 

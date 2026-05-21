@@ -1,12 +1,11 @@
 # MockAI
 
-MockAI é um gerador inteligente de APIs mock que transforma arquivos Swagger/OpenAPI em APIs simuladas locais, permitindo desenvolvimento e testes sem dependência de serviços externos. Suporta geração dinâmica de endpoints e integração opcional com IA para respostas simuladas mais realistas.
-
+MockAI é um gerador inteligente de APIs mock que transforma arquivos Swagger/OpenAPI em APIs simuladas locais, permitindo desenvolvimento e testes sem dependência de serviços externos. Suporta geração dinâmica de endpoints e integração com IA (Groq) para respostas simuladas realistas.
 
 ## Grupo 3
 - Dariel Verdecia Verdecia
 - João Ricardo Tasca Puel
-- Welton Sabino 
+- Welton Sabino
 - Daniel Rodrigues da Silva
 - Luiz Fernando Amaral
 
@@ -35,13 +34,25 @@ O diagrama C4 completo da arquitetura do MockAI está disponível em [`docs/arch
 | Java | 17 |
 | Maven | 3.9.7+ |
 | Spring Boot | 4.0.6 |
+| Spring AI | 2.0.0-M6 (BOM) |
 | SpringDoc OpenAPI | 3.0.2 |
 | H2 Database | runtime |
+| Groq | llama-3.1-8b-instant |
 
 ## Pré-requisitos
 
 - Java 17+
 - Maven 3.9.7+
+- Chave de API do Groq (obtenha em [console.groq.com/keys](https://console.groq.com/keys))
+
+## Configuração
+
+Copie o arquivo de exemplo e preencha com sua chave do Groq:
+
+```bash
+cp .env.example .env
+# Edite .env e defina GROQ_API_KEY=sua_chave_aqui
+```
 
 ## Como executar
 
@@ -65,6 +76,16 @@ mvn clean package
 mvn clean
 ```
 
+## Endpoints da API MockAI
+
+| Método | Path | Descrição |
+|--------|------|-----------|
+| `POST` | `/mockai/import` | Importa uma spec Swagger/OpenAPI (multipart/form-data, campo `file`) |
+| `GET` | `/mockai/endpoints` | Lista todos os endpoints mockados ativos |
+| `GET` | `/mockai/test-ai-connection` | Verifica conectividade com o serviço de IA (Groq) |
+
+Os endpoints mockados são registrados dinamicamente após o import e ficam disponíveis nos paths definidos na spec.
+
 ## Estrutura do Projeto
 
 O projeto segue os princípios de **Clean Architecture** e **Hexagonal Architecture**, organizado em 4 camadas isoladas:
@@ -72,32 +93,42 @@ O projeto segue os princípios de **Clean Architecture** e **Hexagonal Architect
 ```
 src/main/java/com/ia/para/devs/mockai/
 ├── MockaiApplication.java
-├── domain/              # Modelos de domínio puros e ports (interfaces)
-│   ├── model/
+├── adapter/
+│   └── in/
+│       └── web/
+│           ├── AiConnectionController.java   # GET /test-ai-connection
+│           ├── EndpointController.java        # GET /endpoints
+│           ├── ImportController.java          # POST /import
+│           ├── dto/                           # DTOs de request/response e OpenAPI
+│           ├── dynamic/                       # Handler e registry de rotas dinâmicas
+│           └── handler/                       # GlobalExceptionHandler
+├── application/
+│   ├── service/                               # Implementações dos casos de uso
+│   └── util/                                  # HttpMethodMapper
+├── config/                                    # JacksonConfig
+├── domain/
+│   ├── exception/                             # Exceções de domínio tipadas
+│   ├── model/                                 # FileData (modelo de domínio)
 │   └── port/
-├── application/         # Casos de uso e regras de negócio
-│   ├── usecase/
-│   └── service/
-├── infrastructure/      # Adaptadores técnicos: JPA, gateways, mappers
-│   ├── persistence/
-│   │   ├── entity/
-│   │   ├── repository/
-│   │   └── mapper/
-│   └── gateway/
-└── api/                 # Controllers REST, DTOs e tratamento de exceções
-    ├── controller/
-    ├── dto/
-    │   ├── request/
-    │   └── response/
-    └── exception/
+│       ├── in/                                # Use cases (interfaces de entrada)
+│       └── out/                               # Ports de saída (repositórios, gateways)
+└── infrastructure/
+    ├── ai/
+    │   ├── config/                            # GroqApiKeyValidator
+    │   └── gateway/                           # AiGateway (Spring AI + Groq)
+    ├── config/                                # DotEnvInitializer
+    └── persistence/
+        ├── adapter/                           # Adapters de persistência e consulta
+        ├── entity/                            # Entidades JPA (5 entidades)
+        └── repository/                        # Repositórios Spring Data JPA
 ```
 
 ### Responsabilidades por camada
 
-- `domain` — Java puro, sem dependências externas. Define os contratos (ports) que outras camadas implementam.
+- `domain` — Java puro, sem dependências externas. Define os contratos (ports) e exceções de negócio.
 - `application` — Orquestra os casos de uso, depende apenas do domain.
-- `infrastructure` — Implementa os ports do domain usando JPA, H2 e gateways externos.
-- `api` — Expõe endpoints REST, valida entradas e serializa respostas JSON.
+- `infrastructure` — Implementa os ports do domain usando JPA, H2 e Spring AI (Groq).
+- `adapter` — Expõe endpoints REST, valida entradas, registra rotas dinâmicas e serializa respostas JSON.
 
 ## Ferramentas de Desenvolvimento
 
@@ -107,6 +138,7 @@ Banco de dados em memória disponível durante o desenvolvimento:
 
 - URL: `http://localhost:8080/mockai/h2-console`
 - JDBC URL: `jdbc:h2:mem:testdb`
+- Usuário: `sa` | Senha: *(vazio)*
 
 ### Swagger UI
 
@@ -114,3 +146,10 @@ Documentação interativa da API:
 
 - Swagger UI: `http://localhost:8080/mockai/swagger-ui.html`
 - OpenAPI JSON: `http://localhost:8080/mockai/v3/api-docs`
+
+## Documentação
+
+- [PRD — Product Requirements Document](docs/PRD.md)
+- [Diagrama de Arquitetura C4](docs/architecture-diagram.md)
+- [Schema do Banco de Dados](docs/database-schema.md)
+- [Guia de Contribuição](CONTRIBUTING.md)
