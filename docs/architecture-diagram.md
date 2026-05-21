@@ -43,10 +43,15 @@ flowchart TD
   dinamicamente para os
   endpoints mockados"]
 
-  dev -- "Envia especificação\nSwagger/OpenAPI [JSON]\nvia HTTP POST" --> mockai
-  consumer -- "Consome endpoints\nmockados via HTTP" --> mockai
-  mockai -- "Solicita geração\nde payload mockado" --> ai_ext
-  ai_ext -- "Retorna payload\ngerado" --> mockai
+  dev -- "Envia especificação
+  Swagger/OpenAPI [JSON]
+  via HTTP POST" --> mockai
+  consumer -- "Consome endpoints
+mockados via HTTP" --> mockai
+  mockai -- "Solicita geração
+de payload mockado" --> ai_ext
+  ai_ext -- "Retorna payload
+gerado" --> mockai
 
   dev:::person
   consumer:::person
@@ -104,8 +109,10 @@ flowchart LR
   Gera payloads JSON
   dinamicamente"]
 
-  dev      -- "POST /mockai/import\n[JSON Swagger/OpenAPI]" --> api_app
-  consumer -- "GET|POST|PUT|PATCH|DELETE\n[endpoints mockados]" --> api_app
+  dev      -- "POST /mockai/import
+[JSON Swagger/OpenAPI]" --> api_app
+  consumer -- "GET|POST|PUT|PATCH|DELETE
+[endpoints mockados]" --> api_app
   api_app  -- "Spring Data JPA / JDBC"                      --> db
   db       -- "Consulta specs e endpoints"                   --> api_app
   api_app  -- "HTTP — solicita payload mockado"              --> ai_ext
@@ -136,7 +143,8 @@ config:
   theme: neutral
 ---
 flowchart TD
-  http_in["HTTP Request\n(Desenvolvedor / Consumidor)"]
+  http_in["HTTP Request
+(Desenvolvedor / Consumidor)"]
 
   subgraph app["MockAI Application — Clean Architecture"]
     direction TB
