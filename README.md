@@ -77,6 +77,37 @@ refactor: refatoração
 test: testes
 ```
 
+## Teste você mesmo
+
+A coleção do Postman e os exemplos de Swagger estão prontos para uso imediato.
+
+**Coleção Postman:** [`docs/MockAi.postman_collection.json`](docs/MockAi.postman_collection.json)
+
+Importe o arquivo no Postman. A coleção contém:
+
+| Grupo | Descrição |
+|-------|-----------|
+| `import` | `POST /import` — envia um arquivo Swagger para criar os endpoints mockados |
+| `endpoints` | `GET /endpoints` — lista todos os endpoints mockados ativos |
+| `test-ai-connection` | `GET /test-ai-connection` — verifica conectividade com o Groq |
+| `Pet swagger` | Endpoints mockados gerados a partir do `petstore.json` |
+| `Company manager swagger` | Endpoints mockados gerados a partir do `company-manager.json` |
+
+**Exemplos de Swagger disponíveis em [`docs/swagger-examples/`](docs/swagger-examples/):**
+
+| Arquivo | Descrição |
+|---------|-----------|
+| [`petstore.json`](docs/swagger-examples/petstore.json) | API de petstore — exemplo clássico OpenAPI com endpoints de pets |
+| [`company-manager.json`](docs/swagger-examples/company-manager.json) | API de gerenciamento de empresas e proprietários |
+
+**Fluxo rápido:**
+1. Suba a aplicação: `mvn spring-boot:run`
+2. No Postman, execute `import` apontando para um dos arquivos acima
+3. Execute `endpoints` para ver as rotas criadas
+4. Teste os endpoints mockados — as respostas são geradas dinamicamente pela IA
+
+---
+
 ## Documentação adicional
 
 Consultar a pasta `docs/`.
@@ -84,6 +115,8 @@ Consultar a pasta `docs/`.
 - [PRD — Product Requirements Document](docs/PRD.md)
 - [Diagrama de Arquitetura C4](docs/architecture-diagram.md)
 - [Schema do Banco de Dados](docs/database-schema.md)
+- [Apresentação do projeto](docs/apresentacao/MockAI.pptx)
+- [Propostas de telas (apenas avaliativo)](docs/propostas_de_telas_apenas_avaliativo/Prompts_telas_figma.md)
 - [Swagger UI](http://localhost:8080/mockai/swagger-ui.html) — disponível com a aplicação rodando
 - [Guia de Contribuição](CONTRIBUTING.md)
 
