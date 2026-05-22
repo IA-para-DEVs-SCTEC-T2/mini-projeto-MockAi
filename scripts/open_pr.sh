@@ -65,7 +65,7 @@ EOF
 git push -u origin "$BRANCH"
 
 gh pr create \
- --base main \
+ --base develop \
  --head "$BRANCH" \
  --title "$COMMIT_TYPE: $PR_TITLE" \
  --body-file "$BODY_FILE"

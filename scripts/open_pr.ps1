@@ -66,7 +66,7 @@ Set-Content -Path $bodyFile -Value $bodyContent -Encoding UTF8
 git push -u origin $branch
 
 gh pr create `
-    --base main `
+    --base develop `
     --head $branch `
     --title "${commitType}: $prTitle" `
     --body-file $bodyFile

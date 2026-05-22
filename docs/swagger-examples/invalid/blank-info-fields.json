@@ -1,0 +1,20 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "   ",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "Lista todos os pets",
+        "responses": {
+          "200": {
+            "description": "Lista de pets retornada com sucesso"
+          }
+        }
+      }
+    }
+  }
+}

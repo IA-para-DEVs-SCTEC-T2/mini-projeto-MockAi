@@ -1,0 +1,660 @@
+{
+  "info": {
+    "_postman_id": "91a24ffc-02d6-4074-968a-3d52bedff8d1",
+    "name": "MockAi",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "28684682"
+  },
+  "item": [
+    {
+      "name": "Pet swagger",
+      "item": [
+        {
+          "name": "Find all pets",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/mockai/pet",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "mockai",
+                "pet"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"https://petstore3.swagger.io/api/v3/pet\" \\\r\n  -H \"Accept: application/json\"\r\n"
+          },
+          "response": []
+        },
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"doggie\",\r\n    \"photoUrls\": [\"https://example.com/photo.jpg\"],\r\n    \"category\": { \"id\": 1, \"name\": \"Dogs\" },\r\n    \"status\": \"available\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/mockai/pet",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "mockai",
+                "pet"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST \"https://petstore3.swagger.io/api/v3/pet\" \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -d '{\r\n    \"name\": \"doggie\",\r\n    \"photoUrls\": [\"https://example.com/photo.jpg\"],\r\n    \"category\": { \"id\": 1, \"name\": \"Dogs\" },\r\n    \"status\": \"available\"\r\n  }'\r\n"
+          },
+          "response": []
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"id\": 10,\r\n    \"name\": \"doggie\",\r\n    \"photoUrls\": [\"https://example.com/photo.jpg\"],\r\n    \"category\": { \"id\": 1, \"name\": \"Dogs\" },\r\n    \"status\": \"available\"\r\n  }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/mockai/pet",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "mockai",
+                "pet"
+              ]
+            },
+            "description": "Generated from cURL: curl -X PUT \"https://petstore3.swagger.io/api/v3/pet\" \\\r\n  -H \"Content-Type: application/json\" \\\r\n  -d '{\r\n    \"id\": 10,\r\n    \"name\": \"doggie\",\r\n    \"photoUrls\": [\"https://example.com/photo.jpg\"],\r\n    \"category\": { \"id\": 1, \"name\": \"Dogs\" },\r\n    \"status\": \"available\"\r\n  }'\r\n"
+          },
+          "response": []
+        },
+        {
+          "name": "Find by ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/mockai/pet/10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "mockai",
+                "pet",
+                "10"
+              ]
+            },
+            "description": "Generated from cURL: curl -X GET \"https://petstore3.swagger.io/api/v3/pet/10\" \\\r\n  -H \"Accept: application/json\"\r\n"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete by id",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "api_key",
+                "value": "your-api-key"
+              }
+            ],
+            "url": {
+              "raw": "http://localhost:8080/mockai/pet/10",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "mockai",
+                "pet",
+                "10"
+              ]
+            },
+            "description": "Generated from cURL: curl -X DELETE \"https://petstore3.swagger.io/api/v3/pet/10\" \\\r\n  -H \"api_key: your-api-key\"\r\n"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Company manager swagger",
+      "item": [
+        {
+          "name": "Company",
+          "item": [
+            {
+              "name": "By Id",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/mockai/company/a01e45be-f39f-4ad6-8957-cbea11e60f8d",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "company",
+                    "a01e45be-f39f-4ad6-8957-cbea11e60f8d"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find All",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/mockai/company?page=0&size=10",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "company"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find All",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"page\": 0,\r\n    \"size\": 10\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/mockai/company/all",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "company",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create 1",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Tech LTDA\",\r\n    \"owner\": {\r\n        \"id\": \"c924ab84-630d-4fb1-8b4e-48b909af6ad5\"\r\n    },\r\n    \"municipality\": \"Blumenau\",\r\n    \"cnpj\": \"00000000000003\",\r\n    \"businessSegment\": \"COMMERCE\",\r\n    \"email\": \"suporte@tech.com.br\",\r\n    \"foundationDate\": \"2026-03-15\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/mockai/company",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "company"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create 2",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Company LTDA\",\r\n    \"owner\": {\r\n        \"name\": \"Nicolo\",\r\n        \"email\": \"nicolo@email.com\",\r\n        \"cpf\": \"00000000005\",\r\n        \"birthDate\": \"2026-03-14\"\r\n    },\r\n    \"municipality\": \"Blumenau\",\r\n    \"cnpj\": \"00000000000004\",\r\n    \"businessSegment\": \"COMMERCE\",\r\n    \"email\": \"suporte@comapny.com.br\",\r\n    \"foundationDate\": \"2026-03-15\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/mockai/company",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "company"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": \"45f5bf5c-c798-47ca-b214-c5f0c8b6db15\",\r\n    \"name\": \"Tech LTDA\",\r\n    \"owner\": {\r\n        \"id\": \"45f5bf5c-c798-47ca-b214-c5f0c8b6db15\"\r\n    },\r\n    \"municipality\": \"Blumenau\",\r\n    \"cnpj\": \"00000000000002\",\r\n    \"businessSegment\": \"COMMERCE\",\r\n    \"email\": \"suporte@tech.com.br\",\r\n    \"phone\": null,\r\n    \"foundationDate\": \"2026-03-15\",\r\n    \"isActive\": true\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/mockai/company",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "company"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "By Id",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/mockai/company/958d2634-2cb8-493f-807a-c8749ff98824",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "company",
+                    "958d2634-2cb8-493f-807a-c8749ff98824"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        },
+        {
+          "name": "Owner",
+          "item": [
+            {
+              "name": "By Id",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/mockai/owner/432a376d-71c1-40d5-904b-689fcde89866",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "owner",
+                    "432a376d-71c1-40d5-904b-689fcde89866"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find All",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/mockai/owner?page=0&size=10",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "owner"
+                  ],
+                  "query": [
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "size",
+                      "value": "10"
+                    }
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Find All",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"page\": 0,\r\n    \"size\": 10\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/mockai/owner/all",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "owner",
+                    "all"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Create",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"name\": \"Jair Silva Souza\",\r\n    \"email\": \"jair@email.com\",\r\n    \"cpf\": \"00000000001\",\r\n    \"phone\": \"00000000000\",\r\n    \"birthDate\": \"2026-03-14\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/mockai/owner",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "owner"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "Update",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "PUT",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\r\n    \"id\": \"432a376d-71c1-40d5-904b-689fcde89866\",\r\n    \"name\": \"Jair Silva Santos\",\r\n    \"email\": \"jair@email.com\",\r\n    \"phone\": \"00000000003\",\r\n    \"cpf\": \"00000000003\",\r\n    \"birthDate\": \"2026-03-14\"\r\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                },
+                "url": {
+                  "raw": "http://localhost:8080/mockai/owner",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "owner"
+                  ]
+                }
+              },
+              "response": []
+            },
+            {
+              "name": "By Id",
+              "request": {
+                "auth": {
+                  "type": "noauth"
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "http://localhost:8080/mockai/owner/6642fe9d-1739-4291-be44-297c547a23aa",
+                  "protocol": "http",
+                  "host": [
+                    "localhost"
+                  ],
+                  "port": "8080",
+                  "path": [
+                    "mockai",
+                    "owner",
+                    "6642fe9d-1739-4291-be44-297c547a23aa"
+                  ]
+                }
+              },
+              "response": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "test-ai-connection",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/mockai/test-ai-connection",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "mockai",
+            "test-ai-connection"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "endpoints",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/mockai/endpoints",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "mockai",
+            "endpoints"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "import",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            {
+              "type": "file",
+              "key": "file",
+              "src": "/C:/git/mini-projeto-MockAi/docs/swagger-examples/petstore.json"
+            }
+          ]
+        },
+        "url": {
+          "raw": "http://localhost:8080/mockai/import",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "mockai",
+            "import"
+          ]
+        },
+        "description": "Generated from cURL: curl -X POST http://localhost:8080/mockai/import \\\r\n  -F \"file=@/path/to/your/swagger.json\"\r\n"
+      },
+      "response": []
+    },
+    {
+      "name": "api-docs",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8080/mockai/v3/api-docs",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "8080",
+          "path": [
+            "mockai",
+            "v3",
+            "api-docs"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

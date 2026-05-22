@@ -1,0 +1,16 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Pet Store API",
+    "description": "API para gerenciamento de animais de estimação",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/pets": {
+      "get": {
+        "summary": "Lista todos os pets",
+        "responses": {}
+      }
+    }
+  }
+}
