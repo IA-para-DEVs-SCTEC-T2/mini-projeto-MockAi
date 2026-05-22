@@ -118,6 +118,7 @@ Consultar a pasta `docs/`.
 - [Apresentação do projeto](docs/apresentacao/MockAI.pptx)
 - [Propostas de telas (apenas avaliativo)](docs/propostas_de_telas_apenas_avaliativo/Prompts_telas_figma.md)
 - [Swagger UI](http://localhost:8080/mockai/swagger-ui.html) — disponível com a aplicação rodando
+- [Consolidação de Prompts](docs/prompts.md) — histórico de todas as solicitações feitas ao Kiro
 - [Guia de Contribuição](CONTRIBUTING.md)
 
 ## Integrantes

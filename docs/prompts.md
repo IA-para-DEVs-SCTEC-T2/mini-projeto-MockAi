@@ -1,115 +1,137 @@
-﻿# Prompts do Projeto
+# Prompts do Projeto
 
-> Gerado automaticamente. Os arquivos individuais em `docs/prompts/` sao mantidos — nenhum foi removido.
-> Ultima atualizacao: 2026-05-21
+> Gerado automaticamente pelo GitHub Actions.
+> Arquivos individuais em `docs/prompts/` sao mantidos — nenhum foi removido.
+> Ultima atualizacao: 2026-05-22
 
 ---
 
 ## Indice
 
-- [2026-05-08 — Alterar hook de prompts para criar arquivos individuais em docs/prompts/ ao invés de atualizar prompts.md compartilhado](#alterar-hook-de-prompts-para-criar-arquivos-individuais-em-docsprompts-ao-invs-de-atualizar-promptsmd-compartilhado)
-- [2026-05-10 — Validar e melhorar título e descrição da issue #30 no GitHub](#validar-e-melhorar-ttulo-e-descrio-da-issue-30-no-github)
-- [2026-05-10 — Gerar diagrama C4 completo do MockAI com 4 níveis usando Mermaid](#gerar-diagrama-c4-completo-do-mockai-com-4-nveis-usando-mermaid)
-- [2026-05-10 — Adicionar referência ao diagrama C4 no README do projeto](#adicionar-referncia-ao-diagrama-c4-no-readme-do-projeto)
-- [2026-05-11 — Criar CONTRIBUTING.md profissional com GitFlow, Conventional Commits e padrões corporativos](#criar-contributingmd-profissional-com-gitflow-conventional-commits-e-padres-corporativos)
-- [2026-05-12 — Finalizar arquivo issue-title.md com padrões de nomenclatura para issues GitHub](#finalizar-arquivo-issue-titlemd-com-padres-de-nomenclatura-para-issues-github)
-- [2026-05-12 — Criar branch local feature/task39 a partir de origin/develop](#criar-branch-local-featuretask39-a-partir-de-origindevelop)
-- [2026-05-12 — Criar steering file com diretrizes SOLID e Clean Architecture para geração de código Java/Spring Boot](#criar-steering-file-com-diretrizes-solid-e-clean-architecture-para-gerao-de-cdigo-javaspring-boot)
-- [2026-05-12 — Finalizar arquivo issue-labels.md com especificações de labels para GitHub](#finalizar-arquivo-issue-labelsmd-com-especificaes-de-labels-para-github)
-- [2026-05-12 — Adicionar referência ao template user_story_template nos arquivos de documentação](#adicionar-referncia-ao-template-userstorytemplate-nos-arquivos-de-documentao)
-- [2026-05-12 — Criar epic_template.yml baseado no user_story_template com campos Visão e Escopo](#criar-epictemplateyml-baseado-no-userstorytemplate-com-campos-viso-e-escopo)
-- [2026-05-12 — Criar docs_template.yml baseado no user_story_template com campos Descrição e Conteúdo mínimo](#criar-docstemplateyml-baseado-no-userstorytemplate-com-campos-descrio-e-contedo-mnimo)
-- [2026-05-12 — Ajustar referências em issue-labels e issue-title para cobrir todos os templates](#ajustar-referncias-em-issue-labels-e-issue-title-para-cobrir-todos-os-templates)
-- [2026-05-12 — Reescrever SKILL.md com fluxo organizado e regra de busca obrigatória ao editar issue](#reescrever-skillmd-com-fluxo-organizado-e-regra-de-busca-obrigatria-ao-editar-issue)
+- [2026-05-08 — Alterar hook de prompts para criar arquivos individuais em docs/prompts/ ao invés de atualizar prompts.md compartilhado](#alterar-hook-de-prompts-para-criar-arquivos-individuais-em-docs-prompts-ao-inv-s-de-atualizar-prompts-md-compartilhado)
+- [2026-05-10 — Validar e melhorar título e descrição da issue #30 no GitHub](#validar-e-melhorar-t-tulo-e-descri-o-da-issue-30-no-github)
+- [2026-05-10 — Gerar diagrama C4 completo do MockAI com 4 níveis usando Mermaid](#gerar-diagrama-c4-completo-do-mockai-com-4-n-veis-usando-mermaid)
+- [2026-05-10 — Adicionar referência ao diagrama C4 no README do projeto](#adicionar-refer-ncia-ao-diagrama-c4-no-readme-do-projeto)
+- [2026-05-11 — Criar CONTRIBUTING.md profissional com GitFlow, Conventional Commits e padrões corporativos](#criar-contributing-md-profissional-com-gitflow-conventional-commits-e-padr-es-corporativos)
+- [2026-05-12 — Finalizar arquivo issue-title.md com padrões de nomenclatura para issues GitHub](#finalizar-arquivo-issue-title-md-com-padr-es-de-nomenclatura-para-issues-github)
+- [2026-05-12 — Criar branch local feature/task39 a partir de origin/develop](#criar-branch-local-feature-task39-a-partir-de-origin-develop)
+- [2026-05-12 — Criar steering file com diretrizes SOLID e Clean Architecture para geração de código Java/Spring Boot](#criar-steering-file-com-diretrizes-solid-e-clean-architecture-para-gera-o-de-c-digo-java-spring-boot)
+- [2026-05-12 — Finalizar arquivo issue-labels.md com especificações de labels para GitHub](#finalizar-arquivo-issue-labels-md-com-especifica-es-de-labels-para-github)
+- [2026-05-12 — Adicionar referência ao template user_story_template nos arquivos de documentação](#adicionar-refer-ncia-ao-template-user-story-template-nos-arquivos-de-documenta-o)
+- [2026-05-12 — Criar epic_template.yml baseado no user_story_template com campos Visão e Escopo](#criar-epic-template-yml-baseado-no-user-story-template-com-campos-vis-o-e-escopo)
+- [2026-05-12 — Criar docs_template.yml baseado no user_story_template com campos Descrição e Conteúdo mínimo](#criar-docs-template-yml-baseado-no-user-story-template-com-campos-descri-o-e-conte-do-m-nimo)
+- [2026-05-12 — Ajustar referências em issue-labels e issue-title para cobrir todos os templates](#ajustar-refer-ncias-em-issue-labels-e-issue-title-para-cobrir-todos-os-templates)
+- [2026-05-12 — Reescrever SKILL.md com fluxo organizado e regra de busca obrigatória ao editar issue](#reescrever-skill-md-com-fluxo-organizado-e-regra-de-busca-obrigat-ria-ao-editar-issue)
 - [2026-05-12 — Adicionar nos arquivos de template da skill github-issue-management que o tipo da issue é sempre Feature](#adicionar-nos-arquivos-de-template-da-skill-github-issue-management-que-o-tipo-da-issue-sempre-feature)
-- [2026-05-12 — Reorganizar SKILL.md com fluxo estruturado e obrigar identificação da operação antes de agir](#reorganizar-skillmd-com-fluxo-estruturado-e-obrigar-identificao-da-operao-antes-de-agir)
-- [2026-05-12 — Atualizar tópico 2A.2 do SKILL.md para referenciar os templates docs, epic e user_story](#atualizar-tpico-2a2-do-skillmd-para-referenciar-os-templates-docs-epic-e-userstory)
-- [2026-05-12 — Atualizar issue #18 do repositório mini-projeto-MockAi no GitHub](#atualizar-issue-18-do-repositrio-mini-projeto-mockai-no-github)
-- [2026-05-13 — Criar PRD do projeto MockAI em docs/PRD.md com estrutura completa](#criar-prd-do-projeto-mockai-em-docsprdmd-com-estrutura-completa)
-- [2026-05-14 — Ajustar issue #58 para formato user story com template obrigatório](#ajustar-issue-58-para-formato-user-story-com-template-obrigatrio)
-- [2026-05-14 — Adicionar comando gh api PATCH type=Feature no SKILL.md](#adicionar-comando-gh-api-patch-typefeature-no-skillmd)
+- [2026-05-12 — Reorganizar SKILL.md com fluxo estruturado e obrigar identificação da operação antes de agir](#reorganizar-skill-md-com-fluxo-estruturado-e-obrigar-identifica-o-da-opera-o-antes-de-agir)
+- [2026-05-12 — Atualizar tópico 2A.2 do SKILL.md para referenciar os templates docs, epic e user_story](#atualizar-t-pico-2a-2-do-skill-md-para-referenciar-os-templates-docs-epic-e-user-story)
+- [2026-05-12 — Atualizar issue #18 do repositório mini-projeto-MockAi no GitHub](#atualizar-issue-18-do-reposit-rio-mini-projeto-mockai-no-github)
+- [2026-05-13 — Criar PRD do projeto MockAI em docs/PRD.md com estrutura completa](#criar-prd-do-projeto-mockai-em-docs-prd-md-com-estrutura-completa)
+- [2026-05-14 — Ajustar issue #58 para formato user story com template obrigatório](#ajustar-issue-58-para-formato-user-story-com-template-obrigat-rio)
+- [2026-05-14 — Adicionar comando gh api PATCH type=Feature no SKILL.md](#adicionar-comando-gh-api-patch-type-feature-no-skill-md)
 - [2026-05-14 — Pergunta sobre capacidade de criar TODO list para cumprimento de processos](#pergunta-sobre-capacidade-de-criar-todo-list-para-cumprimento-de-processos)
-- [2026-05-14 — Atualizar título da issue #58 para formato user story via github-issue-manager](#atualizar-ttulo-da-issue-58-para-formato-user-story-via-github-issue-manager)
-- [2026-05-14 — Organizar arquivo Prompts_telas_figma.md com nota avaliativa e estrutura clara para commit](#organizar-arquivo-promptstelasfigmamd-com-nota-avaliativa-e-estrutura-clara-para-commit)
-- [2026-05-14 — Pergunta sobre o que faz o comando cat com heredoc para criar arquivo temporário](#pergunta-sobre-o-que-faz-o-comando-cat-com-heredoc-para-criar-arquivo-temporrio)
-- [2026-05-14 — Adicionar padrão heredoc para criação de arquivo temporário na SKILL.md](#adicionar-padro-heredoc-para-criao-de-arquivo-temporrio-na-skillmd)
-- [2026-05-14 — Criar issue EPIC com visão geral do produto usando epic_template e product.md](#criar-issue-epic-com-viso-geral-do-produto-usando-epictemplate-e-productmd)
-- [2026-05-14 — Adicionar regra de Parent Epic no corpo de Stories na SKILL.md](#adicionar-regra-de-parent-epic-no-corpo-de-stories-na-skillmd)
-- [2026-05-14 — Adicionar vínculo Parent Epic #60 na issue #58](#adicionar-vnculo-parent-epic-60-na-issue-58)
-- [2026-05-14 — Atualizar issue #18 para formato user story com vínculo ao épico #60](#atualizar-issue-18-para-formato-user-story-com-vnculo-ao-pico-60)
-- [2026-05-14 — Criar tech_template.yml para issues técnicas baseado no docs_template.yml](#criar-techtemplateyml-para-issues-tcnicas-baseado-no-docstemplateyml)
+- [2026-05-14 — Atualizar título da issue #58 para formato user story via github-issue-manager](#atualizar-t-tulo-da-issue-58-para-formato-user-story-via-github-issue-manager)
+- [2026-05-14 — Organizar arquivo Prompts_telas_figma.md com nota avaliativa e estrutura clara para commit](#organizar-arquivo-prompts-telas-figma-md-com-nota-avaliativa-e-estrutura-clara-para-commit)
+- [2026-05-14 — Pergunta sobre o que faz o comando cat com heredoc para criar arquivo temporário](#pergunta-sobre-o-que-faz-o-comando-cat-com-heredoc-para-criar-arquivo-tempor-rio)
+- [2026-05-14 — Adicionar padrão heredoc para criação de arquivo temporário na SKILL.md](#adicionar-padr-o-heredoc-para-cria-o-de-arquivo-tempor-rio-na-skill-md)
+- [2026-05-14 — Criar issue EPIC com visão geral do produto usando epic_template e product.md](#criar-issue-epic-com-vis-o-geral-do-produto-usando-epic-template-e-product-md)
+- [2026-05-14 — Adicionar regra de Parent Epic no corpo de Stories na SKILL.md](#adicionar-regra-de-parent-epic-no-corpo-de-stories-na-skill-md)
+- [2026-05-14 — Adicionar vínculo Parent Epic #60 na issue #58](#adicionar-v-nculo-parent-epic-60-na-issue-58)
+- [2026-05-14 — Atualizar issue #18 para formato user story com vínculo ao épico #60](#atualizar-issue-18-para-formato-user-story-com-v-nculo-ao-pico-60)
+- [2026-05-14 — Criar tech_template.yml para issues técnicas baseado no docs_template.yml](#criar-tech-template-yml-para-issues-t-cnicas-baseado-no-docs-template-yml)
 - [2026-05-14 — Criar label tech com cor laranja via gh CLI](#criar-label-tech-com-cor-laranja-via-gh-cli)
-- [2026-05-14 — Adicionar label tech e título TECH nos arquivos de referência issue-labels, issue-title e SKILL](#adicionar-label-tech-e-ttulo-tech-nos-arquivos-de-referncia-issue-labels-issue-title-e-skill)
+- [2026-05-14 — Adicionar label tech e título TECH nos arquivos de referência issue-labels, issue-title e SKILL](#adicionar-label-tech-e-t-tulo-tech-nos-arquivos-de-refer-ncia-issue-labels-issue-title-e-skill)
 - [2026-05-14 — Criar user story unificando issues #18 e #58 com épico #60 como pai](#criar-user-story-unificando-issues-18-e-58-com-pico-60-como-pai)
 - [2026-05-14 — Pergunta sobre possibilidade de atualizar campo relationship via gh CLI ou bash](#pergunta-sobre-possibilidade-de-atualizar-campo-relationship-via-gh-cli-ou-bash)
 - [2026-05-14 — Vincular épico #60 como pai da issue #62 via GraphQL addSubIssue](#vincular-pico-60-como-pai-da-issue-62-via-graphql-addsubissue)
-- [2026-05-14 — Extrair hierarquia da SKILL.md para issue-hierarchy.md com vínculo GraphQL e suporte a Story](#extrair-hierarquia-da-skillmd-para-issue-hierarchymd-com-vnculo-graphql-e-suporte-a-story)
-- [2026-05-14 — Transformar issues #18 e #58 em issues técnicas com tech_template e pai Story #62](#transformar-issues-18-e-58-em-issues-tcnicas-com-techtemplate-e-pai-story-62)
-- [2026-05-14 — Atualizar issue #22 para formato user story com validação de arquivo Swagger](#atualizar-issue-22-para-formato-user-story-com-validao-de-arquivo-swagger)
-- [2026-05-14 — Atualizar issue #21 para formato tech_template com cliente OpenAI ChatGPT](#atualizar-issue-21-para-formato-techtemplate-com-cliente-openai-chatgpt)
-- [2026-05-14 — Atualizar descrição da issue #21 para usar .env para armazenar token](#atualizar-descrio-da-issue-21-para-usar-env-para-armazenar-token)
-- [2026-05-14 — Atualizar issue #19 para formato tech_template com endpoints dinâmicos](#atualizar-issue-19-para-formato-techtemplate-com-endpoints-dinmicos)
-- [2026-05-14 — Atualizar issue #23 para formato tech_template com geração de resposta via IA](#atualizar-issue-23-para-formato-techtemplate-com-gerao-de-resposta-via-ia)
+- [2026-05-14 — Extrair hierarquia da SKILL.md para issue-hierarchy.md com vínculo GraphQL e suporte a Story](#extrair-hierarquia-da-skill-md-para-issue-hierarchy-md-com-v-nculo-graphql-e-suporte-a-story)
+- [2026-05-14 — Transformar issues #18 e #58 em issues técnicas com tech_template e pai Story #62](#transformar-issues-18-e-58-em-issues-t-cnicas-com-tech-template-e-pai-story-62)
+- [2026-05-14 — Atualizar issue #22 para formato user story com validação de arquivo Swagger](#atualizar-issue-22-para-formato-user-story-com-valida-o-de-arquivo-swagger)
+- [2026-05-14 — Atualizar issue #21 para formato tech_template com cliente OpenAI ChatGPT](#atualizar-issue-21-para-formato-tech-template-com-cliente-openai-chatgpt)
+- [2026-05-14 — Atualizar descrição da issue #21 para usar .env para armazenar token](#atualizar-descri-o-da-issue-21-para-usar-env-para-armazenar-token)
+- [2026-05-14 — Atualizar issue #19 para formato tech_template com endpoints dinâmicos](#atualizar-issue-19-para-formato-tech-template-com-endpoints-din-micos)
+- [2026-05-14 — Atualizar issue #23 para formato tech_template com geração de resposta via IA](#atualizar-issue-23-para-formato-tech-template-com-gera-o-de-resposta-via-ia)
 - [2026-05-14 — Criar user story de respostas mockadas com IA, pai de #19, #21, #23, filha do épico #60](#criar-user-story-de-respostas-mockadas-com-ia-pai-de-19-21-23-filha-do-pico-60)
 - [2026-05-14 — Atualizar issue #24 para formato user story com listagem de endpoints mockados](#atualizar-issue-24-para-formato-user-story-com-listagem-de-endpoints-mockados)
-- [2026-05-14 — Atualizar issue #49 para formato docs_template com agente de IA para issues](#atualizar-issue-49-para-formato-docstemplate-com-agente-de-ia-para-issues)
-- [2026-05-16 — Criar endpoint POST /import para validar extensão de arquivo JSON e retornar status adequado](#criar-endpoint-post-import-para-validar-extenso-de-arquivo-json-e-retornar-status-adequado)
+- [2026-05-14 — Atualizar issue #49 para formato docs_template com agente de IA para issues](#atualizar-issue-49-para-formato-docs-template-com-agente-de-ia-para-issues)
+- [2026-05-16 — Criar endpoint POST /import para validar extensão de arquivo JSON e retornar status adequado](#criar-endpoint-post-import-para-validar-extens-o-de-arquivo-json-e-retornar-status-adequado)
 - [2026-05-16 — Criar o design para a spec import-endpoint](#criar-o-design-para-a-spec-import-endpoint)
-- [2026-05-16 — Remover o tópico Testing Strategy do design.md da spec import-endpoint](#remover-o-tpico-testing-strategy-do-designmd-da-spec-import-endpoint)
+- [2026-05-16 — Remover o tópico Testing Strategy do design.md da spec import-endpoint](#remover-o-t-pico-testing-strategy-do-design-md-da-spec-import-endpoint)
 - [2026-05-16 — Criar tasks para a spec import-endpoint](#criar-tasks-para-a-spec-import-endpoint)
-- [2026-05-16 — Excluir tasks 1, 9, 10 e 11 do tasks.md da spec import-endpoint e ajustar referências](#excluir-tasks-1-9-10-e-11-do-tasksmd-da-spec-import-endpoint-e-ajustar-referncias)
-- [2026-05-16 — Traduzir arquivos skills.md e specification.md para português](#traduzir-arquivos-skillsmd-e-specificationmd-para-portugus)
-- [2026-05-16 — Criar skill para construir skills, usando skills.md e specification.md como referência](#criar-skill-para-construir-skills-usando-skillsmd-e-specificationmd-como-referncia)
-- [2026-05-16 — Traduzir o arquivo steering.md para português](#traduzir-o-arquivo-steeringmd-para-portugus)
-- [2026-05-16 — Renomear a skill criar-skill para create-skill (nome em inglês)](#renomear-a-skill-criar-skill-para-create-skill-nome-em-ingls)
-- [2026-05-16 — Dúvida sobre uso de inglês ou português no campo description do frontmatter da skill](#dvida-sobre-uso-de-ingls-ou-portugus-no-campo-description-do-frontmatter-da-skill)
-- [2026-05-16 — Adicionar na skill create-skill que o nome deve ser em inglês e a descrição/conteúdo em português](#adicionar-na-skill-create-skill-que-o-nome-deve-ser-em-ingls-e-a-descriocontedo-em-portugus)
-- [2026-05-16 — Criar skill para criação de arquivos steering usando steering.md como referência](#criar-skill-para-criao-de-arquivos-steering-usando-steeringmd-como-referncia)
-- [2026-05-16 — Tornar obrigatório deixar claro quando uma skill deve ser ativada na skill create-skill](#tornar-obrigatrio-deixar-claro-quando-uma-skill-deve-ser-ativada-na-skill-create-skill)
-- [2026-05-16 — Ajustar hook push-modifications para usar script open_pr.sh ao abrir PR](#ajustar-hook-push-modifications-para-usar-script-openprsh-ao-abrir-pr)
-- [2026-05-16 — Adicionar validações no open_pr.sh: bloquear alterações não commitadas e branches protegidas](#adicionar-validaes-no-openprsh-bloquear-alteraes-no-commitadas-e-branches-protegidas)
+- [2026-05-16 — Excluir tasks 1, 9, 10 e 11 do tasks.md da spec import-endpoint e ajustar referências](#excluir-tasks-1-9-10-e-11-do-tasks-md-da-spec-import-endpoint-e-ajustar-refer-ncias)
+- [2026-05-16 — Traduzir arquivos skills.md e specification.md para português](#traduzir-arquivos-skills-md-e-specification-md-para-portugu-s)
+- [2026-05-16 — Criar skill para construir skills, usando skills.md e specification.md como referência](#criar-skill-para-construir-skills-usando-skills-md-e-specification-md-como-refer-ncia)
+- [2026-05-16 — Traduzir o arquivo steering.md para português](#traduzir-o-arquivo-steering-md-para-portugu-s)
+- [2026-05-16 — Renomear a skill criar-skill para create-skill (nome em inglês)](#renomear-a-skill-criar-skill-para-create-skill-nome-em-ingl-s)
+- [2026-05-16 — Dúvida sobre uso de inglês ou português no campo description do frontmatter da skill](#d-vida-sobre-uso-de-ingl-s-ou-portugu-s-no-campo-description-do-frontmatter-da-skill)
+- [2026-05-16 — Adicionar na skill create-skill que o nome deve ser em inglês e a descrição/conteúdo em português](#adicionar-na-skill-create-skill-que-o-nome-deve-ser-em-ingl-s-e-a-descri-o-conte-do-em-portugu-s)
+- [2026-05-16 — Criar skill para criação de arquivos steering usando steering.md como referência](#criar-skill-para-cria-o-de-arquivos-steering-usando-steering-md-como-refer-ncia)
+- [2026-05-16 — Tornar obrigatório deixar claro quando uma skill deve ser ativada na skill create-skill](#tornar-obrigat-rio-deixar-claro-quando-uma-skill-deve-ser-ativada-na-skill-create-skill)
+- [2026-05-16 — Ajustar hook push-modifications para usar script open_pr.sh ao abrir PR](#ajustar-hook-push-modifications-para-usar-script-open-pr-sh-ao-abrir-pr)
+- [2026-05-16 — Adicionar validações no open_pr.sh: bloquear alterações não commitadas e branches protegidas](#adicionar-valida-es-no-open-pr-sh-bloquear-altera-es-n-o-commitadas-e-branches-protegidas)
 - [2026-05-16 — Etapa 1 — Mapeamento dos campos Swagger desserializados para entidades JPA do projeto MockAI](#etapa-1-mapeamento-dos-campos-swagger-desserializados-para-entidades-jpa-do-projeto-mockai)
-- [2026-05-16 — Etapa 2 — Implementar serviço de persistência da spec Swagger no banco de dados](#etapa-2-implementar-servio-de-persistncia-da-spec-swagger-no-banco-de-dados)
-- [2026-05-16 — Etapa 3 — Implementar deleção dos dados antigos com rollback transacional completo](#etapa-3-implementar-deleo-dos-dados-antigos-com-rollback-transacional-completo)
-- [2026-05-16 — Etapa 4 — Tratamento explícito de erros de persistência com mensagens descritivas](#etapa-4-tratamento-explcito-de-erros-de-persistncia-com-mensagens-descritivas)
-- [2026-05-16 — erro durante o processo de compilação (continuação da etapa 4 — tratamento de erros de persistência)](#erro-durante-o-processo-de-compilao-continuao-da-etapa-4-tratamento-de-erros-de-persistncia)
-- [2026-05-16 — Etapa 5 — Integrar serviço de persistência ao endpoint POST /import da task #58](#etapa-5-integrar-servio-de-persistncia-ao-endpoint-post-import-da-task-58)
-- [2026-05-16 — análise dos erros (continuação da etapa 6 — validação e testes)](#anlise-dos-erros-continuao-da-etapa-6-validao-e-testes)
-- [2026-05-16 — erro de dependências (continuação da etapa 6 — correção dos testes)](#erro-de-dependncias-continuao-da-etapa-6-correo-dos-testes)
-- [2026-05-16 — Não fazer testes unitários — remover os arquivos de teste criados](#no-fazer-testes-unitrios-remover-os-arquivos-de-teste-criados)
-- [2026-05-16 — BUILD FAILURE ao executar — ObjectMapper não disponível como bean Spring](#build-failure-ao-executar-objectmapper-no-disponvel-como-bean-spring)
+- [2026-05-16 — Etapa 2 — Implementar serviço de persistência da spec Swagger no banco de dados](#etapa-2-implementar-servi-o-de-persist-ncia-da-spec-swagger-no-banco-de-dados)
+- [2026-05-16 — Etapa 3 — Implementar deleção dos dados antigos com rollback transacional completo](#etapa-3-implementar-dele-o-dos-dados-antigos-com-rollback-transacional-completo)
+- [2026-05-16 — Etapa 4 — Tratamento explícito de erros de persistência com mensagens descritivas](#etapa-4-tratamento-expl-cito-de-erros-de-persist-ncia-com-mensagens-descritivas)
+- [2026-05-16 — erro durante o processo de compilação (continuação da etapa 4 — tratamento de erros de persistência)](#erro-durante-o-processo-de-compila-o-continua-o-da-etapa-4-tratamento-de-erros-de-persist-ncia)
+- [2026-05-16 — Etapa 5 — Integrar serviço de persistência ao endpoint POST /import da task #58](#etapa-5-integrar-servi-o-de-persist-ncia-ao-endpoint-post-import-da-task-58)
+- [2026-05-16 — análise dos erros (continuação da etapa 6 — validação e testes)](#an-lise-dos-erros-continua-o-da-etapa-6-valida-o-e-testes)
+- [2026-05-16 — erro de dependências (continuação da etapa 6 — correção dos testes)](#erro-de-depend-ncias-continua-o-da-etapa-6-corre-o-dos-testes)
+- [2026-05-16 — Não fazer testes unitários — remover os arquivos de teste criados](#n-o-fazer-testes-unit-rios-remover-os-arquivos-de-teste-criados)
+- [2026-05-16 — BUILD FAILURE ao executar — ObjectMapper não disponível como bean Spring](#build-failure-ao-executar-objectmapper-n-o-dispon-vel-como-bean-spring)
 - [2026-05-16 — Diagnosticar e corrigir BUILD FAILURE do exec-maven-plugin no projeto MockAI](#diagnosticar-e-corrigir-build-failure-do-exec-maven-plugin-no-projeto-mockai)
-- [2026-05-16 — Corrigir e validar o arquivo OpenAPI JSON em `docs/petstore.json`](#corrigir-e-validar-o-arquivo-openapi-json-em-docspetstorejson)
-- [2026-05-16 — Diagnosticar e resolver violação de integridade referencial ao deletar dados no banco H2](#diagnosticar-e-resolver-violao-de-integridade-referencial-ao-deletar-dados-no-banco-h2)
+- [2026-05-16 — Corrigir e validar o arquivo OpenAPI JSON em `docs/petstore.json`](#corrigir-e-validar-o-arquivo-openapi-json-em-docs-petstore-json)
+- [2026-05-16 — Diagnosticar e resolver violação de integridade referencial ao deletar dados no banco H2](#diagnosticar-e-resolver-viola-o-de-integridade-referencial-ao-deletar-dados-no-banco-h2)
 - [2026-05-16 — Parar o servidor atual e verificar o funcionamento da API no H2](#parar-o-servidor-atual-e-verificar-o-funcionamento-da-api-no-h2)
-- [2026-05-16 — Criar spec para implementação de client de integração com ChatGPT usando spring-ai-starter-model-openai](#criar-spec-para-implementao-de-client-de-integrao-com-chatgpt-usando-spring-ai-starter-model-openai)
-- [2026-05-17 — Adicionar ao design mecanismo de falha na startup se OPENAI_API_KEY não configurada](#adicionar-ao-design-mecanismo-de-falha-na-startup-se-openaiapikey-no-configurada)
-- [2026-05-17 — Pergunta sobre como fazer o git ignorar .env mas não o .env.example](#pergunta-sobre-como-fazer-o-git-ignorar-env-mas-no-o-envexample)
-- [2026-05-17 — Analisar PR para conflitos e criar novo PR baseado na versão de desenvolvimento](#analisar-pr-para-conflitos-e-criar-novo-pr-baseado-na-verso-de-desenvolvimento)
-- [2026-05-17 — Ajustar todo o código para usar Groq em vez de OpenAI com Spring AI](#ajustar-todo-o-cdigo-para-usar-groq-em-vez-de-openai-com-spring-ai)
-- [2026-05-17 — Revisar documentação, steerings e skills substituindo ChatGPT/OpenAI por Groq](#revisar-documentao-steerings-e-skills-substituindo-chatgptopenai-por-groq)
-- [2026-05-17 — Implementar issue #24 - Listar endpoints mockados disponíveis no projeto MockAI](#implementar-issue-24-listar-endpoints-mockados-disponveis-no-projeto-mockai)
-- [2026-05-17 — Corrigir MultipleBagFetchException ao importar swagger company-manager.json](#corrigir-multiplebagfetchexception-ao-importar-swagger-company-managerjson)
-- [2026-05-17 — Criar testes automatizados para a issue #24 - Listar endpoints mockados disponíveis](#criar-testes-automatizados-para-a-issue-24-listar-endpoints-mockados-disponveis)
-- [2026-05-17 — Implementar retorno de respostas por IA no endpoint dinâmico usando AiGateway](#implementar-retorno-de-respostas-por-ia-no-endpoint-dinmico-usando-aigateway)
-- [2026-05-17 — Ajustar requisitos: schema nulo retorna só status; erro de IA usa fallback estático](#ajustar-requisitos-schema-nulo-retorna-s-status-erro-de-ia-usa-fallback-esttico)
+- [2026-05-16 — Criar spec para implementação de client de integração com ChatGPT usando spring-ai-starter-model-openai](#criar-spec-para-implementa-o-de-client-de-integra-o-com-chatgpt-usando-spring-ai-starter-model-openai)
+- [2026-05-17 — Adicionar ao design mecanismo de falha na startup se OPENAI_API_KEY não configurada](#adicionar-ao-design-mecanismo-de-falha-na-startup-se-openai-api-key-n-o-configurada)
+- [2026-05-17 — Pergunta sobre como fazer o git ignorar .env mas não o .env.example](#pergunta-sobre-como-fazer-o-git-ignorar-env-mas-n-o-o-env-example)
+- [2026-05-17 — Analisar PR para conflitos e criar novo PR baseado na versão de desenvolvimento](#analisar-pr-para-conflitos-e-criar-novo-pr-baseado-na-vers-o-de-desenvolvimento)
+- [2026-05-17 — Ajustar todo o código para usar Groq em vez de OpenAI com Spring AI](#ajustar-todo-o-c-digo-para-usar-groq-em-vez-de-openai-com-spring-ai)
+- [2026-05-17 — Revisar documentação, steerings e skills substituindo ChatGPT/OpenAI por Groq](#revisar-documenta-o-steerings-e-skills-substituindo-chatgpt-openai-por-groq)
+- [2026-05-17 — Implementar issue #24 - Listar endpoints mockados disponíveis no projeto MockAI](#implementar-issue-24-listar-endpoints-mockados-dispon-veis-no-projeto-mockai)
+- [2026-05-17 — Corrigir MultipleBagFetchException ao importar swagger company-manager.json](#corrigir-multiplebagfetchexception-ao-importar-swagger-company-manager-json)
+- [2026-05-17 — Criar testes automatizados para a issue #24 - Listar endpoints mockados disponíveis](#criar-testes-automatizados-para-a-issue-24-listar-endpoints-mockados-dispon-veis)
+- [2026-05-17 — Implementar retorno de respostas por IA no endpoint dinâmico usando AiGateway](#implementar-retorno-de-respostas-por-ia-no-endpoint-din-mico-usando-aigateway)
+- [2026-05-17 — Ajustar requisitos: schema nulo retorna só status; erro de IA usa fallback estático](#ajustar-requisitos-schema-nulo-retorna-s-status-erro-de-ia-usa-fallback-est-tico)
 - [2026-05-17 — Corrigir DynamicResponseBodyBuilder para retornar campos de properties com valores corretos](#corrigir-dynamicresponsebodybuilder-para-retornar-campos-de-properties-com-valores-corretos)
-- [2026-05-18 — Ajuste na persistência de ENDPOINT_RESPONSE para salvar apenas o primeiro status de sucesso](#ajuste-na-persistncia-de-endpointresponse-para-salvar-apenas-o-primeiro-status-de-sucesso)
-- [2026-05-18 — Ajuste para retornar JSON puro nos endpoints dinâmicos, removendo delimitadores de código da IA](#ajuste-para-retornar-json-puro-nos-endpoints-dinmicos-removendo-delimitadores-de-cdigo-da-ia)
-- [2026-05-18 — Ajuste na persistência de PATH_PARAMETER para salvar format e validar endpoint dinâmico](#ajuste-na-persistncia-de-pathparameter-para-salvar-format-e-validar-endpoint-dinmico)
-- [2026-05-18 — Gerar curl de exemplo para cada endpoint do swagger petstore.json](#gerar-curl-de-exemplo-para-cada-endpoint-do-swagger-petstorejson)
-- [2026-05-18 — Atualizar documentações do projeto com base nos prompts de hoje](#atualizar-documentaes-do-projeto-com-base-nos-prompts-de-hoje)
-- [2026-05-18 — Implementar validação do arquivo swagger no endpoint /import com campos obrigatórios](#implementar-validao-do-arquivo-swagger-no-endpoint-import-com-campos-obrigatrios)
-- [2026-05-18 — Criar arquivos swagger de exemplos inválidos para as validações do endpoint /import](#criar-arquivos-swagger-de-exemplos-invlidos-para-as-validaes-do-endpoint-import)
-- [2026-05-18 — Adicionar anotações OpenAPI nos endpoints estáticos para geração do Swagger](#adicionar-anotaes-openapi-nos-endpoints-estticos-para-gerao-do-swagger)
+- [2026-05-18 — Ajuste na persistência de ENDPOINT_RESPONSE para salvar apenas o primeiro status de sucesso](#ajuste-na-persist-ncia-de-endpoint-response-para-salvar-apenas-o-primeiro-status-de-sucesso)
+- [2026-05-18 — Ajuste para retornar JSON puro nos endpoints dinâmicos, removendo delimitadores de código da IA](#ajuste-para-retornar-json-puro-nos-endpoints-din-micos-removendo-delimitadores-de-c-digo-da-ia)
+- [2026-05-18 — Ajuste na persistência de PATH_PARAMETER para salvar format e validar endpoint dinâmico](#ajuste-na-persist-ncia-de-path-parameter-para-salvar-format-e-validar-endpoint-din-mico)
+- [2026-05-18 — Gerar curl de exemplo para cada endpoint do swagger petstore.json](#gerar-curl-de-exemplo-para-cada-endpoint-do-swagger-petstore-json)
+- [2026-05-18 — Atualizar documentações do projeto com base nos prompts de hoje](#atualizar-documenta-es-do-projeto-com-base-nos-prompts-de-hoje)
+- [2026-05-18 — Implementar validação do arquivo swagger no endpoint /import com campos obrigatórios](#implementar-valida-o-do-arquivo-swagger-no-endpoint-import-com-campos-obrigat-rios)
+- [2026-05-18 — Criar arquivos swagger de exemplos inválidos para as validações do endpoint /import](#criar-arquivos-swagger-de-exemplos-inv-lidos-para-as-valida-es-do-endpoint-import)
+- [2026-05-18 — Adicionar anotações OpenAPI nos endpoints estáticos para geração do Swagger](#adicionar-anota-es-openapi-nos-endpoints-est-ticos-para-gera-o-do-swagger)
 - [2026-05-18 — Corrigir upload de arquivo no Swagger UI para o endpoint de import](#corrigir-upload-de-arquivo-no-swagger-ui-para-o-endpoint-de-import)
-- [2026-05-21 — Atualizar docs, steerings e README/CONTRIBUTING com estado atual do sistema](#atualizar-docs-steerings-e-readmecontributing-com-estado-atual-do-sistema)
-- [2026-05-21 — Ajustar README.md para seguir o template README_TEMPLATE.md](#ajustar-readmemd-para-seguir-o-template-readmetemplatemd)
-- [2026-05-21 — Mover PRD.md de docs/ para a raiz do projeto e atualizar referências](#mover-prdmd-de-docs-para-a-raiz-do-projeto-e-atualizar-referncias)
-- [2026-05-21 — Reescrever CONTRIBUTING.md seguindo o template e o fluxo real com hooks e open_pr.sh](#reescrever-contributingmd-seguindo-o-template-e-o-fluxo-real-com-hooks-e-openprsh)
-- [2026-05-21 — Atualizar PRD.md com contexto completo: steerings, README, issues concluídas e src/](#atualizar-prdmd-com-contexto-completo-steerings-readme-issues-concludas-e-src)
-- [2026-05-21 — Ajustar PRD: remover F2, CS08, L08, próximos passos e rodapé; adicionar novas funcionalidades futuras](#ajustar-prd-remover-f2-cs08-l08-prximos-passos-e-rodap-adicionar-novas-funcionalidades-futuras)
-- [2026-05-21 — Atualizar README com referências a PPT, telas Figma, coleção Postman e exemplos Swagger](#atualizar-readme-com-referncias-a-ppt-telas-figma-coleo-postman-e-exemplos-swagger)
+- [2026-05-21 — Atualizar docs, steerings e README/CONTRIBUTING com estado atual do sistema](#atualizar-docs-steerings-e-readme-contributing-com-estado-atual-do-sistema)
+- [2026-05-21 — Ajustar README.md para seguir o template README_TEMPLATE.md](#ajustar-readme-md-para-seguir-o-template-readme-template-md)
+- [2026-05-21 — Mover PRD.md de docs/ para a raiz do projeto e atualizar referências](#mover-prd-md-de-docs-para-a-raiz-do-projeto-e-atualizar-refer-ncias)
+- [2026-05-21 — Reescrever CONTRIBUTING.md seguindo o template e o fluxo real com hooks e open_pr.sh](#reescrever-contributing-md-seguindo-o-template-e-o-fluxo-real-com-hooks-e-open-pr-sh)
+- [2026-05-21 — Atualizar PRD.md com contexto completo: steerings, README, issues concluídas e src/](#atualizar-prd-md-com-contexto-completo-steerings-readme-issues-conclu-das-e-src)
+- [2026-05-21 — Ajustar PRD: remover F2, CS08, L08, próximos passos e rodapé; adicionar novas funcionalidades futuras](#ajustar-prd-remover-f2-cs08-l08-pr-ximos-passos-e-rodap-adicionar-novas-funcionalidades-futuras)
+- [2026-05-21 — Atualizar README com referências a PPT, telas Figma, coleção Postman e exemplos Swagger](#atualizar-readme-com-refer-ncias-a-ppt-telas-figma-cole-o-postman-e-exemplos-swagger)
+- [2026-05-21 — Configurar plugin JaCoCo no pom.xml para cobertura de testes com mínimo de 40%](#configurar-plugin-jacoco-no-pom-xml-para-cobertura-de-testes-com-m-nimo-de-40)
+- [2026-05-21 — Criar testes unitários para ValidateSwaggerContentService cobrindo todos os campos obrigatórios](#criar-testes-unit-rios-para-validateswaggercontentservice-cobrindo-todos-os-campos-obrigat-rios)
+- [2026-05-21 — Criar testes unitários para ImportSwaggerService validando orquestração do fluxo de importação](#criar-testes-unit-rios-para-importswaggerservice-validando-orquestra-o-do-fluxo-de-importa-o)
+- [2026-05-21 — Criar testes unitários para ValidateFileService validando extensão de arquivo .json](#criar-testes-unit-rios-para-validatefileservice-validando-extens-o-de-arquivo-json)
+- [2026-05-21 — Criar testes unitários para GenerateEndpointResponseService cobrindo geração de respostas via IA](#criar-testes-unit-rios-para-generateendpointresponseservice-cobrindo-gera-o-de-respostas-via-ia)
+- [2026-05-21 — Criar testes unitários para CheckAiConnectionService validando verificação de conectividade com IA](#criar-testes-unit-rios-para-checkaiconnectionservice-validando-verifica-o-de-conectividade-com-ia)
+- [2026-05-21 — Criar testes unitários para PersistSwaggerSpecService e GetEndpointsBySpecificationIdService](#criar-testes-unit-rios-para-persistswaggerspecservice-e-getendpointsbyspecificationidservice)
+- [2026-05-21 — Criar testes unitários para DynamicRouteRegistrationService validando registro e remoção de rotas](#criar-testes-unit-rios-para-dynamicrouteregistrationservice-validando-registro-e-remo-o-de-rotas)
+- [2026-05-21 — Criar testes unitários para GlobalExceptionHandler validando mapeamento de exceções para HTTP](#criar-testes-unit-rios-para-globalexceptionhandler-validando-mapeamento-de-exce-es-para-http)
+- [2026-05-21 — Criar testes unitários para AiConnectionController validando respostas de status de conexão](#criar-testes-unit-rios-para-aiconnectioncontroller-validando-respostas-de-status-de-conex-o)
+- [2026-05-21 — Criar testes unitários para ImportController validando fluxo de importação via multipart](#criar-testes-unit-rios-para-importcontroller-validando-fluxo-de-importa-o-via-multipart)
+- [2026-05-21 — Criar testes unitários para EndpointDefinitionQueryAdapter validando consulta ao repositório](#criar-testes-unit-rios-para-endpointdefinitionqueryadapter-validando-consulta-ao-reposit-rio)
+- [2026-05-21 — Criar testes unitários para SwaggerSpecDeletionAdapter validando ordem de deleção e tratamento de erros](#criar-testes-unit-rios-para-swaggerspecdeletionadapter-validando-ordem-de-dele-o-e-tratamento-de-erros)
+- [2026-05-21 — Criar testes unitários para AiGateway validando validações de entrada e tratamento de erros](#criar-testes-unit-rios-para-aigateway-validando-valida-es-de-entrada-e-tratamento-de-erros)
+- [2026-05-21 — Criar testes unitários para DynamicResponseBodyBuilder validando construção de payloads de resposta](#criar-testes-unit-rios-para-dynamicresponsebodybuilder-validando-constru-o-de-payloads-de-resposta)
+- [2026-05-21 — Criar testes unitários para HttpMethodMapper validando mapeamento de métodos HTTP](#criar-testes-unit-rios-para-httpmethodmapper-validando-mapeamento-de-m-todos-http)
+- [2026-05-21 — Executar todos os testes unitários e validar que compilam e passam sem erros](#executar-todos-os-testes-unit-rios-e-validar-que-compilam-e-passam-sem-erros)
+- [2026-05-21 — Validar cobertura de código com JaCoCo e confirmar que atinge mínimo de 40%](#validar-cobertura-de-c-digo-com-jacoco-e-confirmar-que-atinge-m-nimo-de-40)
+- [2026-05-21 — Gerar relatório completo de testes unitários documentando toda a implementação](#gerar-relat-rio-completo-de-testes-unit-rios-documentando-toda-a-implementa-o)
+- [2026-05-21 — Criar testes unitários para os principais fluxos do projeto MockAI garantindo cobertura mínima de 40%](#criar-testes-unit-rios-para-os-principais-fluxos-do-projeto-mockai-garantindo-cobertura-m-nima-de-40)
+- [2026-05-21 — Adicionar referência ao arquivo de consolidação de prompts na seção de documentação adicional do README](#adicionar-refer-ncia-ao-arquivo-de-consolida-o-de-prompts-na-se-o-de-documenta-o-adicional-do-readme)
 
 ---
 
@@ -1379,6 +1401,7 @@ Data/hora: 2026-05-16 20:06:34
 
 Analisar e corrigir todos os erros de dependências identificados no projeto durante a compilação e execução dos testes. Validar conflitos de versões, referências ausentes, pacotes incompatíveis e configurações do ambiente. Garantir que todas as dependências estejam restauradas corretamente conforme o steering e o stack definido no projeto, mantendo compatibilidade com a pipeline de build e testes automatizados.
 
+
 ---
 
 ### Não fazer testes unitários — remover os arquivos de teste criados
@@ -1867,7 +1890,7 @@ Data/hora: 2026-05-18 19:52:23
 
 ## Prompt original
 
-#InstruçãoImplementar validação do arquivo swagger ao receber o arquivo pelo endpoint /import#Detalhes1. Busque a issue 22 do github por gh cli para contexto2. Adicione validações simples para garantir que o arquivo tenha os requisitos mínimos para ser possíver gerar um endpoint dinâmico, como título, descrição, path e status.#RestriçõesNão realizar ou crie quaisquer tipos de testes nesta implementação.Não altere nenhuma funcionalide e comportamentos que já existem no projeto.
+#InstruçãoImplementar validação do arquivo swagger ao receber o arquivo pelo endpoint /import#Detalhes1. Busque a issue 22 do github por gh cli para contexto2. Adicione validações simples para garantir que o arquivo tenha os requisitos mínimos para ser possíver gerar um endpoint dinâmico, como título, descrição, path e status.#RestriçõesNão realizar ou crie quaisquer tipos de testes nesta implementação.Não altere nenhuma funcionalide e comportamentos que já existem no projeto. 
 
 ---
 
@@ -1921,7 +1944,7 @@ Data/hora: 2026-05-18 22:22:14
 
 ## Prompt original
 
-os endpoints estão funcionando, testei via postman. Só tem um detelhe, anteriormente eu conseguia anexar o arquivo no ednpoit de import pela documentação do swagger no link http://localhost:8080/mockai/swagger-ui/index.html#/Import/importFilee agora não consigo mais
+os endpoints estão funcionando, testei via postman. Só tem um detelhe, anteriormente eu conseguia anexar o arquivo no ednpoit de import pela documentação do swagger no link http://localhost:8080/mockai/swagger-ui/index.html#/Import/importFilee agora não consigo mais 
 
 ---
 
@@ -2072,6 +2095,381 @@ e exemplos de swagger em docs/swagger-examples
 
 ---
 
-## Referencia de Specs Implementados
+### Configurar plugin JaCoCo no pom.xml para cobertura de testes com mínimo de 40%
 
-_Nenhum spec encontrado em `docs/specs/`._
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_20-30-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Configurar plugin JaCoCo no pom.xml para cobertura de testes com mínimo de 40%
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 20:30:00
+
+## Prompt original
+
+Configurar o plugin JaCoCo (Java Code Coverage) no pom.xml do projeto MockAI para gerar relatórios de cobertura de código e validar que a cobertura mínima de 40% das linhas seja atingida. O plugin deve incluir as execuções prepare-agent (instrumentação), report (geração de relatório HTML na fase test) e check (validação de cobertura mínima na fase verify). A regra de cobertura deve ser aplicada no nível BUNDLE com counter LINE e value COVEREDRATIO com minimum 0.40. O relatório deve ser gerado em target/site/jacoco/index.html.
+
+---
+
+### Criar testes unitários para ValidateSwaggerContentService cobrindo todos os campos obrigatórios
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_20-35-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para ValidateSwaggerContentService cobrindo todos os campos obrigatórios
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 20:35:00
+
+## Prompt original
+
+Implementar testes unitários para a classe ValidateSwaggerContentService da camada application. Os testes devem cobrir todos os cenários de validação de campos obrigatórios de uma especificação OpenAPI: spec válida com todos os campos, campo openapi null, campo openapi em branco, bloco info null, info.title null, info.description null, paths null, paths vazio, path sem métodos HTTP definidos, método sem responses definidas, e acúmulo de múltiplos erros em uma única exceção InvalidSwaggerContentException. Utilizar JUnit 5 com @DisplayName e AssertJ para assertions.
+
+---
+
+### Criar testes unitários para ImportSwaggerService validando orquestração do fluxo de importação
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_20-40-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para ImportSwaggerService validando orquestração do fluxo de importação
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 20:40:00
+
+## Prompt original
+
+Implementar testes unitários para a classe ImportSwaggerService da camada application. Os testes devem validar a orquestração completa do fluxo de importação: desserialização do JSON via ObjectMapper, delegação da validação ao ValidateSwaggerContentUseCase, persistência via PersistSwaggerSpecUseCase e registro de rotas via DynamicRouteRegistrationUseCase. Cenários: importação bem-sucedida verificando que todos os use cases são chamados na ordem correta; JSON inválido lançando InvalidSwaggerContentException; propagação de exceção quando validação de conteúdo falha sem chamar persistência. Utilizar Mockito com @Mock, @InjectMocks e @Spy para o ObjectMapper.
+
+---
+
+### Criar testes unitários para ValidateFileService validando extensão de arquivo .json
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_20-45-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para ValidateFileService validando extensão de arquivo .json
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 20:45:00
+
+## Prompt original
+
+Implementar testes unitários para a classe ValidateFileService da camada application. Os testes devem cobrir a lógica de validação de extensão de arquivo: aceitar arquivo com extensão .json, aceitar extensão .JSON (case insensitive), rejeitar extensões inválidas (.xml, .yaml, .txt, .pdf) usando @ParameterizedTest com @ValueSource, e rejeitar arquivo sem extensão. Todas as rejeições devem lançar InvalidExtensionException com mensagem contendo ".json". Utilizar JUnit 5 com testes parametrizados e AssertJ.
+
+---
+
+### Criar testes unitários para GenerateEndpointResponseService cobrindo geração de respostas via IA
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_20-50-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para GenerateEndpointResponseService cobrindo geração de respostas via IA
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 20:50:00
+
+## Prompt original
+
+Implementar testes unitários para a classe GenerateEndpointResponseService da camada application. Os testes devem cobrir: retorno null quando endpoint não tem respostas, retorno null quando responseSchema é null ou vazio, retorno null quando DynamicResponseBodyBuilder resolve schema como null, envio de prompt à IA e retorno da resposta, remoção de code fences (```json ... ```) da resposta da IA, lançamento de AiCommunicationException quando IA falha, retorno null quando IA responde com string vazia, e priorização de resposta 200 sobre 201. Utilizar Mockito com @Mock para AiPort e DynamicResponseBodyBuilder, e @Spy para ObjectMapper.
+
+---
+
+### Criar testes unitários para CheckAiConnectionService validando verificação de conectividade com IA
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_20-55-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para CheckAiConnectionService validando verificação de conectividade com IA
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 20:55:00
+
+## Prompt original
+
+Implementar testes unitários para a classe CheckAiConnectionService da camada application. Os testes devem cobrir todos os cenários de verificação de conectividade com o serviço de IA: retornar true quando IA responde com conteúdo válido ("pong"), retornar false quando IA responde com null, retornar false quando IA responde com string vazia, retornar false quando IA responde com string em branco (apenas espaços), e retornar false quando IA lança exceção (RuntimeException). O serviço usa o prompt fixo "ping" para testar a conexão. Utilizar Mockito com @Mock para AiPort.
+
+---
+
+### Criar testes unitários para PersistSwaggerSpecService e GetEndpointsBySpecificationIdService
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-00-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para PersistSwaggerSpecService e GetEndpointsBySpecificationIdService
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:00:00
+
+## Prompt original
+
+Implementar testes unitários para as classes PersistSwaggerSpecService e GetEndpointsBySpecificationIdService da camada application. Para PersistSwaggerSpecService: validar que delega a persistência ao PersistSwaggerSpecPort e retorna o UUID gerado. Para GetEndpointsBySpecificationIdService: validar retorno de endpoints quando specificationId é válido, lançamento de NullPointerException quando specificationId é null (via Objects.requireNonNull), e retorno de lista vazia quando não há endpoints. Utilizar Mockito com @Mock e @InjectMocks para ambos os serviços.
+
+---
+
+### Criar testes unitários para DynamicRouteRegistrationService validando registro e remoção de rotas
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-05-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para DynamicRouteRegistrationService validando registro e remoção de rotas
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:05:00
+
+## Prompt original
+
+Implementar testes unitários para a classe DynamicRouteRegistrationService da camada application. Os testes devem cobrir: cenário de registerRoutes que deve primeiro chamar unregisterAll() no DynamicRouteRegistryPort e depois registerRoutes() com os endpoints obtidos do GetEndpointsBySpecificationIdUseCase; e cenário de unregisterRoutes que deve delegar a chamada ao DynamicRouteRegistryPort.unregisterRoutes(). Verificar a ordem das chamadas e a correta passagem de parâmetros. Utilizar Mockito com @Mock para GetEndpointsBySpecificationIdUseCase e DynamicRouteRegistryPort.
+
+---
+
+### Criar testes unitários para GlobalExceptionHandler validando mapeamento de exceções para HTTP
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-10-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para GlobalExceptionHandler validando mapeamento de exceções para HTTP
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:10:00
+
+## Prompt original
+
+Implementar testes unitários para a classe GlobalExceptionHandler da camada adapter.in.web.handler. Os testes devem validar o mapeamento correto de cada exceção de domínio para o status HTTP correspondente: InvalidExtensionException → HTTP 400 com mensagem contendo ".json"; InvalidSwaggerContentException → HTTP 400 com mensagem da exceção; DatabaseConnectionException → HTTP 503 com mensagem sobre banco de dados; ReferentialIntegrityException → HTTP 409 com mensagem da exceção; PersistenceDeletionException → HTTP 500 com mensagem da exceção; PersistenceFailureException → HTTP 500 com mensagem da exceção. Testar diretamente os métodos do handler sem MockMvc.
+
+---
+
+### Criar testes unitários para AiConnectionController validando respostas de status de conexão
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-15-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para AiConnectionController validando respostas de status de conexão
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:15:00
+
+## Prompt original
+
+Implementar testes unitários para a classe AiConnectionController da camada adapter.in.web. Os testes devem cobrir os dois cenários do endpoint GET /test-ai-connection: retornar HTTP 200 com mensagem "funcional" quando CheckAiConnectionUseCase.checkConnection() retorna true; e retornar HTTP 503 com mensagem "indisponível" quando checkConnection() retorna false. Utilizar Mockito com @Mock para CheckAiConnectionUseCase e @InjectMocks para o controller, testando diretamente o método sem MockMvc.
+
+---
+
+### Criar testes unitários para ImportController validando fluxo de importação via multipart
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-20-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para ImportController validando fluxo de importação via multipart
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:20:00
+
+## Prompt original
+
+Implementar testes unitários para a classe ImportController da camada adapter.in.web. Os testes devem cobrir: importação bem-sucedida retornando HTTP 201 com mensagem "Arquivo importado com sucesso" verificando que ValidateFileUseCase.validate() e ImportSwaggerUseCase.importSpec() são chamados com FileData correto; e propagação de InvalidExtensionException quando a validação de extensão falha. Utilizar MockMultipartFile do Spring Test para simular o upload de arquivo, e Mockito com @Mock para os use cases.
+
+---
+
+### Criar testes unitários para EndpointDefinitionQueryAdapter validando consulta ao repositório
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-25-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para EndpointDefinitionQueryAdapter validando consulta ao repositório
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:25:00
+
+## Prompt original
+
+Implementar testes unitários para a classe EndpointDefinitionQueryAdapter da camada infrastructure.persistence.adapter. Os testes devem validar a delegação correta ao EndpointDefinitionRepository: retorno de endpoints quando o repositório encontra registros para o specificationId fornecido, e retorno de lista vazia quando não há endpoints para a spec. Verificar que o método findAllByApiSpecificationId() do repositório é chamado com o UUID correto. Utilizar Mockito com @Mock para EndpointDefinitionRepository e @InjectMocks para o adapter.
+
+---
+
+### Criar testes unitários para SwaggerSpecDeletionAdapter validando ordem de deleção e tratamento de erros
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-30-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para SwaggerSpecDeletionAdapter validando ordem de deleção e tratamento de erros
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:30:00
+
+## Prompt original
+
+Implementar testes unitários para a classe SwaggerSpecDeletionAdapter da camada infrastructure.persistence.adapter. Os testes devem cobrir: verificação da ordem correta de deleção usando Mockito InOrder (apiSpecificationRepository.deleteAll() → entityManager.flush() → tagRepository.deleteAllInBatch() → entityManager.flush()); lançamento de PersistenceDeletionException quando deleteAll() falha com DataAccessException; e lançamento de PersistenceDeletionException quando flush() falha. Utilizar Mockito com @Mock para ApiSpecificationRepository, TagRepository e EntityManager, e doThrow() com QueryTimeoutException para simular falhas.
+
+---
+
+### Criar testes unitários para AiGateway validando validações de entrada e tratamento de erros
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-35-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para AiGateway validando validações de entrada e tratamento de erros
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:35:00
+
+## Prompt original
+
+Implementar testes unitários para a classe AiGateway da camada infrastructure.ai.gateway. Os testes devem cobrir as validações de entrada e tratamento de erros: lançar IllegalArgumentException quando prompt é null, vazio ou whitespace; lançar AiCommunicationException quando API key não está configurada (vazia ou null); e lançar AiCommunicationException com mensagem "Erro inesperado" quando ocorre RuntimeException durante a chamada ao ChatClient. Utilizar mocks manuais (Mockito.mock()) para ChatClient.Builder e ChatClient, instanciando o AiGateway diretamente no teste com diferentes valores de API key.
+
+---
+
+### Criar testes unitários para DynamicResponseBodyBuilder validando construção de payloads de resposta
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-40-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para DynamicResponseBodyBuilder validando construção de payloads de resposta
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:40:00
+
+## Prompt original
+
+Implementar testes unitários para a classe DynamicResponseBodyBuilder da camada adapter.in.web.dynamic. Os testes devem cobrir: retorno null para schema null, vazio e JSON inválido; construção de objeto simples com propriedades string e integer; construção de array com 3 itens por padrão; resolução de $ref local quando componentsJson é fornecido; geração de valor boolean; geração de valor number; uso do primeiro valor de enum; e resolução de allOf mesclando propriedades de múltiplos schemas. Instanciar o builder diretamente com ObjectMapper real (sem mocks) para testar a lógica de construção de payloads.
+
+---
+
+### Criar testes unitários para HttpMethodMapper validando mapeamento de métodos HTTP
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-45-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para HttpMethodMapper validando mapeamento de métodos HTTP
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:45:00
+
+## Prompt original
+
+Implementar testes unitários para a classe utilitária HttpMethodMapper da camada application.util. Os testes devem cobrir: mapeamento correto de todos os métodos HTTP suportados (GET, POST, PUT, DELETE, PATCH) para o enum RequestMethod do Spring MVC, incluindo variações de case (minúsculo, maiúsculo) e com espaços usando @ParameterizedTest com @CsvSource; lançamento de IllegalArgumentException para método null; lançamento de IllegalArgumentException para método vazio; e lançamento de IllegalArgumentException com mensagem "Unsupported HTTP method" para método não suportado como OPTIONS.
+
+---
+
+### Executar todos os testes unitários e validar que compilam e passam sem erros
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-50-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Executar todos os testes unitários e validar que compilam e passam sem erros
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:50:00
+
+## Prompt original
+
+Executar todos os testes unitários criados para o projeto MockAI usando Maven (mvnw test) e validar que todos compilam corretamente e passam sem falhas. Verificar que não há erros de compilação relacionados a imports, tipos ou APIs incompatíveis. Corrigir qualquer problema encontrado, como incompatibilidades com a versão do Spring AI 2.0.0-M6 (por exemplo, classes como CallPromptResponseSpec que não existem nessa versão). Garantir que os 91 testes unitários passem com 0 falhas e 0 erros.
+
+---
+
+### Validar cobertura de código com JaCoCo e confirmar que atinge mínimo de 40%
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_21-55-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Validar cobertura de código com JaCoCo e confirmar que atinge mínimo de 40%
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 21:55:00
+
+## Prompt original
+
+Executar a fase verify do Maven (mvnw verify) para validar que a cobertura de código medida pelo JaCoCo atinge o mínimo de 40% configurado na regra do plugin. Verificar o relatório HTML gerado em target/site/jacoco/index.html e confirmar a cobertura por pacote. O resultado esperado é "All coverage checks have been met" com cobertura total de aproximadamente 49% de instruções. Documentar a cobertura alcançada por cada pacote do projeto.
+
+---
+
+### Gerar relatório completo de testes unitários documentando toda a implementação
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_22-00-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Gerar relatório completo de testes unitários documentando toda a implementação
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 22:00:00
+
+## Prompt original
+
+Gerar um relatório completo em Markdown (docs/relatorio-testes-unitarios.md) documentando toda a implementação de testes unitários do projeto MockAI. O relatório deve conter: configuração de infraestrutura de testes (dependências e plugin JaCoCo), tabela detalhada de cada classe testada organizada por camada (Application, API, Infrastructure, Utilitários) com quantidade de testes e cenários cobertos, cobertura por pacote segundo o JaCoCo, padrões de teste utilizados (JUnit 5, Mockito, AssertJ), comandos para execução e geração de relatório, e observações sobre limitações e testes de integração pré-existentes.
+
+---
+
+### Criar testes unitários para os principais fluxos do projeto MockAI garantindo cobertura mínima de 40%
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_22-05-00_dariel-verdecia-verdecia.md` |
+| Data | 2026-05-21 |
+
+Prompt: Criar testes unitários para os principais fluxos do projeto MockAI garantindo cobertura mínima de 40%
+Responsável: Dariel Verdecia Verdecia
+Usuário: dariel-verdecia-verdecia
+Data/hora: 2026-05-21 22:05:00
+
+## Prompt original
+
+Criar testes unitários para os principais fluxos do projeto MockAI, garantindo cobertura mínima de 40% do código total. Checklist técnico: Configurar dependências de teste (Mockito + JUnit) no pom.xml se necessário. Implementar testes unitários para os casos de uso (camada application). Implementar testes unitários para os adapters de entrada (camada api). Implementar testes unitários para os adapters de saída (camada infrastructure). Garantir cobertura mínima de 40% do código total. Validar cobertura com relatório (ex: JaCoCo). Implementar tudo por etapas para não estragar nada.
+
+---
+
+### Adicionar referência ao arquivo de consolidação de prompts na seção de documentação adicional do README
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-21_22-55-58_joaopuel.md` |
+| Data | 2026-05-21 |
+
+Prompt: Adicionar referência ao arquivo de consolidação de prompts na seção de documentação adicional do README
+Responsável: joaopuel
+Usuário: joaopuel
+Data/hora: 2026-05-21 22:55:58
+
+## Prompt original
+
+c:\git\mini-projeto-MockAi\docs\prompts.mdAdicione a referência ao arquivo de prompts na seção de documentação adicional do readme
+
+---
+
