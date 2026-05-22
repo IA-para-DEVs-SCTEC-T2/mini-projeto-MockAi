@@ -1,0 +1,138 @@
+name: Consolidate Prompts
+
+on:
+  push:
+    paths:
+      - "docs/prompts/**"
+  pull_request:
+    paths:
+      - "docs/prompts/**"
+
+jobs:
+  consolidate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate docs/prompts.md
+        shell: bash
+        run: |
+          shopt -s globstar nullglob
+
+          OUTPUT="docs/prompts.md"
+          PROMPTS_DIR="docs/prompts"
+          SPECS_DIR="docs/specs"
+          TODAY=$(date +%Y-%m-%d)
+
+          mkdir -p "$(dirname "$OUTPUT")"
+
+          declare -A FILE_DATE
+          declare -A FILE_TITLE
+
+          for f in "$PROMPTS_DIR"/**/*.md "$PROMPTS_DIR"/*.md; do
+            [ -f "$f" ] || continue
+
+            DATE=$(grep -m1 '^date:' "$f" 2>/dev/null | sed 's/date:[[:space:]]*//' | tr -d '"' || true)
+            [ -z "$DATE" ] && DATE=$(grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' "$f" 2>/dev/null | head -1 || true)
+            [ -z "$DATE" ] && DATE=$(git log --follow --diff-filter=A --format="%as" -- "$f" 2>/dev/null | tail -1 || true)
+            [ -z "$DATE" ] && DATE=$(date -r "$f" +%Y-%m-%d 2>/dev/null || stat -c %y "$f" 2>/dev/null | cut -d' ' -f1)
+
+            FILE_DATE["$f"]="$DATE"
+
+            TITLE=$(grep -m1 '^# ' "$f" 2>/dev/null | sed 's/^# //' || true)
+            [ -z "$TITLE" ] && TITLE=$(grep -m1 '^Prompt:' "$f" 2>/dev/null | sed 's/^Prompt:[[:space:]]*//' || true)
+            [ -z "$TITLE" ] && TITLE=$(basename "$f" .md)
+
+            FILE_TITLE["$f"]="$TITLE"
+          done
+
+          SORTED=$(for f in "${!FILE_DATE[@]}"; do echo "${FILE_DATE[$f]} $f"; done | sort)
+
+          {
+            echo "# Prompts do Projeto"
+            echo ""
+            echo "> Gerado automaticamente pelo GitHub Actions."
+            echo "> Arquivos individuais em \`$PROMPTS_DIR/\` sao mantidos — nenhum foi removido."
+            echo "> Ultima atualizacao: $TODAY"
+            echo ""
+            echo "---"
+            echo ""
+            echo "## Indice"
+            echo ""
+          } > "$OUTPUT"
+
+          while IFS=' ' read -r DATE FILE; do
+            [ -f "$FILE" ] || continue
+            TITLE="${FILE_TITLE[$FILE]}"
+            ANCHOR=$(echo "$TITLE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | sed 's/^-\|-$//g')
+            echo "- [$DATE — $TITLE](#$ANCHOR)" >> "$OUTPUT"
+          done <<< "$SORTED"
+
+          {
+            echo ""
+            echo "---"
+            echo ""
+            echo "## Prompts (ordem cronologica)"
+            echo ""
+          } >> "$OUTPUT"
+
+          while IFS=' ' read -r DATE FILE; do
+            [ -f "$FILE" ] || continue
+            TITLE="${FILE_TITLE[$FILE]}"
+            RELPATH=$(echo "$FILE" | sed 's|^\./||')
+            {
+              echo "### $TITLE"
+              echo ""
+              echo "| Campo | Valor |"
+              echo "|-------|-------|"
+              echo "| Arquivo | \`$RELPATH\` |"
+              echo "| Data | $DATE |"
+              echo ""
+              cat "$FILE"
+              echo ""
+              echo "---"
+              echo ""
+            } >> "$OUTPUT"
+          done <<< "$SORTED"
+
+          if [ -d "$SPECS_DIR" ]; then
+            {
+              echo "## Referencia de Specs Implementados"
+              echo ""
+            } >> "$OUTPUT"
+            for spec in "$SPECS_DIR"/**/*.md "$SPECS_DIR"/*.md; do
+              [ -f "$spec" ] || continue
+              SPEC_TITLE=$(grep -m1 '^# ' "$spec" 2>/dev/null | sed 's/^# //' || true)
+              [ -z "$SPEC_TITLE" ] && SPEC_TITLE=$(basename "$spec" .md)
+              SPEC_DESC=$(grep -m1 '^description:' "$spec" 2>/dev/null | sed 's/description:[[:space:]]*//' | tr -d '"' || true)
+              [ -z "$SPEC_DESC" ] && SPEC_DESC=$(awk '/^[^#\-]/{print; exit}' "$spec")
+              SPEC_PATH=$(echo "$spec" | sed 's|^\./||')
+              {
+                echo "### $SPEC_TITLE"
+                echo ""
+                echo "- **Arquivo:** [\`$SPEC_PATH\`](../$SPEC_PATH)"
+                echo "- **Descricao:** $SPEC_DESC"
+                echo ""
+              } >> "$OUTPUT"
+            done
+          fi
+
+          echo "docs/prompts.md gerado com sucesso."
+
+      - name: Commit updated prompts.md
+        if: github.event_name == 'push'
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/prompts.md
+          if git diff --cached --quiet; then
+            echo "Sem alteracoes — commit ignorado."
+          else
+            git commit -m "chore: auto-update docs/prompts.md [skip ci]"
+            git push
+          fi
