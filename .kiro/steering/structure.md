@@ -19,53 +19,128 @@ com.ia.para.devs.mockai
 ```
 src/main/java/com/ia/para/devs/mockai/
 ├── MockaiApplication.java                          # Classe principal Spring Boot
-├── api/                                            # Camada de apresentação (a implementar)
-│   ├── controller/                                 # Controllers REST
-│   ├── dto/                                        # DTOs de request e response
-│   └── mapper/                                     # Mapeadores entre DTOs e modelos de domínio
-├── application/                                    # Casos de uso (a implementar)
-│   └── usecase/                                    # Implementações dos casos de uso
-├── domain/                                         # Regras de negócio e contratos (a implementar)
+├── adapter/                                        # Camada de apresentação (adaptadores de entrada)
+│   └── in/
+│       └── web/
+│           ├── AiConnectionController.java         # GET /test-ai-connection
+│           ├── EndpointController.java             # GET /endpoints
+│           ├── ImportController.java               # POST /import
+│           ├── dto/                                # DTOs de request/response e OpenAPI
+│           │   ├── EndpointResponse.java
+│           │   ├── ImportResponse.java
+│           │   ├── InfoDto.java
+│           │   ├── MediaTypeDto.java
+│           │   ├── OpenApiSpecDto.java
+│           │   ├── ParameterDto.java
+│           │   ├── PathItemDto.java
+│           │   ├── ResponseDto.java
+│           │   ├── SchemaDto.java
+│           │   ├── ServerDto.java
+│           │   └── TagDto.java
+│           ├── dynamic/                            # Roteamento dinâmico de endpoints mockados
+│           │   ├── DynamicEndpointHandler.java
+│           │   ├── DynamicResponseBodyBuilder.java
+│           │   └── SpringWebDynamicRouteRegistry.java
+│           └── handler/
+│               └── GlobalExceptionHandler.java
+├── application/                                    # Casos de uso
+│   ├── service/                                    # Implementações dos casos de uso
+│   │   ├── CheckAiConnectionService.java
+│   │   ├── DynamicRouteRegistrationService.java
+│   │   ├── GenerateEndpointResponseService.java
+│   │   ├── GetEndpointsBySpecificationIdService.java
+│   │   ├── ImportSwaggerService.java
+│   │   ├── ListEndpointsService.java
+│   │   ├── PersistSwaggerSpecService.java
+│   │   ├── ValidateFileService.java
+│   │   └── ValidateSwaggerContentService.java
+│   └── util/
+│       └── HttpMethodMapper.java
+├── config/
+│   └── JacksonConfig.java
+├── domain/                                         # Regras de negócio e contratos
+│   ├── exception/                                  # Exceções de domínio tipadas
+│   │   ├── AiCommunicationException.java
+│   │   ├── DatabaseConnectionException.java
+│   │   ├── InvalidExtensionException.java
+│   │   ├── InvalidSwaggerContentException.java
+│   │   ├── PersistenceDeletionException.java
+│   │   ├── PersistenceFailureException.java
+│   │   └── ReferentialIntegrityException.java
 │   ├── model/                                      # Modelos de domínio puros
-│   └── port/                                       # Interfaces (ports) que definem contratos
+│   │   └── FileData.java
+│   └── port/
+│       ├── in/                                     # Interfaces de entrada (use cases)
+│       │   ├── CheckAiConnectionUseCase.java
+│       │   ├── DynamicRouteRegistrationUseCase.java
+│       │   ├── GenerateEndpointResponseUseCase.java
+│       │   ├── GetEndpointsBySpecificationIdUseCase.java
+│       │   ├── ImportSwaggerUseCase.java
+│       │   ├── ListEndpointsUseCase.java
+│       │   ├── PersistSwaggerSpecUseCase.java
+│       │   ├── ValidateFileUseCase.java
+│       │   └── ValidateSwaggerContentUseCase.java
+│       └── out/                                    # Interfaces de saída (repositórios, gateways)
+│           ├── AiPort.java
+│           ├── DeleteSwaggerSpecPort.java
+│           ├── DynamicRouteRegistryPort.java
+│           ├── GetEndpointsBySpecificationIdPort.java
+│           ├── ListEndpointsPort.java
+│           └── PersistSwaggerSpecPort.java
 └── infrastructure/                                 # Adaptadores técnicos
+    ├── ai/
+    │   ├── config/
+    │   │   └── GroqApiKeyValidator.java
+    │   └── gateway/
+    │       └── AiGateway.java                      # Spring AI + Groq
+    ├── config/
+    │   └── DotEnvInitializer.java
     └── persistence/
+        ├── adapter/                                # Adapters de persistência e consulta
+        │   ├── EndpointDefinitionQueryAdapter.java
+        │   ├── ListEndpointsAdapter.java
+        │   ├── SwaggerSpecDeletionAdapter.java
+        │   └── SwaggerSpecPersistenceAdapter.java
         ├── entity/                                 # Entidades JPA
         │   ├── ApiSpecificationEntity.java
         │   ├── EndpointDefinitionEntity.java
         │   ├── EndpointResponseEntity.java
         │   ├── PathParameterEntity.java
         │   └── TagEntity.java
-        ├── repository/                             # Repositórios Spring Data JPA (a implementar)
-        └── mapper/                                 # Mapeadores entre entidades e modelos de domínio (a implementar)
+        └── repository/                             # Repositórios Spring Data JPA
+            ├── ApiSpecificationRepository.java
+            ├── EndpointDefinitionRepository.java
+            ├── EndpointResponseRepository.java
+            ├── PathParameterRepository.java
+            └── TagRepository.java
 ```
 
 ## Camadas
 
 | Camada           | Pacote                                      | Responsabilidade Principal                                                                                      |
 |------------------|---------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| `domain`         | `...mockai.domain`                          | Modelos de domínio puros e interfaces (ports) que definem os contratos que outras camadas devem implementar.    |
+| `domain`         | `...mockai.domain`                          | Modelos de domínio puros, interfaces (ports in/out) e exceções de negócio tipadas.                              |
 | `application`    | `...mockai.application`                     | Implementa as regras de negócio e os casos de uso, sem depender de frameworks ou detalhes de infraestrutura.    |
-| `infrastructure` | `...mockai.infrastructure`                  | Adaptadores técnicos: persistência JPA, gateways e mapeadores entre entidades e modelos de domínio.             |
-| `api`            | `...mockai.api`                             | Camada de apresentação: expõe endpoints REST, recebe requisições HTTP e delega para os casos de uso.            |
+| `infrastructure` | `...mockai.infrastructure`                  | Adaptadores técnicos: persistência JPA, gateway de IA (Groq via Spring AI) e adapters de consulta.             |
+| `adapter`        | `...mockai.adapter`                         | Camada de apresentação: expõe endpoints REST, registra rotas dinâmicas e trata exceções globalmente.            |
 
 ## Princípios de Dependência
 
 - **Domain** não depende de nenhuma outra camada
 - **Application** depende apenas de **Domain**
-- **Infrastructure** implementa as interfaces definidas em **Domain**
-- **API** depende de **Application** e **Domain**, mas não de **Infrastructure** diretamente
+- **Infrastructure** implementa as interfaces de saída definidas em **Domain** (`port/out`)
+- **Adapter** depende de **Application** (via interfaces `port/in`) e **Domain**, mas não de **Infrastructure** diretamente
 
 ## Fluxo de Dados
 
 ```
-API → Application → Domain ← Infrastructure
+Adapter → Application → Domain ← Infrastructure
 ```
 
-1. **API** recebe requisições HTTP e delega para os casos de uso
+1. **Adapter** recebe requisições HTTP e delega para os casos de uso via ports de entrada
 2. **Application** processa a lógica de negócio usando os contratos do Domain
-3. **Domain** define as regras e os contratos (ports)
-4. **Infrastructure** implementa os adaptadores técnicos que cumprem os contratos
+3. **Domain** define as regras, os contratos (ports) e as exceções de negócio
+4. **Infrastructure** implementa os adapters técnicos que cumprem os contratos de saída
 
 ## Boas Práticas
 

@@ -3,11 +3,12 @@
 // Generated from entity-modeling design
 
 Table api_specification {
-  id          uuid         [pk, not null, note: "Identificador único gerado pela aplicação"]
-  title       varchar(255) [not null, note: "Título da API"]
-  version     varchar(255) [not null, note: "Versão da API"]
-  description text         [note: "Descrição da API"]
-  base_url    varchar(255) [not null, note: "URL base da API"]
+  id              uuid         [pk, not null, note: "Identificador único gerado pela aplicação"]
+  title           varchar(255) [not null, note: "Título da API"]
+  version         varchar(255) [not null, note: "Versão da API"]
+  description     text         [note: "Descrição da API"]
+  base_url        varchar(255) [not null, note: "URL base da API"]
+  components_json text         [note: "Bloco components da spec OpenAPI serializado como JSON — usado para resolução de $ref na geração de payloads"]
 }
 
 Table tag {

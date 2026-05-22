@@ -43,10 +43,15 @@ flowchart TD
   dinamicamente para os
   endpoints mockados"]
 
-  dev -- "Envia especificação\nSwagger/OpenAPI [JSON]\nvia HTTP POST" --> mockai
-  consumer -- "Consome endpoints\nmockados via HTTP" --> mockai
-  mockai -- "Solicita geração\nde payload mockado" --> ai_ext
-  ai_ext -- "Retorna payload\ngerado" --> mockai
+  dev -- "Envia especificação
+  Swagger/OpenAPI [JSON]
+  via HTTP POST" --> mockai
+  consumer -- "Consome endpoints
+mockados via HTTP" --> mockai
+  mockai -- "Solicita geração
+de payload mockado" --> ai_ext
+  ai_ext -- "Retorna payload
+gerado" --> mockai
 
   dev:::person
   consumer:::person
@@ -99,12 +104,15 @@ flowchart LR
   ai_ext["☁️ Groq
   ─────────────────
   API externa (api.groq.com)
+  Modelo: llama-3.1-8b-instant
   ─────────────────
   Gera payloads JSON
   dinamicamente"]
 
-  dev      -- "POST /mockai/mocks\n[JSON Swagger/OpenAPI]" --> api_app
-  consumer -- "GET /mockai/mock/{id}/{path}\n[HTTP]"        --> api_app
+  dev      -- "POST /mockai/import
+[JSON Swagger/OpenAPI]" --> api_app
+  consumer -- "GET|POST|PUT|PATCH|DELETE
+[endpoints mockados]" --> api_app
   api_app  -- "Spring Data JPA / JDBC"                      --> db
   db       -- "Consulta specs e endpoints"                   --> api_app
   api_app  -- "HTTP — solicita payload mockado"              --> ai_ext
@@ -135,64 +143,116 @@ config:
   theme: neutral
 ---
 flowchart TD
-  http_in["HTTP Request\n(Desenvolvedor / Consumidor)"]
+  http_in["HTTP Request
+(Desenvolvedor / Consumidor)"]
 
   subgraph app["MockAI Application — Clean Architecture"]
     direction TB
 
-    subgraph api_layer["Camada API"]
-      ctrl["Controller REST
+    subgraph adapter_layer["Camada Adapter (in/web)"]
+      ctrl["Controllers REST
       ─────────────────
-      Spring Web MVC + Bean Validation
+      ImportController (POST /import)
+      EndpointController (GET /endpoints)
+      AiConnectionController (GET /test-ai-connection)
       ─────────────────
       Recebe requisições HTTP,
-      valida DTOs de entrada,
+      valida entradas,
       serializa respostas JSON"]
+
+      dynamic["Dynamic Route Registry
+      ─────────────────
+      SpringWebDynamicRouteRegistry
+      DynamicEndpointHandler
+      DynamicResponseBodyBuilder
+      ─────────────────
+      Registra e serve rotas
+      mockadas em tempo de execução"]
+
+      handler["GlobalExceptionHandler
+      ─────────────────
+      Mapeia exceções de domínio
+      para respostas HTTP"]
     end
 
     subgraph application_layer["Camada Application"]
-      usecase["Use Cases
+      usecase["Use Cases / Services
       ─────────────────
-      Java puro
+      ImportSwaggerService
+      PersistSwaggerSpecService
+      DynamicRouteRegistrationService
+      GenerateEndpointResponseService
+      ListEndpointsService
+      ValidateFileService
+      ValidateSwaggerContentService
+      CheckAiConnectionService
       ─────────────────
-      Processar spec Swagger,
-      criar mock, servir endpoint"]
+      Orquestra as regras de negócio"]
     end
 
     subgraph domain_layer["Camada Domain"]
       model["Modelos de Domínio
       ─────────────────
-      Java puro — sem frameworks
+      FileData
       ─────────────────
-      ApiSpecification, Endpoint,
-      PathParameter, EndpointResponse"]
+      Java puro — sem frameworks"]
 
-      port["Ports (Interfaces)
+      port_in["Ports de Entrada (in)
       ─────────────────
-      Contratos que definem
-      o que a infraestrutura
-      deve implementar"]
+      ImportSwaggerUseCase
+      ValidateFileUseCase
+      ValidateSwaggerContentUseCase
+      PersistSwaggerSpecUseCase
+      DynamicRouteRegistrationUseCase
+      GenerateEndpointResponseUseCase
+      ListEndpointsUseCase
+      CheckAiConnectionUseCase"]
+
+      port_out["Ports de Saída (out)
+      ─────────────────
+      PersistSwaggerSpecPort
+      DeleteSwaggerSpecPort
+      DynamicRouteRegistryPort
+      ListEndpointsPort
+      GetEndpointsBySpecificationIdPort
+      AiPort"]
+
+      exception["Exceções de Domínio
+      ─────────────────
+      InvalidExtensionException
+      InvalidSwaggerContentException
+      AiCommunicationException
+      DatabaseConnectionException
+      PersistenceFailureException
+      PersistenceDeletionException
+      ReferentialIntegrityException"]
     end
 
     subgraph infra_layer["Camada Infrastructure"]
-      repo["Repositórios JPA
+      repo["Adapters de Persistência
       ─────────────────
-      Spring Data JPA
+      SwaggerSpecPersistenceAdapter
+      SwaggerSpecDeletionAdapter
+      ListEndpointsAdapter
+      EndpointDefinitionQueryAdapter
       ─────────────────
-      Implementa os ports do domain.
-      Persiste e consulta dados no H2"]
+      Implementam os ports de saída.
+      Persistem e consultam dados no H2"]
 
       gateway["Gateway de IA
       ─────────────────
-      HTTP Client (Spring AI)
+      AiGateway (Spring AI)
       ─────────────────
       Chama o Groq (api.groq.com)
       para gerar payloads mockados"]
 
-      mapper["Mappers
+      entities["Entidades JPA
       ─────────────────
-      Converte entre entidades JPA
-      e modelos de domínio"]
+      ApiSpecificationEntity
+      EndpointDefinitionEntity
+      EndpointResponseEntity
+      PathParameterEntity
+      TagEntity"]
     end
   end
 
@@ -200,23 +260,28 @@ flowchart TD
   ai_ext["Groq (api.groq.com)"]
 
   http_in --> ctrl
+  http_in --> dynamic
   ctrl    --> usecase
-  usecase --> model
-  usecase --> port
-  port    --> repo
-  port    --> gateway
-  repo    --> mapper
-  mapper  --> model
-  repo    --> db
+  dynamic --> usecase
+  usecase --> port_in
+  usecase --> port_out
+  port_out --> repo
+  port_out --> gateway
+  repo    --> entities
+  entities --> db
   gateway --> ai_ext
 
   ctrl:::apiComp
+  dynamic:::apiComp
+  handler:::apiComp
   usecase:::appComp
   model:::domainComp
-  port:::domainComp
+  port_in:::domainComp
+  port_out:::domainComp
+  exception:::domainComp
   repo:::infraComp
   gateway:::infraComp
-  mapper:::infraComp
+  entities:::infraComp
   db:::database
   ai_ext:::external
 
@@ -242,11 +307,12 @@ config:
 ---
 erDiagram
   api_specification {
-    UUID   id          PK
+    UUID   id              PK
     string title
     string version
     text   description
     string base_url
+    text   components_json
   }
 
   endpoint_definition {
@@ -295,13 +361,15 @@ erDiagram
   endpoint_definition ||--o{ endpoint_response  : "possui"
 ```
 
+> **Nota:** `api_specification.components_json` armazena o bloco `components` da spec OpenAPI serializado como JSON. Usado para resolução de `$ref` durante a geração de payloads pela IA.
+
 ---
 
 ## Resumo das Tecnologias por Camada
 
 | Camada | Tecnologia | Responsabilidade |
 |---|---|---|
-| API | Spring Web MVC + SpringDoc OpenAPI 3.0.2 | Endpoints REST, validação, documentação Swagger |
-| Application | Java 17 puro | Casos de uso, regras de negócio |
-| Domain | Java 17 puro | Modelos e contratos (ports) |
-| Infrastructure | Spring Data JPA + H2 + HTTP Client | Persistência, gateway de IA, mappers |
+| Adapter (in/web) | Spring Web MVC + SpringDoc OpenAPI 3.0.2 | Endpoints REST, roteamento dinâmico, tratamento de exceções, documentação Swagger |
+| Application | Java 17 puro | Casos de uso, regras de negócio, orquestração |
+| Domain | Java 17 puro | Modelos, contratos (ports) e exceções de negócio |
+| Infrastructure | Spring Data JPA + H2 + Spring AI (Groq) | Persistência, gateway de IA, adapters de consulta |

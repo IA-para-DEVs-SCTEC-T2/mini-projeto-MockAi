@@ -1,116 +1,129 @@
 # MockAI
 
-MockAI é um gerador inteligente de APIs mock que transforma arquivos Swagger/OpenAPI em APIs simuladas locais, permitindo desenvolvimento e testes sem dependência de serviços externos. Suporta geração dinâmica de endpoints e integração opcional com IA para respostas simuladas mais realistas.
+## Objetivo
 
+Simular o funcionamento real de uma API REST a partir de sua documentação Swagger/OpenAPI, disponibilizando endpoints e payloads prontos para consumo imediato — sem dependência do serviço real.
 
-## Grupo 3
-- Dariel Verdecia Verdecia
-- João Ricardo Tasca Puel
-- Welton Sabino 
-- Daniel Rodrigues da Silva
-- Luiz Fernando Amaral
+## Visão geral
 
-## Kanban
-- https://github.com/orgs/IA-para-DEVs-SCTEC-T2/projects/6/views/1
+Desenvolvedores que precisam implementar o consumo de uma API REST frequentemente ficam bloqueados quando o serviço ainda não está disponível. O MockAI resolve isso: receba uma spec OpenAPI (JSON), e os endpoints ficam disponíveis na hora, com respostas geradas dinamicamente por IA (Groq).
 
-## Arquitetura
+## Funcionalidades
 
-O diagrama C4 completo da arquitetura do MockAI está disponível em [`docs/architecture-diagram.md`](docs/architecture-diagram.md), cobrindo os 4 níveis:
-
-- **Nível 1 — Contexto:** sistema, atores externos e serviço de IA
-- **Nível 2 — Containers:** MockAI Application (Spring Boot) e H2 Database
-- **Nível 3 — Componentes:** as 4 camadas da Clean Architecture
-- **Nível 4 — Código:** modelo de dados com as 6 entidades JPA
-
-## Banco de Dados
-
-- [Diagrama do banco de dados (dbdiagram.io)](https://dbdiagram.io/d/6a0034347a923b947269ee88)
-- Especificação DBML: [`docs/database-schema.dbml`](docs/database-schema.dbml)
-- Documentação das tabelas: [`docs/database-schema.md`](docs/database-schema.md)
-
-## Tecnologias
-
-| Tecnologia | Versão |
-|---|---|
-| Java | 17 |
-| Maven | 3.9.7+ |
-| Spring Boot | 4.0.6 |
-| SpringDoc OpenAPI | 3.0.2 |
-| H2 Database | runtime |
+- Importação de spec Swagger/OpenAPI 3.0+ via `POST /import`
+- Criação automática de endpoints mockados (registro dinâmico, sem reinicialização)
+- Geração de payloads realistas com IA (Groq), com fallback estático
+- Listagem dos endpoints mockados ativos via `GET /endpoints`
+- Verificação de conectividade com a IA via `GET /test-ai-connection`
 
 ## Pré-requisitos
 
-- Java 17+
+- Java 17
 - Maven 3.9.7+
+- Chave de API do Groq (obtenha em [console.groq.com/keys](https://console.groq.com/keys))
 
-## Como executar
+## Como instalar
+
+```bash
+git clone https://github.com/IA-para-DEVs-SCTEC-T2/mini-projeto-MockAi.git
+cd mini-projeto-MockAi
+cp .env.example .env
+# Edite .env e defina GROQ_API_KEY=sua_chave_aqui
+# Obtenha sua chave em: https://console.groq.com/keys
+mvn clean compile
+```
+
+## Como executar localmente
 
 ```bash
 mvn spring-boot:run
 ```
 
-## Comandos Maven
+## Estrutura de pastas
 
-```bash
-# Compilar
-mvn clean compile
-
-# Executar testes
-mvn test
-
-# Gerar JAR
-mvn clean package
-
-# Limpar artefatos
-mvn clean
+```text
+.
+├── docs/
+├── scripts/
+├── src/
+│   └── main/java/com/ia/para/devs/mockai/
+│       ├── adapter/in/web/     # Controllers, DTOs, roteamento dinâmico
+│       ├── application/        # Casos de uso e serviços
+│       ├── domain/             # Modelos, ports e exceções
+│       └── infrastructure/     # JPA, gateway de IA (Groq)
+├── CONTRIBUTING.md
+└── README.md
 ```
 
-## Estrutura do Projeto
+## Fluxo de desenvolvimento
 
-O projeto segue os princípios de **Clean Architecture** e **Hexagonal Architecture**, organizado em 4 camadas isoladas:
-
-```
-src/main/java/com/ia/para/devs/mockai/
-├── MockaiApplication.java
-├── domain/              # Modelos de domínio puros e ports (interfaces)
-│   ├── model/
-│   └── port/
-├── application/         # Casos de uso e regras de negócio
-│   ├── usecase/
-│   └── service/
-├── infrastructure/      # Adaptadores técnicos: JPA, gateways, mappers
-│   ├── persistence/
-│   │   ├── entity/
-│   │   ├── repository/
-│   │   └── mapper/
-│   └── gateway/
-└── api/                 # Controllers REST, DTOs e tratamento de exceções
-    ├── controller/
-    ├── dto/
-    │   ├── request/
-    │   └── response/
-    └── exception/
+```text
+1. Escolher uma issue no board do GitHub
+2. Usar o hook /commit-modifications → informar o número da issue → cria a branch feature/task<N> e realiza o commit seguindo a convenção de commits
+3. Usar o hook /push-modifications → realiza o push e abre o PR
+4. Revisão do PR e merge manual
 ```
 
-### Responsabilidades por camada
+>> [Board do projeto no GitHub](https://github.com/orgs/IA-para-DEVs-SCTEC-T2/projects/6/views/1)
 
-- `domain` — Java puro, sem dependências externas. Define os contratos (ports) que outras camadas implementam.
-- `application` — Orquestra os casos de uso, depende apenas do domain.
-- `infrastructure` — Implementa os ports do domain usando JPA, H2 e gateways externos.
-- `api` — Expõe endpoints REST, valida entradas e serializa respostas JSON.
+## Convenção de commits
 
-## Ferramentas de Desenvolvimento
+```text
+feat: nova funcionalidade
+fix: correção
+docs: documentação
+chore: configuração
+refactor: refatoração
+test: testes
+```
 
-### H2 Console
+## Teste você mesmo
 
-Banco de dados em memória disponível durante o desenvolvimento:
+A coleção do Postman e os exemplos de Swagger estão prontos para uso imediato.
 
-- URL: `http://localhost:8080/mockai/h2-console`
-- JDBC URL: `jdbc:h2:mem:testdb`
+**Coleção Postman:** [`docs/MockAi.postman_collection.json`](docs/MockAi.postman_collection.json)
 
-### Swagger UI
+Importe o arquivo no Postman. A coleção contém:
 
-Documentação interativa da API:
+| Grupo | Descrição |
+|-------|-----------|
+| `import` | `POST /import` — envia um arquivo Swagger para criar os endpoints mockados |
+| `endpoints` | `GET /endpoints` — lista todos os endpoints mockados ativos |
+| `test-ai-connection` | `GET /test-ai-connection` — verifica conectividade com o Groq |
+| `Pet swagger` | Endpoints mockados gerados a partir do `petstore.json` |
+| `Company manager swagger` | Endpoints mockados gerados a partir do `company-manager.json` |
 
-- Swagger UI: `http://localhost:8080/mockai/swagger-ui.html`
-- OpenAPI JSON: `http://localhost:8080/mockai/v3/api-docs`
+**Exemplos de Swagger disponíveis em [`docs/swagger-examples/`](docs/swagger-examples/):**
+
+| Arquivo | Descrição |
+|---------|-----------|
+| [`petstore.json`](docs/swagger-examples/petstore.json) | API de petstore — exemplo clássico OpenAPI com endpoints de pets |
+| [`company-manager.json`](docs/swagger-examples/company-manager.json) | API de gerenciamento de empresas e proprietários |
+
+**Fluxo rápido:**
+1. Suba a aplicação: `mvn spring-boot:run`
+2. No Postman, execute `import` apontando para um dos arquivos acima
+3. Execute `endpoints` para ver as rotas criadas
+4. Teste os endpoints mockados — as respostas são geradas dinamicamente pela IA
+
+---
+
+## Documentação adicional
+
+Consultar a pasta `docs/`.
+
+- [PRD — Product Requirements Document](docs/PRD.md)
+- [Diagrama de Arquitetura C4](docs/architecture-diagram.md)
+- [Schema do Banco de Dados](docs/database-schema.md)
+- [Apresentação do projeto](docs/apresentacao/MockAI.pptx)
+- [Propostas de telas (apenas avaliativo)](docs/propostas_de_telas_apenas_avaliativo/Prompts_telas_figma.md)
+- [Swagger UI](http://localhost:8080/mockai/swagger-ui.html) — disponível com a aplicação rodando
+- [Guia de Contribuição](CONTRIBUTING.md)
+
+## Integrantes
+
+- Daniel Rodrigues da Silva
+- Dariel Verdecia Verdecia
+- João Ricardo Tasca Puel
+- Luiz Fernando Amaral
+- Welton Sabino
