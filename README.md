@@ -114,6 +114,7 @@ Consultar a pasta `docs/`.
 
 - [PRD — Product Requirements Document](docs/PRD.md)
 - [Diagrama de Arquitetura C4](docs/architecture-diagram.md)
+- [Diagramas UML — Sequência e Atividades](docs/uml-diagrams.md)
 - [Schema do Banco de Dados](docs/database-schema.md)
 - [Apresentação do projeto](docs/apresentacao/MockAI.pptx)
 - [Propostas de telas (apenas avaliativo)](docs/propostas_de_telas_apenas_avaliativo/Prompts_telas_figma.md)
