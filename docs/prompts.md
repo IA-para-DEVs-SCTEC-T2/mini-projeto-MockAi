@@ -132,6 +132,8 @@
 - [2026-05-21 — Gerar relatório completo de testes unitários documentando toda a implementação](#gerar-relat-rio-completo-de-testes-unit-rios-documentando-toda-a-implementa-o)
 - [2026-05-21 — Criar testes unitários para os principais fluxos do projeto MockAI garantindo cobertura mínima de 40%](#criar-testes-unit-rios-para-os-principais-fluxos-do-projeto-mockai-garantindo-cobertura-m-nima-de-40)
 - [2026-05-21 — Adicionar referência ao arquivo de consolidação de prompts na seção de documentação adicional do README](#adicionar-refer-ncia-ao-arquivo-de-consolida-o-de-prompts-na-se-o-de-documenta-o-adicional-do-readme)
+- [2026-05-22 — Criar diagramas UML (sequência e atividades) dos fluxos de importação Swagger e resposta por IA](#criar-diagramas-uml-sequ-ncia-e-atividades-dos-fluxos-de-importa-o-swagger-e-resposta-por-ia)
+- [2026-05-22 — Simplificar diagramas de sequência UML para mostrar apenas Usuário, Backend, H2 e Groq](#simplificar-diagramas-de-sequ-ncia-uml-para-mostrar-apenas-usu-rio-backend-h2-e-groq)
 
 ---
 
@@ -2470,6 +2472,42 @@ Data/hora: 2026-05-21 22:55:58
 ## Prompt original
 
 c:\git\mini-projeto-MockAi\docs\prompts.mdAdicione a referência ao arquivo de prompts na seção de documentação adicional do readme
+
+---
+
+### Criar diagramas UML (sequência e atividades) dos fluxos de importação Swagger e resposta por IA
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-22_14-00-46_joaopuel.md` |
+| Data | 2026-05-22 |
+
+Prompt: Criar diagramas UML (sequência e atividades) dos fluxos de importação Swagger e resposta por IA
+Responsável: joaopuel
+Usuário: joaopuel
+Data/hora: 2026-05-22 14:00:46
+
+## Prompt original
+
+#InstruçãoCrie diagramas UML do projeto#Detalhes1. Crie um arquivo .md de diagramas UML do projeto.2. Crie 2 diagramas UML: Diagrama de sequência e diagrama de atividades.#Diagrama de sequência1. Descreva a sequência de interações da funcionalide de importação do arquivo swagger e da funcionalidade de obtenção de resposta por IA2. Mostre a ordem das chamadas entre componentes3. Evidencia responsabilidades em cada etapa4. Exiba integrações entre backend e serviço externo Groq#Diagrama de atividades1. Modele o fluxo de execução do processo de impotação de arquivo swagger e processo de obtenção de resposta por IA2. Represente decisões, desvios e ramificações relevantes3. Evidencie início, término e caminhos alternativos
+
+---
+
+### Simplificar diagramas de sequência UML para mostrar apenas Usuário, Backend, H2 e Groq
+
+| Campo | Valor |
+|-------|-------|
+| Arquivo | `docs/prompts/2026-05-22_14-05-24_joaopuel.md` |
+| Data | 2026-05-22 |
+
+Prompt: Simplificar diagramas de sequência UML para mostrar apenas Usuário, Backend, H2 e Groq
+Responsável: joaopuel
+Usuário: joaopuel
+Data/hora: 2026-05-22 14:05:24
+
+## Prompt original
+
+Atualize o diagrama UML de sequência, considere que os componentes são apenas a entrada do Usuário, o serviço backend, o database H2 e o serviço externo groq. Não é necessário descrever o fluxo entre as camadas/componentes internos do projeto.
 
 ---
 
