@@ -33,6 +33,7 @@ class ListEndpointsIntegrationTest {
             "  \"openapi\": \"3.0.1\",\n" +
             "  \"info\": {\n" +
             "    \"title\": \"Test API\",\n" +
+            "    \"description\": \"API de teste para listagem de endpoints\",\n" +
             "    \"version\": \"1.0.0\"\n" +
             "  },\n" +
             "  \"paths\": {\n" +
